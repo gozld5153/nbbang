@@ -1,9 +1,11 @@
-version: 0.1
+version: 0.2
 
 phases:
   pre_build:
     commands:
+      - ls
       - cd client
+      - ls
       - npm install
   build:
     commands:
