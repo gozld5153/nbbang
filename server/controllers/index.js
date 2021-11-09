@@ -1,7 +1,7 @@
 module.exports = {
-  signin: require('./users/signin'),
-  // signup: require('./users/signup'),
-  // get_user_info: require('./users/get_user_info'),
+  signin: require("./users/signin"),
+  signup: require("./users/signup"),
+  get_user_info: require("./users/get_user_info"),
   // project_current: require('./project/project_current'),
   // complete_project: require('./project/complete_project'),
   // delete_project: require('./project/delete_project'),
@@ -18,4 +18,4 @@ module.exports = {
   // delete_goal: require('./goal/delete_goal'),
   // make_like: require('./like/make_like'),
   // delete_like: require('./like/delete_like'),
-}
+};
