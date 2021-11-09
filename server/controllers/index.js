@@ -3,6 +3,8 @@ module.exports = {
   signup: require("./users/signup"),
   get_user_info: require("./users/get_user_info"),
   duplication_check: require("./users/duplication_check"),
+  update_user_info: require("./users/update_user_info"),
+  delete_user: require("./users/delete_user"),
   // project_current: require('./project/project_current'),
   // complete_project: require('./project/complete_project'),
   // delete_project: require('./project/delete_project'),
