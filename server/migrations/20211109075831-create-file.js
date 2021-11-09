@@ -64,9 +64,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.removeConstraint("Files", "Files_fkey_from_Goals");
-    await queryInterface.removeConstraint("Files", "Files_fkey_from_Projects");
-    await queryInterface.removeConstraint("Files", "Files_fkey_from_Users");
     await queryInterface.dropTable("Files");
   },
 };

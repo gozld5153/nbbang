@@ -2,7 +2,7 @@ const { User } = require("../../models");
 
 module.exports = async (req, res) => {
   // TODO 마이페이지 내정보
-  // 파라미터로 email 전달
+  // 파라미터로 id 전달
   let user_info;
   try {
     user_info = await User.findOne({
