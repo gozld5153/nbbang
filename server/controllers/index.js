@@ -1,7 +1,7 @@
 module.exports = {
   signin: require("./users/signin"),
   signup: require("./users/signup"),
-  // get_user_info: require('./users/get_user_info'),
+  get_user_info: require("./users/get_user_info"),
   // project_current: require('./project/project_current'),
   // complete_project: require('./project/complete_project'),
   // delete_project: require('./project/delete_project'),
