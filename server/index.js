@@ -35,20 +35,10 @@ app.use("/users", users_router);
 app.get("/", (req, res) => {
   res.status(201).send("Hello World");
 });
-const HTTP_PORT = process.env.HTTP_PORT || 4000;
+const HTTP_PORT = process.env.HTTP_PORT || 80;
 
 let server;
-// https로 실행(배포)시 아래 주석 해제
-// if(fs.existsSync("./key.pem") && fs.existsSync("./cert.pem")){
 
-// const privateKey = fs.readFileSync(__dirname + "/key.pem", "utf8");
-// const certificate = fs.readFileSync(__dirname + "/cert.pem", "utf8");
-// const credentials = { key: privateKey, cert: certificate };
-
-// server = https.createServer(credentials, app);
-// server.listen(HTTPS_PORT, () => console.log("server runnning"));
-
-// } else {
 server = app.listen(HTTP_PORT);
-// }
+
 module.exports = server;
