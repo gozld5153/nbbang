@@ -1,12 +1,3 @@
-<<<<<<< HEAD
-import React from "react";
-
-const index = () => {
-  return <div></div>;
-};
-
-export default index;
-=======
 require("dotenv").config();
 const fs = require("fs");
 const https = require("https");
@@ -49,4 +40,3 @@ const HTTP_PORT = process.env.HTTP_PORT || 80;
 const server = app.listen(HTTP_PORT);
 
 module.exports = server;
->>>>>>> 580633269a104ebf6b6cc911d1fd908eecf157e1
