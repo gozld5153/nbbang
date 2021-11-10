@@ -3,5 +3,5 @@ module.exports = (req, res) => {
   return res
     .status(200)
     .clearCookie("access_token")
-    .json({ data: null, message: "로그아웃 되었습니다." });
+    .json({ data: null, message: "ok" });
 };
