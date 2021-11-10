@@ -20,7 +20,7 @@ const TotalModal = ({ handleModal, handleSignAndLogin, signAndLogin }) => {
           {signAndLogin === "login" ? (
             <AsideLogin handleSignAndLogin={handleSignAndLogin} />
           ) : (
-            <Signup />
+            <Signup handleSignAndLogin={handleSignAndLogin} />
           )}
         </SignupContainer>
       </ContainerSign>

@@ -1,6 +1,6 @@
-import Nav from "../components/Nav";
 import styled from "styled-components";
-import TotalModal from "../components/TotalModal";
+import TotalModal from "../components/nav_bar/TotalModal";
+import Nav from "../components/nav_bar/Nav";
 import { useState } from "react";
 
 export default function Main() {

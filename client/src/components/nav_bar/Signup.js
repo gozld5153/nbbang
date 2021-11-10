@@ -1,17 +1,18 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import axios from "axios";
 
-const Signup = () => {
+const Signup = ({ handleSignAndLogin }) => {
   const [signupInfo, setSignupInfo] = useState({
     email: "",
     password: "",
-    nickname: "",
+    username: "",
   });
 
   const [errMsg, setErrMsg] = useState({
     email: "",
     password: "",
-    nickname: "",
+    username: "",
   });
 
   const [isChecked, setIsChecked] = useState(false);
@@ -41,7 +42,7 @@ const Signup = () => {
       }
     }
 
-    if (key === "nickname") {
+    if (key === "username") {
       if (/^[A-Za-z0-9]{2,8}$/.test(e.target.value)) {
         setSignupInfo({
           ...signupInfo,
@@ -59,10 +60,20 @@ const Signup = () => {
   };
 
   const handleSingup = () => {
-    if (errMsg.email || errMsg.password || errMsg.nickname || !isChecked) {
+    if (
+      errMsg.email !== null ||
+      errMsg.password !== null ||
+      errMsg.username !== null
+    ) {
+      console.log("돌아가!");
       return;
     } else {
       //todo axios 통신요청
+      console.log(signupInfo);
+      axios
+        .post("http://localhost:80/users/signup", signupInfo)
+        .then((data) => handleSignAndLogin())
+        .catch((err) => console.log(err));
     }
   };
 
@@ -95,12 +106,12 @@ const Signup = () => {
 
       <input
         type="text"
-        placeholder="nickname"
-        onChange={handleInputValue("nickname")}
+        placeholder="username"
+        onChange={handleInputValue("username")}
       ></input>
 
-      {errMsg.nickname === "2자이상 10자이하로 작성해주세요." ? (
-        <div>{errMsg.nickname}</div>
+      {errMsg.username === "2자이상 10자이하로 작성해주세요." ? (
+        <div>{errMsg.username}</div>
       ) : null}
       <SignupBtn onClick={handleSingup}>Sign up</SignupBtn>
     </Container>
