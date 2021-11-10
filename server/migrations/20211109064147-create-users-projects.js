@@ -51,16 +51,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    // 관계설정 삭제
-    await queryInterface.removeConstraint(
-      "Users_Projects",
-      "Users_Projects_fkey_from_Projects"
-    );
-    await queryInterface.removeConstraint(
-      "Users_Projects",
-      "Users_Projects_fkey_from_Users"
-    );
-    // 테이블 삭제
     await queryInterface.dropTable("Users_Projects");
   },
 };

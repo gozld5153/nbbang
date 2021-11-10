@@ -26,10 +26,11 @@ module.exports = async (req, res) => {
   }
   // seed 추가가 제대로 이루어지지 않았다면
   if (!user_info) {
-    return res.status(500).json({ data: null, message: "데이터베이스 오류" });
+    return res.status(500).json({ message: "데이터베이스 오류" });
   }
   // 회원가입이 제대로 진행되면
-  return res.status(200).json({
+  return res.status(201).json({
+    data: null,
     message: "회원가입 되었습니다.",
   });
 };
