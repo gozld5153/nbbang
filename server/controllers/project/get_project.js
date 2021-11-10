@@ -26,11 +26,35 @@ module.exports = async (req, res) => {
     });
   }
 
+  // let member_ids;
+  // try {
+  //   member_ids = await Users_Projects.findAll({
+  //     attributes: [ "user_id" ],
+  //     where: {
+  //       project_id: req.params.project_id
+  //     }
+  //   })
+  // } catch {
+  //   member_ids = null;
+  // }
+  // if (!member_ids) {
+  //   return res.status(400).json({
+  //     data: null,
+  //     message: "프로젝트에 포함된 멤버가 존재하지 않습니다."
+  //   })
+  // }
+  // // user_info = await User.findOne({
+  // //   where: { email: req.body.email, password: req.body.password },
+  // // });
   // let member_info;
   // try {
-  //   member_info = await Project.
-  // } catch {
-  //   member_info = null;
+  //   member_info = member_ids.map(async (user_id) => {
+  //     await User.findOne({
+  //       where: { id: user_id }
+  //     })
+
+  //   })
+
   // }
 
   return res.status(200).json({ data: project_info.dataValues, message: "ok" });
