@@ -29,6 +29,7 @@ const GlobalStyles = createGlobalStyle`
     button {
         border: 0;
         background: none;
+        cursor: pointer;
         
         &:focus {
             outline: none;
