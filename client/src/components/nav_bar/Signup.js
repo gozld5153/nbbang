@@ -77,7 +77,6 @@ const Signup = ({ handleSignAndLogin }) => {
       return;
     } else {
       //todo axios 통신요청
-      console.log(signupInfo);
       axios
         .post(`${process.env.API_URL}/users/signup`, signupInfo)
         .then((data) => handleSignAndLogin())

@@ -18,8 +18,10 @@ const Login = ({ handleNavbar }) => {
       setErrMsg("정보를 입력하세요!");
     } else {
       //todo axios 통신요청
-      axios
-        .post(`${process.env.API_URL}/users/signin`, loginInfo)
+      axios //`${process.env.API_URL}/users/signin`
+        .post(`${process.env.API_URL}/users/signin`, loginInfo, {
+          withCredentials: true,
+        })
         .then(() => handleNavbar())
         .catch((err) => console.log(err));
     }

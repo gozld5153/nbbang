@@ -1,13 +1,10 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import TotalModal from "../components/nav_bar/TotalModal";
 import Nav from "../components/nav_bar/Nav";
 import { useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 export default function Main() {
-  const Main = styled.div`
-    height: 100vh;
-  `;
-
   const [isModal, setIsModal] = useState(false);
   const [signAndLogin, setSignAndLogin] = useState("");
   const [isLogin, setIsLogin] = useState(false);
@@ -34,25 +31,58 @@ export default function Main() {
     setIsModal(!isModal);
   };
 
-  useEffect(() => {
-    if (document.cookie) {
-      setIsLogin(true);
-    }
-  }, []);
+  // 토큰이 유효하면 로그인 상태 유지 아니면 로그아웃
+  // useEffect(async () => {
+
+  //   }
+  // }, []);
 
   return (
-    <Main>
-      <Nav handleModal={handleModal} isLogin={isLogin} />
-      {isModal ? (
-        <TotalModal
-          handleModal={handleModal}
-          handleSignAndLogin={handleSignAndLogin}
-          signAndLogin={signAndLogin}
-          handleNavbar={handleNavbar}
-        ></TotalModal>
-      ) : (
-        <div>작업중입니다.</div>
-      )}
-    </Main>
+    <BrowserRouter>
+      <Container>
+        <Nav handleModal={handleModal} isLogin={isLogin} />
+        {isModal ? (
+          <TotalModal
+            handleModal={handleModal}
+            handleSignAndLogin={handleSignAndLogin}
+            signAndLogin={signAndLogin}
+            handleNavbar={handleNavbar}
+          ></TotalModal>
+        ) : (
+          <>
+            <div>작업중입니다.</div>
+            <MiniMypage>테스트중</MiniMypage>
+          </>
+        )}
+      </Container>
+    </BrowserRouter>
   );
 }
+const moveLeft = keyframes`
+  0% {
+    transform: translateX(0)
+  }
+  50% {
+    transform: translateX(-50%)
+  }
+  100% {
+    transform: translateX(-100%)
+  }
+`;
+
+const Container = styled.div`
+  height: 100vh;
+  position: relative;
+`;
+
+const MiniMypage = styled.div`
+  position: absolute;
+  height: 93vh;
+  width: 30%;
+  right: 0;
+  top: 7vh;
+  background-color: greenyellow;
+  &.right {
+    animation: ${moveLeft} 0.5s linear forwards;
+  }
+`;

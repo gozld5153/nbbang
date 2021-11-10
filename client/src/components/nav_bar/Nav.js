@@ -1,6 +1,20 @@
 import styled from "styled-components";
+import axios from "axios";
+import { useCookies } from "react-cookie";
 
 export default function Nav({ handleModal, isLogin }) {
+  const [cookies, setCookie, removeCookie] = useCookies([]);
+  const handleLogout = () => {
+    axios
+      .post(`${process.env.API_URL}/users/signout`, null, {
+        withCredentials: true,
+      })
+      .then(() => {
+        removeCookie("access_token");
+        window.location.replace("/");
+      });
+  };
+
   return (
     <NavBar>
       <Logo src={`${process.env.PUBLIC_URL}/images/logo.png`} />
@@ -9,7 +23,7 @@ export default function Nav({ handleModal, isLogin }) {
           <>
             <LoginBtn isLogin={isLogin}>새 프로젝트</LoginBtn>
             <LoginBtn isLogin={isLogin}>마이 페이지</LoginBtn>
-            <LoginBtn>Logout</LoginBtn>
+            <LoginBtn onClick={handleLogout}>Logout</LoginBtn>
           </>
         ) : (
           <>

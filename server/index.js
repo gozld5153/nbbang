@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(
   cors({
-    origin: "*",
+    origin: true,
     // 테스트를 위한 주석 배포시엔 주석 해제
     // 포스트맨으로 요청 보내고 받기 위함
     // origin: ["https://localhost:3000"],
