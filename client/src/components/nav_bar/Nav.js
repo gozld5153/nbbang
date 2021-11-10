@@ -2,7 +2,7 @@ import styled from "styled-components";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 
-export default function Nav({ handleModal, isLogin }) {
+export default function Nav({ handleModal, isLogin, handleMypage }) {
   const [cookies, setCookie, removeCookie] = useCookies([]);
   const handleLogout = () => {
     axios
@@ -22,7 +22,9 @@ export default function Nav({ handleModal, isLogin }) {
         {isLogin ? (
           <>
             <LoginBtn isLogin={isLogin}>새 프로젝트</LoginBtn>
-            <LoginBtn isLogin={isLogin}>마이 페이지</LoginBtn>
+            <LoginBtn isLogin={isLogin} onClick={handleMypage}>
+              마이 페이지
+            </LoginBtn>
             <LoginBtn onClick={handleLogout}>Logout</LoginBtn>
           </>
         ) : (
