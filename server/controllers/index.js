@@ -7,15 +7,17 @@ module.exports = {
   update_user_info: require("./users/update_user_info"),
   delete_user: require("./users/delete_user"),
   get_project: require("./project/get_project"),
-  project_current: require("./project/project_current"),
+  // project_current: require("./project/project_current"),
+  post_project: require("./project/post_project"),
+  delete_project: require("./project/delete_project"),
+  update_project: require("./project/update_project"),
   // complete_project: require('./project/complete_project'),
-  // delete_project: require('./project/delete_project'),
+
   // update_user_info: require('./users/update_user_info'),
   // delete_user: require('./users/delete_user'),
 
-  // make_new_project: require('./project/make_new_project'),
   // delete_project: require('./project/delete_project'),
-  // update_project: require('./project/update_project'),
+
   // get_project_user: require('./project/get_project_user'),
   // create_goal: require('./goal/create_goal'),
   // get_goal: require('./goal/get_goal'),

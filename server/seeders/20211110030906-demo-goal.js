@@ -8,7 +8,7 @@ module.exports = {
         project_id: 1,
         goal_name: "goal table test",
         description: "",
-        state: "",
+        state: "todo",
         important: "",
         deadline: "",
         createdAt: new Date(),

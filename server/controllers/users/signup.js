@@ -31,6 +31,6 @@ module.exports = async (req, res) => {
   // 회원가입이 제대로 진행되면
   return res.status(201).json({
     data: null,
-    message: "회원가입 되었습니다.",
+    message: "ok",
   });
 };
