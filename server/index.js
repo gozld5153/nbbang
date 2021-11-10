@@ -6,7 +6,6 @@ const cookieParser = require("cookie-parser");
 const express = require("express");
 const app = express();
 
-// const controllers = require("./controllers");
 const users_router = require("./router/users_router");
 const project_router = require("./router/project_router");
 const goal_router = require("./router/goal_router");
@@ -16,7 +15,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(
   cors({
-    origin: "*",
+    origin: true,
     // 테스트를 위한 주석 배포시엔 주석 해제
     // 포스트맨으로 요청 보내고 받기 위함
     // origin: ["https://localhost:3000"],
@@ -26,7 +25,6 @@ app.use(
 );
 app.use(cookieParser());
 // TODO : 엔드포인트 관련 라우팅
-
 app.use("/users", users_router);
 app.use("/project", project_router);
 // app.use("/goal", goal_router);
