@@ -28,7 +28,7 @@ app.use(cookieParser());
 // TODO : 엔드포인트 관련 라우팅
 
 app.use("/users", users_router);
-// app.use("/project", project_router);
+app.use("/project", project_router);
 // app.use("/goal", goal_router);
 // app.use("/like", like_router);
 
