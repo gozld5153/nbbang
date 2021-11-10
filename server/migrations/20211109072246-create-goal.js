@@ -62,8 +62,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.removeConstraint("Goals", "Goals_fkey_from_Projects");
-    await queryInterface.removeConstraint("Goals", "Goals_fkey_from_Users");
     await queryInterface.dropTable("Goals");
   },
 };
