@@ -2,8 +2,11 @@ import styled, { keyframes } from "styled-components";
 import TotalModal from "../components/nav_bar/TotalModal";
 import Nav from "../components/nav_bar/Nav";
 import { useState, useEffect } from "react";
+<<<<<<< HEAD
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import axios from "axios";
+=======
+>>>>>>> 16df946dacf12ecf4b830e87f13588da3aebd2a4
 
 export default function Main() {
   const [isModal, setIsModal] = useState(false);
@@ -52,10 +55,12 @@ export default function Main() {
   }, []);
 
   return (
-    <BrowserRouter>
-      <Container>
-        <Nav
+    <Container>
+      <Nav handleModal={handleModal} isLogin={isLogin} />
+      {isModal ? (
+        <TotalModal
           handleModal={handleModal}
+<<<<<<< HEAD
           isLogin={isLogin}
           handleMypage={handleMypage}
         />
@@ -81,6 +86,19 @@ export default function Main() {
         )}
       </Container>
     </BrowserRouter>
+=======
+          handleSignAndLogin={handleSignAndLogin}
+          signAndLogin={signAndLogin}
+          handleNavbar={handleNavbar}
+        ></TotalModal>
+      ) : (
+        <>
+          <div>작업중입니다.</div>
+          <MiniMypage>테스트중</MiniMypage>
+        </>
+      )}
+    </Container>
+>>>>>>> 16df946dacf12ecf4b830e87f13588da3aebd2a4
   );
 }
 const moveLeft = keyframes`
