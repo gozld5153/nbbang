@@ -2,9 +2,8 @@ const { project_current, get_project } = require("../controllers");
 const express = require("express");
 const router = express.Router();
 
-router.get("/project/:project_id", get_project);
-// router.get("/current/:id", project_current);
-// app.get("/project/current/:id", controllers.project_current);
+router.get("/:project_id/:user_id", get_project);
+router.get("/current/:user_id", project_current);
 // app.get("/project/complete/:id", controllers.complete_project);
 // app.delete("/project", controllers.delete_project);
 
