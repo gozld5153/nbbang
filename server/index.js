@@ -26,12 +26,16 @@ app.use(
 );
 app.use(cookieParser());
 // TODO : 엔드포인트 관련 라우팅
+
 app.use("/users", users_router);
 app.use("/project", project_router);
 // app.use("/goal", goal_router);
 // app.use("/like", like_router);
 
-const HTTP_PORT = process.env.HTTP_PORT || 4000;
+app.get("/", (req, res) => {
+  res.status(201).send("Hello World");
+});
+const HTTP_PORT = process.env.HTTP_PORT || 80;
 
 const server = app.listen(HTTP_PORT);
 
