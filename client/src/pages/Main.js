@@ -2,7 +2,6 @@ import styled, { keyframes } from "styled-components";
 import TotalModal from "../components/nav_bar/TotalModal";
 import Nav from "../components/nav_bar/Nav";
 import { useState, useEffect } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 export default function Main() {
   const [isModal, setIsModal] = useState(false);
@@ -43,33 +42,22 @@ export default function Main() {
   // }, []);
 
   return (
-    <BrowserRouter>
-      <Container>
-        <Nav
+    <Container>
+      <Nav handleModal={handleModal} isLogin={isLogin} />
+      {isModal ? (
+        <TotalModal
           handleModal={handleModal}
-          isLogin={isLogin}
-          handleMypage={handleMypage}
-        />
-        {isModal ? (
-          <TotalModal
-            handleModal={handleModal}
-            handleSignAndLogin={handleSignAndLogin}
-            signAndLogin={signAndLogin}
-            handleNavbar={handleNavbar}
-          ></TotalModal>
-        ) : (
-          <>
-            <div>작업중입니다.</div>
-            <MiniMypage
-              className={isMypage ? "add" : "hide"}
-              isMypage={isMypage}
-            >
-              테스트중
-            </MiniMypage>
-          </>
-        )}
-      </Container>
-    </BrowserRouter>
+          handleSignAndLogin={handleSignAndLogin}
+          signAndLogin={signAndLogin}
+          handleNavbar={handleNavbar}
+        ></TotalModal>
+      ) : (
+        <>
+          <div>작업중입니다.</div>
+          <MiniMypage>테스트중</MiniMypage>
+        </>
+      )}
+    </Container>
   );
 }
 const moveLeft = keyframes`
