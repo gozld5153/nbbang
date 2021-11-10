@@ -37,8 +37,13 @@ module.exports = async (req, res) => {
   );
 
   const { username } = user_info.dataValues;
-  return res.status(200).json({
-    message: `${username} 로그인`,
-    data: { access_token: access_token },
-  });
+  return res
+    .status(200)
+    .cookie("access_token", access_token, {
+      httpOnly: true,
+    })
+    .json({
+      message: `${username} 로그인`,
+      data: null,
+    });
 };

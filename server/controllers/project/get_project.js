@@ -1,13 +1,16 @@
-const { Project } = require("../../models");
+const { User, Project, Users_Projects } = require("../../models");
 
 module.exports = async (req, res) => {
   // TODO 프로젝트 단독 요청 구현
   // req.params.project_id 에 프로젝트 id
   // req.params.user_id user_id
-  if (!req.params.project_id) {
-    return res.status(400).json({ data: null, message: "잘못된 요청입니다." });
+  //
+  // project_id로 users_projects에서 member 얻어와서 배열로 보내준다.
+  if (!(req.params.project_id && req.params.user_id)) {
+    return res
+      .status(400)
+      .json({ data: null, message: "프로젝트 및 유저 정보가 누락되었습니다." });
   }
-  // console.log("user_id", req.params.user_id);
   let project_info;
   try {
     project_info = await Project.findOne({
@@ -22,5 +25,13 @@ module.exports = async (req, res) => {
       message: "데이터베이스 에러 또는 존재하지 않는 프로젝트입니다.",
     });
   }
+
+  // let member_info;
+  // try {
+  //   member_info = await Project.
+  // } catch {
+  //   member_info = null;
+  // }
+
   return res.status(200).json({ data: project_info.dataValues, message: "ok" });
 };
