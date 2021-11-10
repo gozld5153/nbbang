@@ -8,7 +8,7 @@ module.exports = {
         captain_id: 1,
         description: null,
         presentation: null,
-        state: "current",
+        state: "progress",
         progress: "",
         deadline: "",
         createdAt: new Date(),

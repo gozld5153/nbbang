@@ -43,7 +43,7 @@ module.exports = async (req, res) => {
       httpOnly: true,
     })
     .json({
-      message: `${username} 로그인`,
+      message: "ok",
       data: null,
     });
 };
