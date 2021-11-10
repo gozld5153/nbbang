@@ -64,6 +64,7 @@ export default function App() {
   }, []);
 
   return (
+<<<<<<< HEAD
     <Router>
       <Container>
         <Nav
@@ -94,5 +95,17 @@ export default function App() {
         </Routes>
       </Container>
     </Router>
+=======
+    <Container>
+      <Project/>
+    </Container>
+>>>>>>> 720ddc9 (기술 작성중 중간 저장)
   );
-}
+};
+const Container = styled.div`
+  position: relative;
+  display:flex;
+  flex-direction:column;
+  width: 100vw;
+  min-height: 100vh;
+`;
