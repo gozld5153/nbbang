@@ -1,6 +1,7 @@
 module.exports = {
   signin: require("./users/signin"),
   signup: require("./users/signup"),
+  signout: require("./users/signout"),
   get_user_info: require("./users/get_user_info"),
   duplication_check: require("./users/duplication_check"),
   update_user_info: require("./users/update_user_info"),
