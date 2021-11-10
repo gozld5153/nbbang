@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Main from "./pages/Main";
+import axios from "axios";
 import {
   MyPage,
   Profile,
@@ -17,12 +18,74 @@ const Container = styled.div`
 `;
 
 export default function App() {
+  const [isModal, setIsModal] = useState(false);
+  const [signAndLogin, setSignAndLogin] = useState("");
+  const [isLogin, setIsLogin] = useState(false);
+  const [isMypage, setIsMypage] = useState(false);
+  const [switchBtn, setSwitchBtn] = useState(false);
+
+  const handleNavbar = () => {
+    setIsLogin(true);
+    setIsModal(!isModal);
+  };
+
+  const handleSignAndLogin = () => {
+    if (signAndLogin === "login") {
+      setSignAndLogin("signup");
+    } else {
+      setSignAndLogin("login");
+    }
+  };
+
+  const handleModal = (e) => {
+    if (e.target.innerHTML === "Login") {
+      setSignAndLogin("login");
+    } else {
+      setSignAndLogin("signup");
+    }
+    setIsModal(!isModal);
+  };
+
+  const handleMypage = () => {
+    setSwitchBtn(true);
+    setIsMypage(!isMypage);
+  };
+
+  // 토큰이 유효하면 로그인 상태 유지 아니면 로그아웃
+  useEffect(async () => {
+    axios
+      .post(`${process.env.API_URL}/users/signin`, null, {
+        withCredentials: true,
+      })
+      .then(() => {
+        setIsLogin(true);
+      })
+      .catch(() => setIsLogin(false));
+  }, []);
+
   return (
     <Router>
       <Container>
-        <Nav />
+        <Nav
+          handleModal={handleModal}
+          isLogin={isLogin}
+          handleMypage={handleMypage}
+        />
         <Routes>
-          <Route path="/" element={<Main />} />
+          <Route
+            path="/"
+            element={
+              <Main
+                isModal={isModal}
+                handleModal={handleModal}
+                handleSignAndLogin={handleSignAndLogin}
+                signAndLogin={signAndLogin}
+                handleNavbar={handleNavbar}
+                switchBtn={switchBtn}
+                isMypage={isMypage}
+              />
+            }
+          />
           <Route path="mypage" element={<MyPage />}>
             <Route path="profile" element={<Profile />} />
             <Route path="project-inprogress" element={<ProjectInProgress />} />
