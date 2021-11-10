@@ -3,12 +3,14 @@ import TotalModal from "../components/nav_bar/TotalModal";
 import Nav from "../components/nav_bar/Nav";
 import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import axios from "axios";
 
 export default function Main() {
   const [isModal, setIsModal] = useState(false);
   const [signAndLogin, setSignAndLogin] = useState("");
   const [isLogin, setIsLogin] = useState(false);
   const [isMypage, setIsMypage] = useState(false);
+  const [switchBtn, setSwitchBtn] = useState(false);
 
   const handleNavbar = () => {
     setIsLogin(true);
@@ -33,14 +35,21 @@ export default function Main() {
   };
 
   const handleMypage = () => {
+    setSwitchBtn(true);
     setIsMypage(!isMypage);
   };
 
   // 토큰이 유효하면 로그인 상태 유지 아니면 로그아웃
-  // useEffect(async () => {
-
-  //   }
-  // }, []);
+  useEffect(async () => {
+    axios
+      .post("http://localhost:80/users/signin", null, {
+        withCredentials: true,
+      })
+      .then(() => {
+        setIsLogin(true);
+      })
+      .catch(() => setIsLogin(false));
+  }, []);
 
   return (
     <BrowserRouter>
@@ -60,12 +69,14 @@ export default function Main() {
         ) : (
           <>
             <div>작업중입니다.</div>
-            <MiniMypage
-              className={isMypage ? "add" : "hide"}
-              isMypage={isMypage}
-            >
-              테스트중
-            </MiniMypage>
+            {switchBtn ? (
+              <MiniMypage
+                className={isMypage ? "add" : "hide"}
+                isMypage={isMypage}
+              >
+                테스트중
+              </MiniMypage>
+            ) : null}
           </>
         )}
       </Container>
@@ -103,9 +114,10 @@ const Container = styled.div`
 `;
 
 const MiniMypage = styled.div`
-  position: absolute;
+  position: fixed;
   height: 93vh;
   width: 30%;
+
   right: ${(props) => (props.isMypage ? "-30%" : "0")};
   top: 7vh;
   background-color: greenyellow;
