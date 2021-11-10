@@ -4,7 +4,7 @@ module.exports = async (req, res) => {
   // TODO 회원탈퇴 구현
   // req.params에 id 들어옴
   if (!req.params.id) {
-    return res.status(400).json({ message: "잘못된 요청입니다." });
+    return res.status(400).json({ data: null, message: "잘못된 요청입니다." });
   }
   let user_info;
   try {

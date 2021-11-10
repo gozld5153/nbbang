@@ -6,6 +6,12 @@ module.exports = async (req, res) => {
   // req.body에 email과 password들어옴
   // email과 password로 db검색 후 일치하는게 있다면 accesstoken 발급
 
+  if (!(req.body.email && req.body.password)) {
+    return res
+      .status(400)
+      .json({ data: null, message: "email 또는 password가 누락되었습니다." });
+  }
+
   let user_info;
   try {
     user_info = await User.findOne({

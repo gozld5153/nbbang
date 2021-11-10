@@ -11,7 +11,7 @@ const router = express.Router();
 
 router.post("/signin", signin);
 router.post("/signup", signup);
-router.get("/:id", get_user_info);
+router.get("/:user_id", get_user_info);
 router.post("/duplication", duplication_check);
 router.put("/", update_user_info);
 router.delete("/:id", delete_user);

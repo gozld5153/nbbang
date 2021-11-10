@@ -6,15 +6,15 @@ module.exports = async (req, res) => {
   let user_info;
   try {
     user_info = await User.findOne({
-      where: { id: req.params.id },
+      where: { id: req.params.user_id },
     });
   } catch {
     user_info = null;
   }
   if (!user_info) {
     return res.status(400).json({
-      message: "잘못된 요청입니다.",
       data: null,
+      message: "잘못된 요청입니다.",
     });
   }
   delete user_info.dataValues.password;
