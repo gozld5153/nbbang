@@ -5,7 +5,12 @@ import Signup from "./Signup";
 import AsideLogin from "./AsideLogin";
 import AsideSignup from "./AsideSignup";
 import { useState } from "react";
-const TotalModal = ({ handleModal, handleSignAndLogin, signAndLogin }) => {
+const TotalModal = ({
+  handleModal,
+  handleSignAndLogin,
+  signAndLogin,
+  handleNavbar,
+}) => {
   return (
     <Modal onClick={handleModal}>
       <ContainerSign onClick={(e) => e.stopPropagation()}>
@@ -13,7 +18,7 @@ const TotalModal = ({ handleModal, handleSignAndLogin, signAndLogin }) => {
           {signAndLogin === "signup" ? (
             <AsideSignup handleSignAndLogin={handleSignAndLogin} />
           ) : (
-            <Login />
+            <Login handleNavbar={handleNavbar} />
           )}
         </LoginContainer>
         <SignupContainer>

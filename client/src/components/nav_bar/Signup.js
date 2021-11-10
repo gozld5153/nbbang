@@ -57,6 +57,14 @@ const Signup = ({ handleSignAndLogin }) => {
 
   const handleCheckEmail = () => {
     //todo axios 통신요청
+    if (errMsg.email === null) {
+      axios //`${process.env.API_URL}/users/duplication`
+        .post(`${process.env.API_URL}/users/duplication`, {
+          email: signupInfo.email,
+        })
+        .then(() => setIsChecked(true))
+        .catch((err) => setIsChecked(false));
+    }
   };
 
   const handleSingup = () => {
@@ -71,7 +79,7 @@ const Signup = ({ handleSignAndLogin }) => {
       //todo axios 통신요청
       console.log(signupInfo);
       axios
-        .post("http://localhost:80/users/signup", signupInfo)
+        .post(`${process.env.API_URL}/users/signup`, signupInfo)
         .then((data) => handleSignAndLogin())
         .catch((err) => console.log(err));
     }
@@ -88,6 +96,11 @@ const Signup = ({ handleSignAndLogin }) => {
           onChange={handleInputValue("email")}
         ></input>
         <button onClick={handleCheckEmail}>중복확인</button>
+        {isChecked || signupInfo.email === "" ? null : (
+          <div>
+            <p>X</p>
+          </div>
+        )}
       </div>
 
       {errMsg.email === "유효한 이메일형식이 아닙니다." ? (
@@ -146,6 +159,18 @@ const Container = styled.div`
         background-color: #e1e1e1;
         font-weight: bold;
       }
+    }
+    div {
+      width: 1.5rem;
+      height: 1.5rem;
+      position: absolute;
+      display: grid;
+      place-content: center;
+      right: 0.8rem;
+      top: 0.8rem;
+      border: 1px solid red;
+      border-radius: 50%;
+      color: red;
     }
   }
 `;

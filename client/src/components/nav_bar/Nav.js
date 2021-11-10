@@ -1,12 +1,26 @@
 import styled from "styled-components";
 
-export default function Nav({ handleModal }) {
+export default function Nav({ handleModal, isLogin }) {
   return (
     <NavBar>
       <Logo src={`${process.env.PUBLIC_URL}/images/logo.png`} />
       <ContainerBtn>
-        <LoginBtn onClick={handleModal}>Login</LoginBtn>
-        <LoginBtn onClick={handleModal}>Sign up</LoginBtn>
+        {isLogin ? (
+          <>
+            <LoginBtn isLogin={isLogin}>새 프로젝트</LoginBtn>
+            <LoginBtn isLogin={isLogin}>마이 페이지</LoginBtn>
+            <LoginBtn>Logout</LoginBtn>
+          </>
+        ) : (
+          <>
+            <LoginBtn onClick={handleModal} isLogin={isLogin}>
+              Login
+            </LoginBtn>
+            <LoginBtn onClick={handleModal} isLogin={isLogin}>
+              Sign up
+            </LoginBtn>
+          </>
+        )}
       </ContainerBtn>
     </NavBar>
   );
@@ -38,22 +52,12 @@ const LoginBtn = styled.button`
   background-color: #f3f3f4;
   margin-right: 2rem;
   height: 2rem;
-  width: 4rem;
+  width: ${(props) => {
+    return props.isLogin ? "6rem" : "4rem";
+  }};
   border-radius: 0.5rem;
   &:hover {
     background-color: #e1e1e1;
     font-weight: bold;
   }
-`;
-
-const Modal = styled.div`
-  position: fixed;
-  z-index: 999;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background-color: rgba(0, 0, 0, 0.4);
-  display: grid;
-  place-items: center;
 `;

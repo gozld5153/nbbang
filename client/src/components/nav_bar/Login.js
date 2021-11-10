@@ -1,22 +1,27 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import axios from "axios";
 
-const Login = () => {
+const Login = ({ handleNavbar }) => {
   const [loginInfo, setLoginInfo] = useState({
     email: "",
     password: "",
   });
-
   const [errMsg, setErrMsg] = useState("");
 
   const handleValue = (key) => (e) => {
     setLoginInfo({ ...loginInfo, [key]: e.target.value });
   };
+
   const handleLogin = () => {
     if (!loginInfo.email || !loginInfo.password) {
       setErrMsg("정보를 입력하세요!");
     } else {
       //todo axios 통신요청
+      axios
+        .post(`${process.env.API_URL}/users/signin`, loginInfo)
+        .then(() => handleNavbar())
+        .catch((err) => console.log(err));
     }
   };
   return (
