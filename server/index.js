@@ -6,7 +6,6 @@ const cookieParser = require("cookie-parser");
 const express = require("express");
 const app = express();
 
-// const controllers = require("./controllers");
 const users_router = require("./router/users_router");
 const project_router = require("./router/project_router");
 const goal_router = require("./router/goal_router");

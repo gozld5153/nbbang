@@ -3,7 +3,6 @@ const { Project } = require("../../models");
 module.exports = async (req, res) => {
   // TODO 프로젝트 생성 구현
   // req.body에 프로젝트 객체
-  console.log(req.body);
   if (!(req.body.project_name && req.body.captain_id)) {
     return res
       .status(400)
