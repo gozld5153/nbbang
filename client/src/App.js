@@ -18,6 +18,7 @@ const Container = styled.div`
 `;
 
 export default function App() {
+  const [userInfo, setUserInfo] = useState({});
   const [isModal, setIsModal] = useState(false);
   const [signAndLogin, setSignAndLogin] = useState("");
   const [isLogin, setIsLogin] = useState(false);
@@ -50,14 +51,19 @@ export default function App() {
     setSwitchBtn(true);
     setIsMypage(!isMypage);
   };
+  const handleOffMypage = () => {
+    setSwitchBtn(false);
+    setIsMypage(false);
+  };
 
   // 토큰이 유효하면 로그인 상태 유지 아니면 로그아웃
   useEffect(async () => {
-    axios
-      .post(`${process.env.API_URL}/users/signin`, null, {
+    axios //`${process.env.API_URL}/users/signin`
+      .post(`http://localhost:80/users/signin`, null, {
         withCredentials: true,
       })
-      .then(() => {
+      .then((data) => {
+        setUserInfo(data.data.data.user_info);
         setIsLogin(true);
       })
       .catch(() => setIsLogin(false));
@@ -70,6 +76,7 @@ export default function App() {
           handleModal={handleModal}
           isLogin={isLogin}
           handleMypage={handleMypage}
+          handleOffMypage={handleOffMypage}
         />
         <Routes>
           <Route
@@ -83,6 +90,7 @@ export default function App() {
                 handleNavbar={handleNavbar}
                 switchBtn={switchBtn}
                 isMypage={isMypage}
+                userInfo={userInfo}
               />
             }
           />
