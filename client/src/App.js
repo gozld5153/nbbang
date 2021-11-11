@@ -18,6 +18,9 @@ const Container = styled.div`
   position: relative;
 `;
 
+import Project from "./pages/Project";
+// import GoalModal from './components/project/GoalModal'
+  
 export default function App() {
   const [userData, setUserData] = useState(InProgress);
   const [userInfo, setUserInfo] = useState({});
@@ -60,8 +63,8 @@ export default function App() {
 
   // 토큰이 유효하면 로그인 상태 유지 아니면 로그아웃
   useEffect(() => {
-    axios //`${process.env.API_URL}/users/signin`
-      .post(`http://localhost:80/users/signin`, null, {
+    axios
+      .post(`${process.env.API_URL}/users/signin`, null, {
         withCredentials: true,
       })
       .then((data) => {
@@ -109,8 +112,17 @@ export default function App() {
             />
             <Route path="project-done" element={<ProjectDone />} />
           </Route>
+          <Route path="project" element={<Project />}>
+            {/* <Route path=":a" element={<GoalModal />} /> */}
+          </Route>
         </Routes>
       </Container>
     </Router>
   );
-}
+};
+
+const Container = styled.div`
+  width: 100vw;
+  min-height: 100vh;
+  position: relative;
+`;
