@@ -10,13 +10,9 @@ import {
 } from "./pages/MyPage";
 import styled from "styled-components";
 import Nav from "./components/nav_bar/Nav";
-
-const Container = styled.div`
-  width: 100vw;
-  min-height: 100vh;
-  position: relative;
-`;
-
+import Project from "./pages/Project";
+import GoalModal from './components/project/GoalModal'
+  
 export default function App() {
   const [isModal, setIsModal] = useState(false);
   const [signAndLogin, setSignAndLogin] = useState("");
@@ -52,7 +48,7 @@ export default function App() {
   };
 
   // 토큰이 유효하면 로그인 상태 유지 아니면 로그아웃
-  useEffect(async () => {
+  useEffect(() => {
     axios
       .post(`${process.env.API_URL}/users/signin`, null, {
         withCredentials: true,
@@ -64,7 +60,6 @@ export default function App() {
   }, []);
 
   return (
-<<<<<<< HEAD
     <Router>
       <Container>
         <Nav
@@ -92,20 +87,15 @@ export default function App() {
             <Route path="project-inprogress" element={<ProjectInProgress />} />
             <Route path="project-done" element={<ProjectDone />} />
           </Route>
+          <Route path="project" element={<Project />} />
         </Routes>
       </Container>
     </Router>
-=======
-    <Container>
-      <Project/>
-    </Container>
->>>>>>> 720ddc9 (기술 작성중 중간 저장)
   );
 };
+
 const Container = styled.div`
-  position: relative;
-  display:flex;
-  flex-direction:column;
   width: 100vw;
   min-height: 100vh;
+  position: relative;
 `;

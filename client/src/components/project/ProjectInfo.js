@@ -1,8 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 
-export default function ProjectInfo({ projectModalOpener, projectInfo, member }) {
-
+export default function ProjectInfo({
+  projectModalOpener,
+  memberModalOpener,
+  projectInfo,
+  member,
+}) {
   return (
     <Container>
       <ProjectInfomation>
@@ -11,31 +15,52 @@ export default function ProjectInfo({ projectModalOpener, projectInfo, member })
             <div>{projectInfo.project_name}</div>
           </ProjectName>
           <ProjectSettings>
-            <img onClick={projectModalOpener} src={`${process.env.PUBLIC_URL}/images/settings.png`} alt='setting' />
+            <img
+              onClick={projectModalOpener}
+              src={`${process.env.PUBLIC_URL}/images/settings.png`}
+              alt="setting"
+            />
           </ProjectSettings>
-          <ProjectDue>{projectInfo.deadline}</ProjectDue>
+          <ProjectDue>
+            2021.11.11~2021.11.11
+            {`${projectInfo.deadline.startDate
+              .toLocaleString()
+              .split(" ")
+              .join("")
+              .slice(0, 10)} ~ 
+              ${projectInfo.deadline.endDate
+                .toLocaleString()
+                .split(" ")
+                .join("")
+                .slice(0, 10)}`}
+          </ProjectDue>
+          <button onClick={memberModalOpener}>초대버튼</button>
         </ProjectInfoContainer>
         <ProjectMember>
-          {member.map((el) => <Profile len={5} key={el.id} src={el.profile} alt={el.username} />)}
+          {member.map((el) => (
+            <Profile len={5} key={el.id} src={el.profile} alt={el.username} />
+          ))}
         </ProjectMember>
       </ProjectInfomation>
       <ProjectProgress>
         <RateContainer>
           <RateFrame>
             <RateName>프로젝트 진행률</RateName>
-            <RateBar important={projectInfo.progress} color='blue' />
-            <RateBar important={projectInfo.total_important} color='white' />
+            <RateBar important={projectInfo.progress} color="blue" />
+            <RateBar important={projectInfo.total_important} color="white" />
           </RateFrame>
         </RateContainer>
         <RateContainer>
           <RateFrame>
             <RateName>팀원 상대 진행률</RateName>
-            {member.map((el) => <RateBar important={el.progress} color={el.color} key={el.id} />)}
+            {member.map((el) => (
+              <RateBar important={el.progress} color={el.color} key={el.id} />
+            ))}
           </RateFrame>
         </RateContainer>
       </ProjectProgress>
     </Container>
-  )
+  );
 }
 
 const Container = styled.div`
