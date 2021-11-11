@@ -27,7 +27,12 @@ module.exports = async (req, res) => {
   if (like_info) {
     // 이미 존재하므로 update 쿼리 진행
     try {
-      data = await Like.update(req.body, {
+      await Like.update(req.body, {
+        where: {
+          id: like_info.id,
+        },
+      });
+      data = await Like.findOne({
         where: {
           id: like_info.id,
         },

@@ -1,8 +1,7 @@
-const { Goal } = require("../../models");
+const { Comment } = require("../../models");
 
 module.exports = async (req, res) => {
-  // TODO 목표 수정 api 구현
-  // req.body에 수정내용 들어옴
+  // TODO comment 수정 구현
   if (!req.body.id) {
     return res
       .status(400)
@@ -10,13 +9,13 @@ module.exports = async (req, res) => {
   }
   let data;
   try {
-    data = await Goal.update(req.body, {
+    data = await Comment.update(req.body, {
       where: {
         id: req.body.id,
       },
     });
   } catch {
-    return res.status(500).json({ data: null, message: "데이터베이스 오류" });
+    return res.status(500).json({ data: null, message: "데이터베이스 에러" });
   }
   return res.status(201).json({ data: data, message: "ok" });
 };
