@@ -12,12 +12,6 @@ import styled from "styled-components";
 import Nav from "./components/nav_bar/Nav";
 import { InProgress } from "./mockdata/MyPageProjectData";
 
-const Container = styled.div`
-  width: 100vw;
-  min-height: 100vh;
-  position: relative;
-`;
-
 import Project from "./pages/Project";
 // import GoalModal from './components/project/GoalModal'
   
