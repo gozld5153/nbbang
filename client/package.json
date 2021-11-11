@@ -12,12 +12,8 @@
     "react-datepicker": "^4.3.0",
     "date-fns": "^2.25.0",
     "react-dom": "^17.0.2",
-<<<<<<< HEAD
     "react-icons": "^4.3.1",
     "react-router-dom": "^6.0.1",
-=======
-    "react-router-dom": "^6.0.2",
->>>>>>> 8dc553ccc46fa58fd99a6f38a3737e808729a90d
     "react-scripts": "4.0.3",
     "scss": "^0.2.4",
     "styled-components": "^5.3.3",
