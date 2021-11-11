@@ -10,13 +10,9 @@ import {
 } from "./pages/MyPage";
 import styled from "styled-components";
 import Nav from "./components/nav_bar/Nav";
-
-const Container = styled.div`
-  width: 100vw;
-  min-height: 100vh;
-  position: relative;
-`;
-
+import Project from "./pages/Project";
+// import GoalModal from './components/project/GoalModal'
+  
 export default function App() {
   const [userInfo, setUserInfo] = useState({});
 
@@ -59,8 +55,13 @@ export default function App() {
 
   // 토큰이 유효하면 로그인 상태 유지 아니면 로그아웃
   useEffect(() => {
+<<<<<<< HEAD
     axios //`${process.env.API_URL}/users/signin`
       .post(`http://localhost:80/users/signin`, null, {
+=======
+    axios
+      .post(`${process.env.API_URL}/users/signin`, null, {
+>>>>>>> 8dc553ccc46fa58fd99a6f38a3737e808729a90d
         withCredentials: true,
       })
       .then((data) => {
@@ -100,8 +101,17 @@ export default function App() {
             <Route path="project-inprogress" element={<ProjectInProgress />} />
             <Route path="project-done" element={<ProjectDone />} />
           </Route>
+          <Route path="project" element={<Project />}>
+            {/* <Route path=":a" element={<GoalModal />} /> */}
+          </Route>
         </Routes>
       </Container>
     </Router>
   );
-}
+};
+
+const Container = styled.div`
+  width: 100vw;
+  min-height: 100vh;
+  position: relative;
+`;
