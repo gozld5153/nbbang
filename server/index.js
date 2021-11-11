@@ -6,11 +6,11 @@ const cookieParser = require("cookie-parser");
 const express = require("express");
 const app = express();
 
-// const controllers = require("./controllers");
 const users_router = require("./router/users_router");
 const project_router = require("./router/project_router");
 const goal_router = require("./router/goal_router");
 const like_router = require("./router/like_router");
+const comment_router = require("./router/comment_router");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -28,8 +28,9 @@ app.use(cookieParser());
 // TODO : 엔드포인트 관련 라우팅
 app.use("/users", users_router);
 app.use("/project", project_router);
-// app.use("/goal", goal_router);
-// app.use("/like", like_router);
+app.use("/goal", goal_router);
+app.use("/like", like_router);
+app.use("/comment", comment_router);
 
 app.get("/", (req, res) => {
   res.status(201).send("Hello World");

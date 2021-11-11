@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       presentation: DataTypes.STRING,
       state: DataTypes.STRING,
       progress: DataTypes.STRING,
+      deadline: DataTypes.STRING,
     },
     {
       sequelize,
