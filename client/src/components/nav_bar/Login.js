@@ -13,7 +13,8 @@ const Login = ({ handleNavbar }) => {
     setLoginInfo({ ...loginInfo, [key]: e.target.value });
   };
 
-  const handleLogin = () => {
+  const handleLogin = (event) => {
+    event.preventDefault();
     if (!loginInfo.email || !loginInfo.password) {
       setErrMsg("정보를 입력하세요!");
     } else {
