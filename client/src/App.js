@@ -67,7 +67,7 @@ export default function App() {
         console.log("됐냐?");
       })
       .catch(() => setIsLogin(false));
-  }, [isLogin]);
+  });
 
   return (
     <Router>
