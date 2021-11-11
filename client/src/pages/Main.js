@@ -1,5 +1,10 @@
 import styled, { keyframes } from "styled-components";
 import TotalModal from "../components/nav_bar/TotalModal";
+import MiniMypage from "../components/miniMypage/MiniMypage";
+import Slide from "../components/mainComponents/Slide";
+import image1 from "../components/mainComponents/img/image1.png";
+import image2 from "../components/mainComponents/img/image2.jpg";
+import image3 from "../components/mainComponents/img/image3.png";
 
 export default function Main({
   isModal,
@@ -9,6 +14,7 @@ export default function Main({
   handleNavbar,
   switchBtn,
   isMypage,
+  userInfo,
 }) {
   return (
     <Container>
@@ -21,62 +27,19 @@ export default function Main({
         ></TotalModal>
       ) : (
         <>
-          <div>작업중입니다.</div>
+          <Slide images={[image1, image2, image3]}></Slide>
           {switchBtn ? (
-            <MiniMypage
-              className={isMypage ? "add" : "hide"}
-              isMypage={isMypage}
-            >
-              테스트중
-            </MiniMypage>
+            <MiniMypage isMypage={isMypage} userInfo={userInfo}></MiniMypage>
           ) : null}
         </>
       )}
     </Container>
   );
 }
-const moveLeft = keyframes`
-  0% {
-    transform: translateX(0)
-  }
-  50% {
-    transform: translateX(-50%)
-  }
-  100% {
-    transform: translateX(-100%)
-  }
-`;
-
-const moveHide = keyframes`
-  0% {
-    transform: translateX(0)
-  }
-  50% {
-    transform: translateX(50%)
-  }
-  100% {
-    transform: translateX(100%)
-  }
-`;
 
 const Container = styled.div`
-  height: 100vh;
+  width: 100%;
+  height: 93vh;
   position: relative;
   overflow-x: hidden;
-`;
-
-const MiniMypage = styled.div`
-  position: fixed;
-  height: 93vh;
-  width: 30%;
-
-  right: ${(props) => (props.isMypage ? "-30%" : "0")};
-  top: 7vh;
-  background-color: greenyellow;
-  &.hide {
-    animation: ${moveHide} 0.4s linear forwards;
-  }
-  &.add {
-    animation: ${moveLeft} 0.4s linear forwards;
-  }
 `;

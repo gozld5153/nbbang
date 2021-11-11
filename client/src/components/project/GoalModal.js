@@ -12,6 +12,7 @@ export default function GoalModal() {
 const Container = styled.div`
   position: absolute;
   top: 0;
+  left:0;
   display: ${(props) => (true ? "flex" : "none")};
   justify-content: center;
   align-items: center;

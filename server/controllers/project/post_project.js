@@ -1,9 +1,8 @@
-const { Project } = require("../../models");
+const { Project, Users_Projects } = require("../../models");
 
 module.exports = async (req, res) => {
   // TODO 프로젝트 생성 구현
   // req.body에 프로젝트 객체
-  console.log(req.body);
   if (!(req.body.project_name && req.body.captain_id)) {
     return res
       .status(400)
@@ -12,6 +11,14 @@ module.exports = async (req, res) => {
   let response;
   try {
     response = await Project.create(req.body);
+  } catch {
+    return res.status(500).json({ data: null, message: "데이터베이스 오류" });
+  }
+  try {
+    await Users_Projects.create({
+      user_id: req.body.captain_id,
+      project_id: response.dataValues.id,
+    });
   } catch {
     return res.status(500).json({ data: null, message: "데이터베이스 오류" });
   }
