@@ -11,7 +11,8 @@ import {
 import styled from "styled-components";
 import Nav from "./components/nav_bar/Nav";
 import Project from "./pages/Project";
-
+// import GoalModal from './components/project/GoalModal'
+  
 export default function App() {
   const [isModal, setIsModal] = useState(false);
   const [signAndLogin, setSignAndLogin] = useState("");
@@ -86,8 +87,8 @@ export default function App() {
             <Route path="project-inprogress" element={<ProjectInProgress />} />
             <Route path="project-done" element={<ProjectDone />} />
           </Route>
-          <Route path='project' element={<Project />}>
-            
+          <Route path="project" element={<Project />}>
+            {/* <Route path=":a" element={<GoalModal />} /> */}
           </Route>
         </Routes>
       </Container>

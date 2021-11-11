@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import Goal from './Goal'
 import GoalCreateModal from "./GoalCreateModal";
@@ -14,9 +13,6 @@ export default function ProjectField({ myInfo }) {
   const [isComplete, setIsComplete] = useState([]);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
 
-  const navigate = useNavigate();
-  let location = useLocation();
-
   const goalList = [isTodo, isProgress, isComplete];
   const goalListText = ["To Do", "Progress", "Complete"];
 
@@ -24,10 +20,8 @@ export default function ProjectField({ myInfo }) {
     setIsCreateOpen(!isCreateOpen);
   };
 
-  const GoalOpener = (goal_id) => {
-    navigate(`/${goal_id}`);
-    console.log(navigate)
-    console.log(location);
+  const GoalOpener = (goal_id) => { 
+
   }
 
   useEffect(() => {
@@ -59,7 +53,7 @@ export default function ProjectField({ myInfo }) {
         myInfo={myInfo}
         setIsTodo={setIsTodo}
       />
-      <GoalModal />
+      {/* <GoalModal /> */}
     </Container>
   );
 }

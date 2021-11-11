@@ -17,10 +17,10 @@ export function MyPage() {
 }
 
 export function Profile() {
-  return <div>d</div>;
+  return <div>a</div>;
 }
 export function ProjectInProgress() {
-  return <div>d</div>;
+  return <div>b</div>;
 }
 export function ProjectDone() {
   return <div>d</div>;
