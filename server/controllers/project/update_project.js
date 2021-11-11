@@ -3,7 +3,6 @@ const { Project, Users_Projects } = require("../../models");
 module.exports = async (req, res) => {
   // TODO 프로젝트 수정 구현
   // req.body
-  console.log(req.body);
   if (!(req.body.id && req.body.member)) {
     return res.status(400).json({ data: null, message: "잘못된 요청입니다." });
   }
