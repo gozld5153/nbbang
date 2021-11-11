@@ -28,7 +28,7 @@ app.use(cookieParser());
 app.use("/users", users_router);
 app.use("/project", project_router);
 app.use("/goal", goal_router);
-// app.use("/like", like_router);
+app.use("/like", like_router);
 
 app.get("/", (req, res) => {
   res.status(201).send("Hello World");

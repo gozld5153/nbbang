@@ -15,6 +15,8 @@ module.exports = {
   post_goal: require("./goal/post_goal"),
   update_goal: require("./goal/update_goal"),
   delete_goal: require("./goal/delete_goal"),
+  post_like: require("./like/post_like"),
+  delete_like: require("./like/delete_like"),
   // complete_project: require('./project/complete_project'),
 
   // update_user_info: require('./users/update_user_info'),
