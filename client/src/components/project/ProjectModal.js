@@ -1,17 +1,76 @@
 import React from "react";
 import styled from "styled-components";
 
-export default function ProjectModal({ isProjectOpen }) {
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { ko } from 'date-fns/esm/locale'
+
+export default function ProjectModal({
+  isProjectOpen,
+  projectModalOpener,
+  member,
+  projectInfo,
+  DataHandler,
+}) {
+  const captain = member.filter((el) => el.id === projectInfo.captain_id)[0].username;
   return (
     <Container isProjectOpen={isProjectOpen}>
       <ModalContainer>
         프로젝트 이름 변경
+        <input
+          type="text"
+          onBlur={(e) => DataHandler("project_name", e.target.value)}
+        />
+        <br />
         프로젝트 마감 기한 변경
+        <Daypicker>
+          <StyleDatePicker
+            selected={projectInfo.deadline.startDate}
+            dateFormat="yyyy-MM-dd"
+            minDate={new Date()}
+            selectsStart
+            endDate={projectInfo.deadline.endDate}
+            placeholderText="From"
+            showPopperArrow={false}
+            locale={ko}
+            monthsShown={2}
+            onChange={(date) =>
+              DataHandler("deadline", {
+                ...projectInfo.deadline,
+                startDate: date,
+              })
+            }
+          />
+          <StyleDatePicker
+            selected={projectInfo.deadline.endDate}
+            dateFormat="yyyy-MM-dd"
+            minDate={new Date()}
+            selectsEnd
+            startDate={projectInfo.deadline.startDate}
+            placeholderText="To"
+            showPopperArrow={false}
+            monthsShown={2}
+            onChange={(date) =>
+              DataHandler("deadline", {
+                ...projectInfo.deadline,
+                endDate: date,
+              })
+            }
+          />
+        </Daypicker>
         팀장 변경
-        프로젝트 팀 초대
+        <ul>
+          {captain}
+          {member.map((el) => (
+            <li onClick={() => DataHandler("captain_id", el.id)} key={el.id}>
+              {el.username}
+            </li>
+          ))}
+        </ul>
+        <div onClick={projectModalOpener}>close</div>
       </ModalContainer>
     </Container>
-  )
+  );
 }
 
 const Container = styled.div`
@@ -33,3 +92,9 @@ const ModalContainer = styled.div`
   border:1px solid black;
   background-color:white;
 `
+
+const Daypicker = styled.div`
+`;
+
+const StyleDatePicker = styled(DatePicker)`
+`;

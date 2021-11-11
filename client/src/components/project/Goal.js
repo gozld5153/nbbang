@@ -17,22 +17,36 @@ export default function Goal({ goalInfo }) {
 
   return (
     <Container>
-      <ImportantText>{importantText[important-1]}</ImportantText>
-      <GoalName>
-        {goal_name}
-      </GoalName>
+      <ImportantText>{importantText[important - 1]}</ImportantText>
+      <GoalName>{goal_name}</GoalName>
       <DetailContainer>
         <ButtonContainer>
-          <IconContainer><Icon src={`${process.env.PUBLIC_URL}/images/agreeDisable.png`} /></IconContainer>
-          <IconContainer><Icon src={`${process.env.PUBLIC_URL}/images/comments.png`} />{coments.length}</IconContainer>
-          <IconContainer><Icon src={`${process.env.PUBLIC_URL}/images/clip.png`} />{file.length}</IconContainer>
+          <IconContainer>
+            <Icon src={`${process.env.PUBLIC_URL}/images/agreeDisable.png`} />
+            {agreement}
+          </IconContainer>
+          <IconContainer>
+            <Icon src={`${process.env.PUBLIC_URL}/images/comments.png`} />
+            {coments.length}
+          </IconContainer>
+          <IconContainer>
+            <Icon src={`${process.env.PUBLIC_URL}/images/clip.png`} />
+            {file.length}
+          </IconContainer>
         </ButtonContainer>
-        <Deadline>
-          {deadline}
-        </Deadline>
+        <Deadline>{`${deadline.startDate
+          .toLocaleString()
+          .split(" ")
+          .join("")
+          .slice(0, 10)} ~ 
+              ${deadline.endDate
+                .toLocaleString()
+                .split(" ")
+                .join("")
+                .slice(0, 10)}`}</Deadline>
       </DetailContainer>
     </Container>
-  )
+  );
 }
 
 const Container = styled.div`
