@@ -17,18 +17,8 @@ module.exports = {
   delete_goal: require("./goal/delete_goal"),
   post_like: require("./like/post_like"),
   delete_like: require("./like/delete_like"),
-  // complete_project: require('./project/complete_project'),
-
-  // update_user_info: require('./users/update_user_info'),
-  // delete_user: require('./users/delete_user'),
-
-  // delete_project: require('./project/delete_project'),
-
-  // get_project_user: require('./project/get_project_user'),
-  // create_goal: require('./goal/create_goal'),
-  // get_goal: require('./goal/get_goal'),
-  // update_goal: require('./goal/update_goal'),
-  // delete_goal: require('./goal/delete_goal'),
-  // make_like: require('./like/make_like'),
-  // delete_like: require('./like/delete_like'),
+  get_comment: require("./comment/get_comment"),
+  post_comment: require("./comment/post_comment"),
+  update_comment: require("./comment/update_comment"),
+  delete_comment: require("./comment/delete_comment"),
 };
