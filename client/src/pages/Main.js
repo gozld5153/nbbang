@@ -2,7 +2,6 @@ import styled, { keyframes } from "styled-components";
 import TotalModal from "../components/nav_bar/TotalModal";
 import Nav from "../components/nav_bar/Nav";
 import { useState, useEffect } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 export default function Main() {
   const [isModal, setIsModal] = useState(false);
@@ -33,29 +32,26 @@ export default function Main() {
 
   // 토큰이 유효하면 로그인 상태 유지 아니면 로그아웃
   // useEffect(async () => {
-
   //   }
   // }, []);
 
   return (
-    <BrowserRouter>
-      <Container>
-        <Nav handleModal={handleModal} isLogin={isLogin} />
-        {isModal ? (
-          <TotalModal
-            handleModal={handleModal}
-            handleSignAndLogin={handleSignAndLogin}
-            signAndLogin={signAndLogin}
-            handleNavbar={handleNavbar}
-          ></TotalModal>
-        ) : (
-          <>
-            <div>작업중입니다.</div>
-            <MiniMypage>테스트중</MiniMypage>
-          </>
-        )}
-      </Container>
-    </BrowserRouter>
+    <Container>
+      <Nav handleModal={handleModal} isLogin={isLogin} />
+      {isModal ? (
+        <TotalModal
+          handleModal={handleModal}
+          handleSignAndLogin={handleSignAndLogin}
+          signAndLogin={signAndLogin}
+          handleNavbar={handleNavbar}
+        ></TotalModal>
+      ) : (
+        <>
+          <div>작업중입니다.</div>
+          <MiniMypage>테스트중</MiniMypage>
+        </>
+      )}
+    </Container>
   );
 }
 const moveLeft = keyframes`

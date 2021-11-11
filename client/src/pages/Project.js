@@ -44,5 +44,4 @@ const Container = styled.div`
   flex-direction:column;
   width:100vw;
   min-height: 93vh;
-  margin-top:7vh;
 `;
