@@ -6,6 +6,7 @@ phases:
       - ls
       - cd client
       - ls
+      - echo $API_URL
       - npm install
   build:
     commands:
