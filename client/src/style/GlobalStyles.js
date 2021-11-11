@@ -17,7 +17,7 @@ const GlobalStyles = createGlobalStyle`
         font-weight: bold;
     }
     input {
-        border:none;
+        border: 1px solid black;
         vertical-align: middle;
     }
     input:focus {
@@ -29,6 +29,7 @@ const GlobalStyles = createGlobalStyle`
     button {
         border: 0;
         background: none;
+        cursor: pointer;
         
         &:focus {
             outline: none;
