@@ -43,6 +43,17 @@ module.exports = {
       onUpdate: "cascade",
     });
     await queryInterface.addConstraint("Likes", {
+      fields: ["project_id"],
+      type: "foreign key",
+      name: "Likes_fkey_from_Projects",
+      references: {
+        table: "Projects",
+        field: "id",
+      },
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    });
+    await queryInterface.addConstraint("Likes", {
       fields: ["goal_id"],
       type: "foreign key",
       name: "Likes_fkey_from_Goals",

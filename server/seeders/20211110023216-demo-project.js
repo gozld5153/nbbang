@@ -10,7 +10,7 @@ module.exports = {
         presentation: null,
         state: "progress",
         progress: "",
-        deadline: "",
+        deadline: "왜 사라졌지?",
         createdAt: new Date(),
         updatedAt: new Date(),
       },

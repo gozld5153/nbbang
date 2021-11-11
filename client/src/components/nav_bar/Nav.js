@@ -1,12 +1,19 @@
 import styled from "styled-components";
 import axios from "axios";
 import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 
-export default function Nav({ handleModal, isLogin }) {
+export default function Nav({
+  handleModal,
+  isLogin,
+  handleMypage,
+  handleOffMypage,
+}) {
+  const navigate = useNavigate();
   const [cookies, setCookie, removeCookie] = useCookies([]);
   const handleLogout = () => {
-    axios
-      .post(`${process.env.API_URL}/users/signout`, null, {
+    axios //`${process.env.API_URL}/users/signout`
+      .post(`http://localhost:80/users/signout`, null, {
         withCredentials: true,
       })
       .then(() => {
@@ -17,12 +24,20 @@ export default function Nav({ handleModal, isLogin }) {
 
   return (
     <NavBar>
-      <Logo src={`${process.env.PUBLIC_URL}/images/logo.png`} />
+      <Logo
+        src={`${process.env.PUBLIC_URL}/images/logo.png`}
+        onClick={() => {
+          handleOffMypage();
+          navigate("/");
+        }}
+      />
       <ContainerBtn>
         {isLogin ? (
           <>
             <LoginBtn isLogin={isLogin}>새 프로젝트</LoginBtn>
-            <LoginBtn isLogin={isLogin}>마이 페이지</LoginBtn>
+            <LoginBtn isLogin={isLogin} onClick={handleMypage}>
+              마이 페이지
+            </LoginBtn>
             <LoginBtn onClick={handleLogout}>Logout</LoginBtn>
           </>
         ) : (
@@ -52,6 +67,7 @@ const Logo = styled.img`
   height: 100%;
   object-fit: contain;
   margin-left: 3rem;
+  cursor: pointer;
 `;
 
 const ContainerBtn = styled.div`

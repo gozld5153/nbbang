@@ -1,8 +1,8 @@
-const { signin } = require("../controllers");
+const { post_like, delete_like } = require("../controllers");
 const express = require("express");
 const router = express.Router();
 
-// app.post("/like", controllers.make_like);
-// app.delete("/like", controllers.delete_like);
+router.post("/", post_like);
+router.delete("/:like_id", delete_like);
 
 module.exports = router;
