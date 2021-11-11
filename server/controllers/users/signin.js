@@ -5,6 +5,7 @@ module.exports = async (req, res) => {
   // TODO 로그인 구현
   // req.body에 email과 password들어옴
   // email과 password로 db검색 후 일치하는게 있다면 accesstoken 발급
+  // access_token이 존재하면 토큰으로 로그인
 
   if (!(req.body.email && req.body.password)) {
     return res
@@ -43,7 +44,7 @@ module.exports = async (req, res) => {
       httpOnly: true,
     })
     .json({
-      message: `${username} 로그인`,
+      message: "ok",
       data: null,
     });
 };
