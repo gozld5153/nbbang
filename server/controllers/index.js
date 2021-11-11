@@ -11,6 +11,10 @@ module.exports = {
   delete_project: require("./project/delete_project"),
   update_project: require("./project/update_project"),
   project_list: require("./project/project_list"),
+  get_goal: require("./goal/get_goal"),
+  post_goal: require("./goal/post_goal"),
+  update_goal: require("./goal/update_goal"),
+  delete_goal: require("./goal/delete_goal"),
   // complete_project: require('./project/complete_project'),
 
   // update_user_info: require('./users/update_user_info'),

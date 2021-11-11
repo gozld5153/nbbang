@@ -13,6 +13,5 @@ router.post("/", post_project);
 router.delete("/:project_id", delete_project);
 router.put("/", update_project);
 router.get("/:user_id", project_list);
-// app.get("/project/complete/:id", controllers.complete_project);
 
 module.exports = router;
