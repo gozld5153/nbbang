@@ -7,10 +7,9 @@ const {
 const express = require("express");
 const router = express.Router();
 
-router.get("/:user_id/:project_id", get_goal);
+router.get("/", get_goal);
 router.post("/", post_goal);
-
 router.put("/", update_goal);
-router.delete("/", delete_goal);
+router.delete("/:goal_id", delete_goal);
 
 module.exports = router;
