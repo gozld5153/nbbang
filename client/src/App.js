@@ -10,10 +10,19 @@ import {
 } from "./pages/MyPage";
 import styled from "styled-components";
 import Nav from "./components/nav_bar/Nav";
+import { InProgress } from "./mockdata/MyPageProjectData";
+
+const Container = styled.div`
+  width: 100vw;
+  min-height: 100vh;
+  position: relative;
+`;
+
 import Project from "./pages/Project";
 // import GoalModal from './components/project/GoalModal'
   
 export default function App() {
+  const [userData, setUserData] = useState(InProgress);
   const [userInfo, setUserInfo] = useState({});
 
   const [isModal, setIsModal] = useState(false);
@@ -98,7 +107,15 @@ export default function App() {
           />
           <Route path="mypage" element={<MyPage />}>
             <Route path="profile" element={<Profile />} />
-            <Route path="project-inprogress" element={<ProjectInProgress />} />
+            <Route
+              path="project-inprogress"
+              element={
+                <ProjectInProgress
+                  userData={userData}
+                  setUserData={setUserData}
+                />
+              }
+            />
             <Route path="project-done" element={<ProjectDone />} />
           </Route>
           <Route path="project" element={<Project />}>
