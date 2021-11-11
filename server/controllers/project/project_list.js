@@ -5,6 +5,8 @@ module.exports = async (req, res) => {
   // project_list_by_progress
   // req.query.state
   // req.params.user_id
+  // 한페이지에 5개
+  // req.query.page 에 페이지 정보 줄거임
 
   // 여기서부터 시작
   if (!(req.params.user_id && req.query.state)) {
@@ -80,5 +82,5 @@ module.exports = async (req, res) => {
     data = null;
   }
 
-  return res.status(200).json({ data: data, message: "세부테스트 필요" });
+  return res.status(200).json({ data: data, message: "ok" });
 };
