@@ -62,7 +62,6 @@ module.exports = async (req, res) => {
       message: "데이터베이스 에러 또는 존재하지 않는 프로젝트입니다.",
     });
   }
-  console.log(project_info);
   // users_projects 검색
   let users_projects_info;
   try {

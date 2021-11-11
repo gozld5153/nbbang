@@ -7,10 +7,10 @@ module.exports = {
   update_user_info: require("./users/update_user_info"),
   delete_user: require("./users/delete_user"),
   get_project: require("./project/get_project"),
-  // project_current: require("./project/project_current"),
   post_project: require("./project/post_project"),
   delete_project: require("./project/delete_project"),
   update_project: require("./project/update_project"),
+  project_list: require("./project/project_list"),
   // complete_project: require('./project/complete_project'),
 
   // update_user_info: require('./users/update_user_info'),
