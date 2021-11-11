@@ -59,7 +59,7 @@ const Signup = ({ handleSignAndLogin }) => {
     //todo axios 통신요청
     if (errMsg.email === null) {
       axios //`${process.env.API_URL}/users/duplication`
-        .post(`http://localhost:8080/users/duplication`, {
+        .post(`${process.env.API_URL}/users/duplication`, {
           email: signupInfo.email,
         })
         .then(() => setIsChecked(true))
@@ -78,7 +78,7 @@ const Signup = ({ handleSignAndLogin }) => {
     } else {
       //todo axios 통신요청
       axios //`${process.env.API_URL}/users/signup`
-        .post(`http://localhost:80/users/signup`, signupInfo)
+        .post(`${process.env.API_URL}/users/signup`, signupInfo)
         .then((data) => handleSignAndLogin())
         .catch((err) => console.log(err));
     }
