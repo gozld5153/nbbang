@@ -1,4 +1,5 @@
 module.exports = {
+  // users
   signin: require("./users/signin"),
   signup: require("./users/signup"),
   signout: require("./users/signout"),
@@ -6,19 +7,28 @@ module.exports = {
   duplication_check: require("./users/duplication_check"),
   update_user_info: require("./users/update_user_info"),
   delete_user: require("./users/delete_user"),
+  // project
   get_project: require("./project/get_project"),
   post_project: require("./project/post_project"),
   delete_project: require("./project/delete_project"),
   update_project: require("./project/update_project"),
   project_list: require("./project/project_list"),
+  // goal
   get_goal: require("./goal/get_goal"),
   post_goal: require("./goal/post_goal"),
   update_goal: require("./goal/update_goal"),
   delete_goal: require("./goal/delete_goal"),
+  // like
   post_like: require("./like/post_like"),
   delete_like: require("./like/delete_like"),
+  // comment
   get_comment: require("./comment/get_comment"),
   post_comment: require("./comment/post_comment"),
   update_comment: require("./comment/update_comment"),
   delete_comment: require("./comment/delete_comment"),
+  // file
+  get_file: require("./file/get_file"),
+  post_file: require("./file/post_file"),
+  update_file: require("./file/update_file"),
+  delete_file: require("./file/delete_file"),
 };
