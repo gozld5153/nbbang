@@ -66,7 +66,10 @@ export default function App() {
         setIsLogin(true);
         console.log("됐냐?");
       })
-      .catch(() => setIsLogin(false));
+      .catch(() => {
+        setIsLogin(false);
+        console.log("안 됐냐?");
+      });
   }, []);
 
   return (
