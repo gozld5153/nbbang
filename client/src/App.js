@@ -64,14 +64,11 @@ export default function App() {
       .then((data) => {
         setUserInfo(data.data.data.user_info);
         setIsLogin(true);
-        console.log("됐냐?");
       })
       .catch(() => {
         setIsLogin(false);
-        console.log(`${process.env.REACT_APP_API_URL}`);
-        console.log("안 됐냐?");
       });
-  }, []);
+  }, [isLogin]);
 
   return (
     <Router>
