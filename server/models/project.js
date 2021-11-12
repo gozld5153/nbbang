@@ -23,7 +23,6 @@ module.exports = (sequelize, DataTypes) => {
       description: DataTypes.STRING,
       presentation: DataTypes.STRING,
       state: DataTypes.STRING,
-      progress: DataTypes.STRING,
       deadline: DataTypes.STRING,
     },
     {

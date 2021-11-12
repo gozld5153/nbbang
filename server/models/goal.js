@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       goal_name: DataTypes.STRING,
       description: DataTypes.STRING,
       state: DataTypes.STRING,
-      important: DataTypes.STRING,
+      important: DataTypes.INTEGER,
       deadline: DataTypes.STRING,
     },
     {

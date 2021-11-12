@@ -1,4 +1,4 @@
-const { Goal, File, Comment } = require("../../models");
+const { Goal, File, Comment, Like } = require("../../models");
 const comment = require("../../models/comment");
 
 module.exports = async (req, res) => {
@@ -34,6 +34,13 @@ module.exports = async (req, res) => {
           goal_id: req.query.goal_id,
         },
       });
+      like_info = await Like.findAndCountAll({
+        where: {
+          goal_id: req.query.goal_id,
+        },
+      });
+      console.log(like_info);
+      goal_info.dataValues.like_count = like_info.count;
       goal_info.dataValues.files = file_info;
       goal_info.dataValues.comments = comment_info;
     } catch {
@@ -45,7 +52,7 @@ module.exports = async (req, res) => {
 
     return res.status(200).json({ data: data, message: "ok" });
   }
-  // goal_id, project_id 둘다 없으면 정보 누락
+  // project_id 없으면 정보 누락
   if (!req.query.project_id) {
     return res
       .status(400)
@@ -61,12 +68,13 @@ module.exports = async (req, res) => {
           project_id: req.query.project_id,
         },
       });
+    } else {
+      goal_info = await Goal.findAll({
+        where: {
+          project_id: req.query.project_id,
+        },
+      });
     }
-    goal_info = await Goal.findAll({
-      where: {
-        project_id: req.query.project_id,
-      },
-    });
   } catch {
     return res.status(500).json({ data: null, message: "데이터베이스 오류" });
   }
