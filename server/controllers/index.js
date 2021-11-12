@@ -13,6 +13,7 @@ module.exports = {
   delete_project: require("./project/delete_project"),
   update_project: require("./project/update_project"),
   project_list: require("./project/project_list"),
+  project_member: require("./project/project_member"),
   // goal
   get_goal: require("./goal/get_goal"),
   post_goal: require("./goal/post_goal"),
