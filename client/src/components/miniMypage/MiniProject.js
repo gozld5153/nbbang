@@ -1,46 +1,69 @@
 import React from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
-const MiniProject = () => {
+const Project = ({ progress, members }) => {
+  const navigate = useNavigate();
   return (
-    <Container>
+    <>
       <div>진행중인 프로젝트</div>
       <div>
         <ul>
-          <li>프로젝트1</li>
-          <li>프로젝트2</li>
-          <li>프로젝트3</li>
+          {progress.map((project, idx) => (
+            <li key={idx} onClick={() => navigate("project-inprogress")}>
+              <p>{project}</p>
+              {members[idx].map((name, idx) => (
+                <span key={idx}>{name.username}</span>
+              ))}
+            </li>
+          ))}
         </ul>
       </div>
-      <div>
-        <span>이전</span>
-        <span>1</span>
-        <span>2</span>
-        <span>3</span>
-        <span>다음</span>
-      </div>
+    </>
+  );
+};
+
+const MiniProject = ({ progress, members }) => {
+  return (
+    <Container>
+      {/* 테스트용 실제동작은 div와 Project 자리 체인지  */}
+      {progress.length > 0 ? (
+        <div>진행 중인 프로젝트가 없습니다.</div>
+      ) : (
+        <Project progress={progress} members={members} />
+      )}
     </Container>
   );
 };
 
 const Container = styled.div`
-  border-bottom: 1px solid #f3f3f4;
+  border-bottom: 2px solid #2e3032;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   > :nth-child(1) {
-    margin: 1rem 0 0 1rem;
+    font-weight: bold;
+    font-size: 2rem;
+    color: #2e3032;
   }
   > :nth-child(2) {
-    width: 60%;
-    margin: 2rem auto 0 auto;
+    width: 80%;
+    margin: 1rem auto 0 auto;
     & li {
-      border-bottom: 1px solid #f3f3f4;
-      padding: 1rem;
-    }
-  }
-  > :nth-child(3) {
-    margin-top: 2rem;
-    text-align: center;
-    & span {
-      margin: 0.5rem;
+      cursor: pointer;
+      color: #2e3032;
+      font-weight: 500;
+      border-bottom: 1px solid #2e3032;
+      padding: 1rem 1rem 0.5rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      &:hover {
+        font-weight: bold;
+      }
+      > p {
+        margin-bottom: 0.5rem;
+      }
     }
   }
 `;

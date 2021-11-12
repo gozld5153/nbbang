@@ -17,6 +17,9 @@ module.exports = {
       goal_id: {
         type: Sequelize.INTEGER,
       },
+      file_name: {
+        type: Sequelize.STRING,
+      },
       description: {
         type: Sequelize.STRING,
       },
