@@ -11,16 +11,11 @@ import {
 import styled from "styled-components";
 import Nav from "./components/nav_bar/Nav";
 import { InProgress } from "./mockdata/MyPageProjectData";
-
-const Container = styled.div`
-  width: 100vw;
-  min-height: 100vh;
-  position: relative;
-`;
-
 import Project from "./pages/Project";
+import { set } from "date-fns/esm";
+
 // import GoalModal from './components/project/GoalModal'
-  
+
 export default function App() {
   const [userData, setUserData] = useState(InProgress);
   const [userInfo, setUserInfo] = useState({});
@@ -29,6 +24,7 @@ export default function App() {
   const [isLogin, setIsLogin] = useState(false);
   const [isMypage, setIsMypage] = useState(false);
   const [switchBtn, setSwitchBtn] = useState(false);
+  const [isOn, setIsOn] = useState(false);
 
   const handleNavbar = () => {
     setIsLogin(true);
@@ -36,11 +32,15 @@ export default function App() {
   };
 
   const handleSignAndLogin = () => {
-    if (signAndLogin === "login") {
-      setSignAndLogin("signup");
-    } else {
-      setSignAndLogin("login");
-    }
+    setIsOn(true);
+    setTimeout(() => {
+      if (signAndLogin === "login") {
+        setSignAndLogin("signup");
+      } else {
+        setSignAndLogin("login");
+      }
+      setIsOn(false);
+    }, 500);
   };
 
   const handleModal = (e) => {
@@ -53,6 +53,8 @@ export default function App() {
   };
 
   const handleMypage = () => {
+    //axios 요청으로 유저의 프로젝트 정보를 받아 와서 스테이트 관리해준다!
+    console.log(userData);
     setSwitchBtn(true);
     setIsMypage(!isMypage);
   };
@@ -63,21 +65,22 @@ export default function App() {
 
   // 토큰이 유효하면 로그인 상태 유지 아니면 로그아웃
   useEffect(() => {
-    axios
-      .post(`${process.env.API_URL}/users/signin`, null, {
-        withCredentials: true,
-      })
+    axios(`${process.env.REACT_APP_API_URL}/users`, {
+      withCredentials: true,
+    })
       .then((data) => {
+        console.log(data);
         setUserInfo(data.data.data.user_info);
         setIsLogin(true);
       })
       .catch(() => setIsLogin(false));
-  }, []);
+  }, [isLogin]);
 
   return (
     <Router>
       <Container>
         <Nav
+          isModal={isModal}
           handleModal={handleModal}
           isLogin={isLogin}
           handleMypage={handleMypage}
@@ -96,20 +99,14 @@ export default function App() {
                 switchBtn={switchBtn}
                 isMypage={isMypage}
                 userInfo={userInfo}
+                isOn={isOn}
+                userData={userData}
               />
             }
           />
           <Route path="mypage" element={<MyPage />}>
             <Route path="profile" element={<Profile />} />
-            <Route
-              path="project-inprogress"
-              element={
-                <ProjectInProgress
-                  userData={userData}
-                  setUserData={setUserData}
-                />
-              }
-            />
+            <Route path="project-inprogress" element={<ProjectInProgress />} />
             <Route path="project-done" element={<ProjectDone />} />
           </Route>
           <Route path="project" element={<Project />}>
@@ -119,10 +116,11 @@ export default function App() {
       </Container>
     </Router>
   );
-};
+}
 
 const Container = styled.div`
   width: 100vw;
   min-height: 100vh;
   position: relative;
+  overflow: auto;
 `;

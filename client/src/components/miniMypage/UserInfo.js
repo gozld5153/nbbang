@@ -7,11 +7,16 @@ const UserInfo = ({ userInfo }) => {
   return (
     <Container>
       <div onClick={() => navigate("/mypage")}>
+        {/* 유저정보 profile에서 사진을 가져와야 함 */}
         <img src={`${process.env.PUBLIC_URL}/images/bbang.png`}></img>
       </div>
       <div>
-        <div>유저네임: {userInfo.username}</div>
-        <div>유저이메일: {userInfo.email}</div>
+        <div>
+          <div>{userInfo.username}</div>
+        </div>
+        <div>
+          <div>{userInfo.email}</div>
+        </div>
       </div>
     </Container>
   );
@@ -23,13 +28,15 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border-bottom: solid 2px #f3f3f4;
+  border-bottom: solid 2px #2e3032;
+  color: #2e3032;
+
   > :nth-child(1) {
     /* flex-grow: 1; */
     text-align: center;
     height: 150px;
     width: 150px;
-    background-color: red;
+    background-color: #191123;
     border-radius: 50%;
     margin: 0 2rem 0 2rem;
     cursor: pointer;
@@ -40,9 +47,11 @@ const Container = styled.div`
     }
   }
   > :nth-child(2) {
-    /* flex-grow: 1; */
+    flex: 60%;
     > div {
       margin: 2rem;
+      font-weight: bold;
+      font-size: 2rem;
     }
   }
 `;
