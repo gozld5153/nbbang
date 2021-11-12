@@ -1,4 +1,4 @@
-const { User, Project, Users_Projects } = require("../../models");
+const { User, Project, Users_Projects, Goal } = require("../../models");
 
 module.exports = async (req, res) => {
   // TODO 프로젝트 목록 api 구현
@@ -8,8 +8,7 @@ module.exports = async (req, res) => {
   // 한페이지에 5개
   // req.query.page 에 페이지 정보 줄거임
 
-  // 여기서부터 시작
-  if (!(req.params.user_id && req.query.state)) {
+  if (!req.params.user_id) {
     return res.status(400).json({ data: null, message: "잘못된 요청입니다." });
   }
 
@@ -32,15 +31,49 @@ module.exports = async (req, res) => {
   }
   // project_ids 에서 받아온 project_id로 project 정보 가져옴
   let data = [];
+  let total_count;
   try {
     for (let info of project_ids) {
-      // TODO 함수시작
+      // TODO for문 시작
       let project_info;
-      console.log("info", info);
       try {
-        project_info = await Project.findOne({
-          where: { id: info.dataValues.project_id, state: req.query.state },
+        if (!req.query.state) {
+          project_info = await Project.findOne({
+            where: { id: info.dataValues.project_id },
+          });
+        } else {
+          project_info = await Project.findOne({
+            where: { id: info.dataValues.project_id, state: req.query.state },
+          });
+        }
+        // captain_name 추가
+        const captain_info = await User.findOne({
+          where: {
+            id: project_info.dataValues.captain_id,
+          },
         });
+        project_info.dataValues.captain_name = captain_info.dataValues.username;
+        // 프로젝트 진행도 all_important complete_important 추가
+        // 프로젝트 아이디 info.dataValues.project_id
+        // 프로젝트 아이디로 goal 테이블 검색해서 important 총합 구함
+        const goal_info = await Goal.findAll({
+          attributes: ["important", "state"],
+          where: {
+            project_id: info.dataValues.project_id,
+          },
+        });
+        // console.log("goal_info", goal_info);
+        let all_important = 0;
+        let complete_important = 0;
+        for (let el of goal_info) {
+          console.log("el", el);
+          if (el.dataValues.state === "complete")
+            complete_important += el.dataValues.important;
+          all_important += el.dataValues.important;
+        }
+        console.log("all_important", all_important);
+        project_info.dataValues.all_important = all_important;
+        project_info.dataValues.complete_important = complete_important;
       } catch {
         project_info = null;
       }
@@ -60,27 +93,63 @@ module.exports = async (req, res) => {
       // project에 포함된 멤버 검색
       let member_info = [];
       try {
-        for (let info of users_projects_info) {
-          let temp = await User.findOne({
-            where: { id: info.user_id },
+        for (let el of users_projects_info) {
+          let temp_user = await User.findOne({
+            where: { id: el.user_id },
           });
           // password 정보 삭제
-          delete temp.dataValues.password;
+          delete temp_user.dataValues.password;
           // color 정보 추가
-          temp.dataValues.color = info.color;
-          member_info.push(temp.dataValues);
+          temp_user.dataValues.color = el.color;
+          // my_all_important / my_complete_important 내용 추가
+          // el.user_id / info.dataValues.project_id
+          const goal_info = await Goal.findAll({
+            attributes: ["important", "state"],
+            where: {
+              project_id: info.dataValues.project_id,
+            },
+          });
+          let my_all_important = 0;
+          let my_complete_important = 0;
+          for (let el of goal_info) {
+            if (el.dataValues.state === "complete")
+              my_complete_important += el.dataValues.important;
+            my_all_important += el.dataValues.important;
+          }
+          temp_user.dataValues.my_all_important = my_all_important;
+          temp_user.dataValues.my_complete_important = my_complete_important;
+          member_info.push(temp_user.dataValues);
         }
       } catch {
         member_info = null;
       }
       // project_info에 members 추가
       project_info.dataValues.members = member_info;
-      // TODO 함수 끝
       data.push(project_info);
+      // TODO for문 탈출
+    }
+    if (!req.query.state) {
+      const complete = [];
+      const progress = [];
+      for (let project of data) {
+        if (project.dataValues.state === "complete") complete.push(project);
+        if (project.dataValues.state === "progress") progress.push(project);
+      }
+      total_count = data.length;
+      const progress_count = progress.length;
+      const complete_count = complete.length;
+      data = {
+        progress_count,
+        complete_count,
+        complete,
+        progress,
+      };
+    } else {
+      total_count = data.length;
     }
   } catch {
     data = null;
   }
 
-  return res.status(200).json({ data: data, message: "ok" });
+  return res.status(200).json({ total_count, data, message: "ok" });
 };
