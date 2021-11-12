@@ -13,7 +13,7 @@ export default function Nav({
   const [cookies, setCookie, removeCookie] = useCookies([]);
   const handleLogout = () => {
     axios
-      .post(`${process.env.API_URL}/users/signout`, null, {
+      .post(`${process.env.REACT_APP_API_URL}/users/signout`, null, {
         withCredentials: true,
       })
       .then(() => {

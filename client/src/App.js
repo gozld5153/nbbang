@@ -58,7 +58,7 @@ export default function App() {
   // 토큰이 유효하면 로그인 상태 유지 아니면 로그아웃
   useEffect(() => {
     axios
-      .get(`${process.env.API_URL}/users/users`, {
+      .get(`${process.env.REACT_APP_API_URL}/users/users`, {
         withCredentials: true,
       })
       .then((data) => {
@@ -68,7 +68,7 @@ export default function App() {
       })
       .catch(() => {
         setIsLogin(false);
-        console.log(`${process.env.API_URL}`);
+        console.log(`${process.env.REACT_APP_API_URL}`);
         console.log("안 됐냐?");
       });
   }, []);

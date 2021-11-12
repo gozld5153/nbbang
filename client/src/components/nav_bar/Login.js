@@ -19,7 +19,7 @@ const Login = ({ handleNavbar }) => {
     } else {
       //todo axios 통신요청
       axios //
-        .post(`${process.env.API_URL}/users/signin`, loginInfo, {
+        .post(`${process.env.REACT_APP_API_URL}/users/signin`, loginInfo, {
           withCredentials: true,
         })
         .then(() => handleNavbar())
