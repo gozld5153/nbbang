@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 
-const Login = ({ handleNavbar }) => {
+const Login = ({ handleNavbar, isOn }) => {
   const [loginInfo, setLoginInfo] = useState({
     email: "",
     password: "",
@@ -19,7 +19,7 @@ const Login = ({ handleNavbar }) => {
     } else {
       //todo axios 통신요청
       axios //`${process.env.API_URL}/users/signin`
-        .post(`http://localhost:80/users/signin`, loginInfo, {
+        .post(`${process.env.REACT_APP_API_URL}/users/signin`, loginInfo, {
           withCredentials: true,
         })
         .then(() => handleNavbar())
@@ -27,7 +27,7 @@ const Login = ({ handleNavbar }) => {
     }
   };
   return (
-    <Container>
+    <Container isOn={isOn}>
       <div>Sign in to Nbbang</div>
       <input
         type="text"
@@ -46,17 +46,23 @@ const Login = ({ handleNavbar }) => {
 };
 
 const Container = styled.div`
+  flex: 0 0 50%;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  z-index: 0;
+  background-color: #eeeeee;
+  color: #222222;
+
   > :nth-child(1) {
     font-weight: bold;
     font-size: 3rem;
     margin-bottom: 4rem;
   }
   input {
+    z-index: 0;
     background-color: #f3f3f4;
     height: 2rem;
     margin: 0.5rem;

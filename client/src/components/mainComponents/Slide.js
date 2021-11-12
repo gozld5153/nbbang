@@ -67,7 +67,9 @@ const IndicatorWrapper = styled.div`
 `;
 
 const Container = styled.div`
-  height: 50vh;
+  height: 60vh;
+  border-bottom: 2px solid #2e3032;
+  padding: 2rem;
 `;
 
 const Wrapper = styled.div`
@@ -78,6 +80,7 @@ const Wrapper = styled.div`
   flex-wrap: nowrap;
   overflow: hidden;
   position: relative;
+  border-radius: 20px;
 `;
 const Slider = styled.div`
   width: 100%;
