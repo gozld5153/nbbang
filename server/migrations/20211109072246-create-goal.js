@@ -8,13 +8,13 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      user_id: {
+      userId: {
         type: Sequelize.INTEGER,
       },
-      project_id: {
+      projectId: {
         type: Sequelize.INTEGER,
       },
-      goal_name: {
+      goalName: {
         type: Sequelize.STRING,
       },
       description: {
@@ -39,9 +39,9 @@ module.exports = {
       },
     });
     await queryInterface.addConstraint("Goals", {
-      fields: ["user_id"],
+      fields: ["userId"],
       type: "foreign key",
-      name: "Goals_fkey_from_Users",
+      name: "GoalsFkeyFrom_Users",
       references: {
         table: "Users",
         field: "id",
@@ -50,9 +50,9 @@ module.exports = {
       onUpdate: "cascade",
     });
     await queryInterface.addConstraint("Goals", {
-      fields: ["project_id"],
+      fields: ["projectId"],
       type: "foreign key",
-      name: "Goals_fkey_from_Projects",
+      name: "GoalsFkeyFromProjects",
       references: {
         table: "Projects",
         field: "id",

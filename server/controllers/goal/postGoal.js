@@ -3,7 +3,7 @@ const { Goal } = require("../../models");
 module.exports = async (req, res) => {
   // TODO 목표 생성 api 구현
   // req.body에 goal 정보 들어옴
-  if (!(req.body.user_id && req.body.project_id && req.body.goal_name)) {
+  if (!(req.body.userId && req.body.projectId && req.body.goalName)) {
     return res
       .status(400)
       .json({ data: null, message: "누락된 항목이 있습니다." });

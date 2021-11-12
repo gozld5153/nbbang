@@ -1,17 +1,17 @@
 "use strict";
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("Users_Projects", {
+    await queryInterface.createTable("UsersProjects", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      user_id: {
+      userId: {
         type: Sequelize.INTEGER,
       },
-      project_id: {
+      projectId: {
         type: Sequelize.INTEGER,
       },
       color: {
@@ -27,10 +27,10 @@ module.exports = {
       },
     });
     // 관계설정 Users_Projects의 user_id와 project_id 조인테이블
-    await queryInterface.addConstraint("Users_Projects", {
-      fields: ["user_id"],
+    await queryInterface.addConstraint("UsersProjects", {
+      fields: ["userId"],
       type: "foreign key",
-      name: "Users_Projects_fkey_from_Users",
+      name: "UsersProjectsFkeyFromUsers",
       references: {
         table: "Users",
         field: "id",
@@ -38,10 +38,10 @@ module.exports = {
       onDelete: "cascade",
       onUpdate: "cascade",
     });
-    await queryInterface.addConstraint("Users_Projects", {
-      fields: ["project_id"],
+    await queryInterface.addConstraint("UsersProjects", {
+      fields: ["projectId"],
       type: "foreign key",
-      name: "Users_Projects_fkey_from_Projects",
+      name: "UsersProjectsFkeyFromProjects",
       references: {
         table: "Projects",
         field: "id",
@@ -51,6 +51,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("Users_Projects");
+    await queryInterface.dropTable("UsersProjects");
   },
 };

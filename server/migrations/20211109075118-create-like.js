@@ -8,13 +8,13 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      user_id: {
+      userId: {
         type: Sequelize.INTEGER,
       },
-      project_id: {
+      projectId: {
         type: Sequelize.INTEGER,
       },
-      goal_id: {
+      goalId: {
         type: Sequelize.INTEGER,
       },
       agreement: {
@@ -32,9 +32,9 @@ module.exports = {
       },
     });
     await queryInterface.addConstraint("Likes", {
-      fields: ["user_id"],
+      fields: ["userId"],
       type: "foreign key",
-      name: "Likes_fkey_from_Users",
+      name: "LikesFkeyFromUsers",
       references: {
         table: "Users",
         field: "id",
@@ -43,9 +43,9 @@ module.exports = {
       onUpdate: "cascade",
     });
     await queryInterface.addConstraint("Likes", {
-      fields: ["project_id"],
+      fields: ["projectId"],
       type: "foreign key",
-      name: "Likes_fkey_from_Projects",
+      name: "LikesFkeyFromProjects",
       references: {
         table: "Projects",
         field: "id",
@@ -54,9 +54,9 @@ module.exports = {
       onUpdate: "cascade",
     });
     await queryInterface.addConstraint("Likes", {
-      fields: ["goal_id"],
+      fields: ["goalId"],
       type: "foreign key",
-      name: "Likes_fkey_from_Goals",
+      name: "LikesFkeyFromGoals",
       references: {
         table: "Goals",
         field: "id",

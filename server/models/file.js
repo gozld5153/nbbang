@@ -16,10 +16,10 @@ module.exports = (sequelize, DataTypes) => {
   }
   File.init(
     {
-      user_id: DataTypes.INTEGER,
-      project_id: DataTypes.INTEGER,
-      goal_id: DataTypes.INTEGER,
-      file_name: DataTypes.STRING,
+      userId: DataTypes.INTEGER,
+      projectId: DataTypes.INTEGER,
+      goalId: DataTypes.INTEGER,
+      fileName: DataTypes.STRING,
       description: DataTypes.STRING,
     },
     {

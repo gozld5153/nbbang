@@ -18,9 +18,9 @@ module.exports = (sequelize, DataTypes) => {
   }
   Goal.init(
     {
-      user_id: DataTypes.INTEGER,
-      project_id: DataTypes.INTEGER,
-      goal_name: DataTypes.STRING,
+      userId: DataTypes.INTEGER,
+      projectId: DataTypes.INTEGER,
+      goalName: DataTypes.STRING,
       description: DataTypes.STRING,
       state: DataTypes.STRING,
       important: DataTypes.INTEGER,

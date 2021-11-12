@@ -8,16 +8,16 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      user_id: {
+      userId: {
         type: Sequelize.INTEGER,
       },
-      project_id: {
+      projectId: {
         type: Sequelize.INTEGER,
       },
-      goal_id: {
+      goalId: {
         type: Sequelize.INTEGER,
       },
-      file_name: {
+      fileName: {
         type: Sequelize.STRING,
       },
       description: {
@@ -33,9 +33,9 @@ module.exports = {
       },
     });
     await queryInterface.addConstraint("Files", {
-      fields: ["user_id"],
+      fields: ["userId"],
       type: "foreign key",
-      name: "Files_fkey_from_Users",
+      name: "FilesFkeyFromUsers",
       references: {
         table: "Users",
         field: "id",
@@ -44,9 +44,9 @@ module.exports = {
       onUpdate: "cascade",
     });
     await queryInterface.addConstraint("Files", {
-      fields: ["project_id"],
+      fields: ["projectId"],
       type: "foreign key",
-      name: "Files_fkey_from_Projects",
+      name: "FilesFkeyFromProjects",
       references: {
         table: "Projects",
         field: "id",
@@ -55,9 +55,9 @@ module.exports = {
       onUpdate: "cascade",
     });
     await queryInterface.addConstraint("Files", {
-      fields: ["goal_id"],
+      fields: ["goalId"],
       type: "foreign key",
-      name: "Files_fkey_from_Goals",
+      name: "FilesFkeyFromGoals",
       references: {
         table: "Goals",
         field: "id",

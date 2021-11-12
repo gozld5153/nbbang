@@ -8,13 +8,13 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      user_id: {
+      userId: {
         type: Sequelize.INTEGER,
       },
-      project_id: {
+      projectId: {
         type: Sequelize.INTEGER,
       },
-      goal_id: {
+      goalId: {
         type: Sequelize.INTEGER,
       },
       content: {
@@ -30,9 +30,9 @@ module.exports = {
       },
     });
     await queryInterface.addConstraint("Comments", {
-      fields: ["user_id"],
+      fields: ["userId"],
       type: "foreign key",
-      name: "Comments_fkey_from_Users",
+      name: "CommentsFkeyFromUsers",
       references: {
         table: "Users",
         field: "id",
@@ -41,9 +41,9 @@ module.exports = {
       onUpdate: "cascade",
     });
     await queryInterface.addConstraint("Comments", {
-      fields: ["project_id"],
+      fields: ["projectId"],
       type: "foreign key",
-      name: "Comments_fkey_from_Projects",
+      name: "CommentsFkeyFromProjects",
       references: {
         table: "Projects",
         field: "id",
@@ -52,9 +52,9 @@ module.exports = {
       onUpdate: "cascade",
     });
     await queryInterface.addConstraint("Comments", {
-      fields: ["goal_id"],
+      fields: ["goalId"],
       type: "foreign key",
-      name: "Comments_fkey_from_Goals",
+      name: "CommentsFkeyFromGoals",
       references: {
         table: "Goals",
         field: "id",

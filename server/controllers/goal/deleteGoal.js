@@ -2,14 +2,14 @@ const { Goal } = require("../../models");
 
 module.exports = async (req, res) => {
   // TODO 목표 삭제 구현
-  // req.params.goal_id
-  if (!req.params.goal_id) {
+  // req.params.goalId
+  if (!req.params.goalId) {
     return res.status(400).json({ data: null, message: "잘못된 요청입니다." });
   }
   try {
     await Goal.destroy({
       where: {
-        id: req.params.goal_id,
+        id: req.params.goalId,
       },
     });
   } catch {

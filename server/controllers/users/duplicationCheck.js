@@ -3,15 +3,15 @@ const { User } = require("../../models");
 module.exports = async (req, res) => {
   // TODO email 중복검사
   // body로 email 전달
-  let user_info;
+  let userInfo;
   try {
-    user_info = await User.findOne({
+    userInfo = await User.findOne({
       where: { email: req.body.email },
     });
   } catch {
-    user_info = null;
+    userInfo = null;
   }
-  if (!user_info) {
+  if (!userInfo) {
     return res.status(200).json({
       data: null,
       message: "ok",

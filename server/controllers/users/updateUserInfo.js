@@ -6,18 +6,18 @@ module.exports = async (req, res) => {
   if (!req.body.id) {
     return res.status(400).json({ data: null, message: "잘못된 요청입니다." });
   }
-  let how_many_changed;
+  let howManyChanged;
   try {
-    how_many_changed = await User.update(req.body, {
+    howManyChanged = await User.update(req.body, {
       where: {
         id: req.body.id,
       },
     });
   } catch {
-    how_many_changed = null;
+    howManyChanged = null;
   }
-  if (!how_many_changed) {
+  if (!howManyChanged) {
     return res.status(500).json({ data: null, message: "데이터베이스 에러" });
   }
-  return res.status(201).json({ data: how_many_changed, message: "ok" });
+  return res.status(201).json({ data: howManyChanged, message: "ok" });
 };

@@ -1,19 +1,16 @@
 const { File } = require("../../models");
 
 module.exports = async (req, res) => {
-  // TODO file 내용 업데이트
-  // req.body
-  if (!req.body.file_id) {
+  // TODO 파일 생성 구현
+  // req.body에 담겨옴
+  if (!(req.body.userId && req.body.projectId && req.body.goalId)) {
     return res.status(400).json({ data: null, message: "잘못된 요청입니다." });
   }
+  let fileInfo;
   try {
-    await File.update(req.body, {
-      where: {
-        id: req.body.file_id,
-      },
-    });
+    fileInfo = await File.create(req.body);
   } catch {
     return res.status(500).json({ data: null, message: "데이터베이스 오류" });
   }
-  return res.status(201).json({ data: null, message: "ok" });
+  return res.status(201).json({ data: fileInfo, message: "ok" });
 };
