@@ -68,6 +68,7 @@ export default function App() {
       })
       .catch(() => {
         setIsLogin(false);
+        console.log(`${process.env.API_URL}`);
         console.log("안 됐냐?");
       });
   }, []);
