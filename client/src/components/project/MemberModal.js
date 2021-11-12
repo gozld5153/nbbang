@@ -1,8 +1,16 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import axios from 'axios'
+
 import MemberMockData from '../../mockData/MemberMockData'
 
-export default function MemberModal({ memberModalOpener, isMemberOpen, setMember, member }) {
+export default function MemberModal({
+  memberModalOpener,
+  isMemberOpen,
+  setMember,
+  member,
+  projectInfo,
+}) {
   const [searchEmail, setSearchEmail] = useState("");
   const [searchMember, setSearchMember] = useState([
     {
@@ -32,18 +40,39 @@ export default function MemberModal({ memberModalOpener, isMemberOpen, setMember
   const enterHandler = (e) => {
     // const email = e.target.value;
     if (e.key === "Enter" && searchEmail) {
+      // axios.get(`http://server.nbbang.ml/project/`, {
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   withCredentials: true,
+      // });
+
       setSearchMember([...MemberMockData]);
     }
   };
 
   const closeHandler = () => {
-    const reduplication = member.filter((el) => el.id === selectMember.id).length;
+    const reduplication = member.filter((el) => el.id === selectMember.id)
+      .length;
     if (!selectMember.email) {
-      return alert('입력 해줘')
+      return alert("입력 해줘");
     }
     if (reduplication && selectMember.username) {
       return alert("이미 가입된 맴버입니다.");
     }
+    axios.put(
+      `http://server.nbbang.ml/project`,
+      {
+        id: projectInfo.id,
+        member: [...member, selectMember],
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      }
+    );
     setMember([...member, selectMember]);
     memberModalOpener();
   };
@@ -60,10 +89,14 @@ export default function MemberModal({ memberModalOpener, isMemberOpen, setMember
         />
         <ul>
           {searchMember.map((el) => (
-            <li onClick={() => selectHandler(el.id)} key={el.id}>{el.email}</li>
+            <li onClick={() => selectHandler(el.id)} key={el.id}>
+              {el.email}
+            </li>
           ))}
-          <li></li>
         </ul>
+        색깔 선택
+        <ColorChecker color={selectMember.color}/>
+        <input type="text" onChange={(e) => setSelectMember({...selectMember,color:e.target.value})} />
         <button onClick={closeHandler}>초대</button>
       </ModalContainer>
     </Container>
@@ -89,3 +122,12 @@ const ModalContainer = styled.div`
   border: 1px solid black;
   background-color: white;
 `;
+
+const ColorChecker = styled.div`
+  width:5rem;
+  height: 5rem;
+  border-radius:2.5rem;
+  background-color: ${(props) => { if (props.color && props.color[0] === "#" && props.color.length === 7) {
+    return props.color;
+  } }};
+`

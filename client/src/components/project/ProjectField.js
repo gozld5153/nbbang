@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import axios from 'axios'
+
 import Goal from './Goal'
 import GoalCreateModal from "./GoalCreateModal";
-import GoalModal from './GoalModal'
 
 import GoalMockData from '../../mockData/GoalMockData'
 
-export default function ProjectField({ myInfo }) {
+export default function ProjectField({ myInfo, projectId, params }) {
   const { todo, progress, complete } = GoalMockData.data;
   const [isTodo, setIsTodo] = useState([]);
   const [isProgress, setIsProgress] = useState([]);
@@ -16,19 +18,32 @@ export default function ProjectField({ myInfo }) {
   const goalList = [isTodo, isProgress, isComplete];
   const goalListText = ["To Do", "Progress", "Complete"];
 
+  const pathname = useLocation();
+  const navigate = useNavigate();
+
   const createModalOpener = () => {
     setIsCreateOpen(!isCreateOpen);
   };
-
-  const GoalOpener = (goal_id) => { 
-
-  }
 
   useEffect(() => {
     setIsTodo([...todo]);
     setIsProgress([...progress]);
     setIsComplete([...complete]);
+    axios
+      .get(`http://server.nbbang.ml/goal?project_id=${params}`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      })
+      .then((res) => {
+        console.log("axios 요청 결과: ", res.data.data);
+        // setIsTodo([...res.data.data.todo]);
+        // setIsProgress([...res.data.data.progress]);
+        // setIsComplete([...res.data.data.complete]);
+      });
   }, []);
+
   return (
     <Container>
       {goalList.map((el, idx) => (
@@ -40,8 +55,16 @@ export default function ProjectField({ myInfo }) {
             onClick={createModalOpener}
           />
           {el.map((goal) => (
-            <div onClick={() => GoalOpener(goal.id)}>
-              <Goal goalInfo={goal} key={goal.id} />
+            <div
+              onClick={() =>
+                navigate(`./${goal.id}`, {
+                  state: { a:'b' },
+                  replace: false,
+                })
+              }
+              key={goal.id}
+            >
+              <Goal goalInfo={goal} />
             </div>
           ))}
         </GoalList>
@@ -52,8 +75,9 @@ export default function ProjectField({ myInfo }) {
         isTodo={isTodo}
         myInfo={myInfo}
         setIsTodo={setIsTodo}
+        projectId={projectId}
       />
-      {/* <GoalModal /> */}
+      <Outlet />
     </Container>
   );
 }

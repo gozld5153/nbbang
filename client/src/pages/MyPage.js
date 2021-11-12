@@ -7,7 +7,7 @@ import { VscProject } from "react-icons/vsc";
 import { useLocation } from "react-router-dom";
 
 import Progressbar from "../components/utils/Progressbar";
-import { InProgress, Done } from "../mockdata/MyPageProjectData";
+import { InProgress, Done } from "../mockData/MyPageProjectData";
 import ProjectPagePagination from "../components/utils/ProjectPagePagination";
 
 const MyPageWrapper = styled.div`
@@ -197,7 +197,6 @@ export function MyPageNav() {
 }
 
 export function Profile() {
-<<<<<<< HEAD
   return <div>프로필</div>;
 }
 export function ProjectInProgress({ userData, setUserData }) {
@@ -247,12 +246,6 @@ export function ProjectInProgressItems({ project }) {
       <ProjectContribution>{project.contribution}%</ProjectContribution>
     </ProjectItems>
   );
-=======
-  return <div>a</div>;
-}
-export function ProjectInProgress() {
-  return <div>b</div>;
->>>>>>> 8dc553ccc46fa58fd99a6f38a3737e808729a90d
 }
 export function ProjectDone() {
   return (

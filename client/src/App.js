@@ -10,14 +10,21 @@ import {
 } from "./pages/MyPage";
 import styled from "styled-components";
 import Nav from "./components/nav_bar/Nav";
-import { InProgress } from "./mockdata/MyPageProjectData";
+import { InProgress } from "./mockData/MyPageProjectData";
 
 import Project from "./pages/Project";
-// import GoalModal from './components/project/GoalModal'
+import GoalModal from './components/project/GoalModal'
   
 export default function App() {
   const [userData, setUserData] = useState(InProgress);
-  const [userInfo, setUserInfo] = useState({});
+  const [userInfo, setUserInfo] = useState({
+    id: 1,
+    username: "demouser",
+    email: "demouser@nbbang.com",
+    profile: null,
+    createdAt: "2021-11-09T14:20:45.000Z",
+    updatedAt: "2021-11-09T14:20:45.000Z",
+  });
   const [isModal, setIsModal] = useState(false);
   const [signAndLogin, setSignAndLogin] = useState("");
   const [isLogin, setIsLogin] = useState(false);
@@ -106,8 +113,11 @@ export default function App() {
             />
             <Route path="project-done" element={<ProjectDone />} />
           </Route>
-          <Route path="project" element={<Project />}>
-            {/* <Route path=":a" element={<GoalModal />} /> */}
+          <Route
+            path="project/:project_id"
+            element={<Project id={userInfo.id} />}
+          >
+            <Route path=":id" element={<GoalModal />} />
           </Route>
         </Routes>
       </Container>

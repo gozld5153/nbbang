@@ -7,6 +7,7 @@ export default function ProjectInfo({
   projectInfo,
   member,
 }) {
+  //기능 clear
   return (
     <Container>
       <ProjectInfomation>
@@ -22,17 +23,7 @@ export default function ProjectInfo({
             />
           </ProjectSettings>
           <ProjectDue>
-            2021.11.11~2021.11.11
-            {`${projectInfo.deadline.startDate
-              .toLocaleString()
-              .split(" ")
-              .join("")
-              .slice(0, 10)} ~ 
-              ${projectInfo.deadline.endDate
-                .toLocaleString()
-                .split(" ")
-                .join("")
-                .slice(0, 10)}`}
+            {projectInfo.deadline}
           </ProjectDue>
           <button onClick={memberModalOpener}>초대버튼</button>
         </ProjectInfoContainer>
