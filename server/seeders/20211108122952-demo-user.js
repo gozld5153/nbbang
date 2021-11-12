@@ -7,7 +7,7 @@ module.exports = {
         username: "demouser",
         password: "1234",
         email: "demouser@nbbang.com",
-        profile: null,
+        profile: "picturepicturepicture",
         createdAt: new Date(),
         updatedAt: new Date(),
       },

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import axios from 'axios'
 
-import MemberMockData from '../../mockData/MemberMockData'
+import MemberMockData from '../../mockdata/MemberMockData'
 
 export default function MemberModal({
   memberModalOpener,

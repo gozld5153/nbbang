@@ -8,7 +8,7 @@ import ProjectInfo from "../components/project/ProjectInfo"
 import ProjectField from "../components/project/ProjectField"
 import ProjectModal from '../components/project/ProjectModal'
 import MemberModal from '../components/project/MemberModal'
-// import projectMockData from '../mockData/ProjectMockData';
+// import projectMockData from '../mockData/ProjectMockdata';
 
 export default function Project({ id }) {
   const params = useParams();

@@ -6,7 +6,7 @@ import axios from 'axios'
 import Goal from './Goal'
 import GoalCreateModal from "./GoalCreateModal";
 
-import GoalMockData from '../../mockData/GoalMockData'
+import GoalMockData from '../../mockdata/GoalMockData'
 
 export default function ProjectField({ myInfo, projectId, params }) {
   const { todo, progress, complete } = GoalMockData.data;

@@ -7,7 +7,7 @@ import { VscProject } from "react-icons/vsc";
 import { useLocation } from "react-router-dom";
 
 import Progressbar from "../components/utils/Progressbar";
-import { InProgress, Done } from "../mockData/MyPageProjectData";
+import { InProgress, Done } from "../mockdata/MyPageProjectData";
 import ProjectPagePagination from "../components/utils/ProjectPagePagination";
 
 const MyPageWrapper = styled.div`

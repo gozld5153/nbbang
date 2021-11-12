@@ -8,12 +8,13 @@ export default function Nav({
   isLogin,
   handleMypage,
   handleOffMypage,
+  isModal,
 }) {
   const navigate = useNavigate();
   const [cookies, setCookie, removeCookie] = useCookies([]);
   const handleLogout = () => {
-    axios //`${process.env.API_URL}/users/signout`
-      .post(`http://localhost:80/users/signout`, null, {
+    axios
+      .post(`${process.env.REACT_APP_API_URL}/users/signout`, null, {
         withCredentials: true,
       })
       .then(() => {
@@ -23,7 +24,7 @@ export default function Nav({
   };
 
   return (
-    <NavBar>
+    <NavBar isModal={isModal}>
       <Logo
         src={`${process.env.PUBLIC_URL}/images/logo.png`}
         onClick={() => {
@@ -60,13 +61,16 @@ const NavBar = styled.div`
   width: 100%;
   display: flex;
   border-bottom: solid 1px #f3f3f4;
+  z-index: ${({ isModal }) => (isModal ? 0 : 1000)};
+  position: fixed;
+  top: 0;
+  background-color: #ffffff;
 `;
 
 const Logo = styled.img`
-  width: 10%;
+  width: 20%;
   height: 100%;
-  object-fit: contain;
-  margin-left: 3rem;
+  object-fit: fill;
   cursor: pointer;
 `;
 

@@ -5,6 +5,7 @@ import Slide from "../components/mainComponents/Slide";
 import image1 from "../components/mainComponents/img/image1.png";
 import image2 from "../components/mainComponents/img/image2.jpg";
 import image3 from "../components/mainComponents/img/image3.png";
+import MainComponent from "../components/mainComponents/MainComponent";
 
 export default function Main({
   isModal,
@@ -15,6 +16,8 @@ export default function Main({
   switchBtn,
   isMypage,
   userInfo,
+  isOn,
+  userData,
 }) {
   return (
     <Container>
@@ -24,13 +27,21 @@ export default function Main({
           handleSignAndLogin={handleSignAndLogin}
           signAndLogin={signAndLogin}
           handleNavbar={handleNavbar}
+          isOn={isOn}
         ></TotalModal>
       ) : (
         <>
           <Slide images={[image1, image2, image3]}></Slide>
           {switchBtn ? (
-            <MiniMypage isMypage={isMypage} userInfo={userInfo}></MiniMypage>
+            <MiniMypage
+              isMypage={isMypage}
+              userInfo={userInfo}
+              userData={userData}
+            ></MiniMypage>
           ) : null}
+          <MainComponent />
+          <MainComponent />
+          <MainComponent />
         </>
       )}
     </Container>
@@ -38,8 +49,12 @@ export default function Main({
 }
 
 const Container = styled.div`
-  width: 100%;
+  margin: 7vh auto 0 auto;
+  width: 80vw;
+  height: 100%;
   height: 93vh;
   position: relative;
-  overflow-x: hidden;
+  /* white-space: nowrap; */
+  /* overflow-x: hidden; */
+  /* border: 1px solid blue; */
 `;

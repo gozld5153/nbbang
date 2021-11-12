@@ -6,7 +6,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/esm/locale";
 
-import getGoalId from '../../mockData/GoalOneMockData'
+import getGoalId from '../../mockdata/GoalOneMockData'
 
 export default function GoalModal(props) {
   const params = useParams();
