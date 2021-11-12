@@ -24,7 +24,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       important: {
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
       },
       deadline: {
         type: Sequelize.STRING,
