@@ -87,6 +87,8 @@ export default function MemberModal({
     setMember([...member, selectMember]);
     memberModalOpener();
   };
+
+
   return (
     <Container isMemberOpen={isMemberOpen}>
       <ModalContainer>
