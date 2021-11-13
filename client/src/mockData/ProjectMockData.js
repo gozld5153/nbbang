@@ -13,10 +13,7 @@ const getProject = {
       description: "",
       total_important: 10,
       progress: 3,
-      deadline: {
-        startDate: '',
-        endDate: '',
-      },
+      deadline: "2021.11.12~2021.11.13",
       member: [
         {
           id: 0,

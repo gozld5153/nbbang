@@ -8,6 +8,7 @@ export default function Nav({
   isLogin,
   handleMypage,
   handleOffMypage,
+  isModal,
 }) {
   const navigate = useNavigate();
   const [cookies, setCookie, removeCookie] = useCookies([]);
@@ -23,7 +24,7 @@ export default function Nav({
   };
 
   return (
-    <NavBar>
+    <NavBar isModal={isModal}>
       <Logo
         src={`${process.env.PUBLIC_URL}/images/logo.png`}
         onClick={() => {
@@ -56,18 +57,19 @@ export default function Nav({
 }
 
 const NavBar = styled.div`
-  height: 100px;
-  width: calc(100% - 220px);
+  height: 6rem;
+  width: 100%;
   display: flex;
-  border: solid 5px black;
-  margin: 0px 100px;
+  border-bottom: 5px solid black;
+  z-index: ${({ isModal }) => (isModal ? 0 : 1000)};
+  top: 0;
+  background-color: #ffffff;
 `;
 
 const Logo = styled.img`
-  width: 190px;
+  width: 20%;
   height: 100%;
-  object-fit: contain;
-  padding: 10px;
+  object-fit: fill;
   cursor: pointer;
 `;
 

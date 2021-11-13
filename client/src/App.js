@@ -11,18 +11,26 @@ import {
 import styled from "styled-components";
 import Nav from "./components/nav_bar/Nav";
 import { InProgress } from "./mockData/MyPageProjectData";
-
 import Project from "./pages/Project";
-// import GoalModal from './components/project/GoalModal'
+import GoalModal from './components/project/GoalModal'
+import { set } from "date-fns/esm";
 
 export default function App() {
   const [userData, setUserData] = useState(InProgress);
-  const [userInfo, setUserInfo] = useState({});
+  const [userInfo, setUserInfo] = useState({
+    id: 1,
+    username: "demouser",
+    email: "demouser@nbbang.com",
+    profile: null,
+    createdAt: "2021-11-09T14:20:45.000Z",
+    updatedAt: "2021-11-09T14:20:45.000Z",
+  });
   const [isModal, setIsModal] = useState(false);
   const [signAndLogin, setSignAndLogin] = useState("");
   const [isLogin, setIsLogin] = useState(false);
   const [isMypage, setIsMypage] = useState(false);
   const [switchBtn, setSwitchBtn] = useState(false);
+  const [isOn, setIsOn] = useState(false);
 
   const handleNavbar = () => {
     setIsLogin(true);
@@ -30,11 +38,15 @@ export default function App() {
   };
 
   const handleSignAndLogin = () => {
-    if (signAndLogin === "login") {
-      setSignAndLogin("signup");
-    } else {
-      setSignAndLogin("login");
-    }
+    setIsOn(true);
+    setTimeout(() => {
+      if (signAndLogin === "login") {
+        setSignAndLogin("signup");
+      } else {
+        setSignAndLogin("login");
+      }
+      setIsOn(false);
+    }, 500);
   };
 
   const handleModal = (e) => {
@@ -47,6 +59,8 @@ export default function App() {
   };
 
   const handleMypage = () => {
+    //axios 요청으로 유저의 프로젝트 정보를 받아 와서 스테이트 관리해준다!
+    console.log(userData);
     setSwitchBtn(true);
     setIsMypage(!isMypage);
   };
@@ -62,63 +76,74 @@ export default function App() {
         withCredentials: true,
       })
       .then((data) => {
+        console.log(data);
         setUserInfo(data.data.data.user_info);
         setIsLogin(true);
       })
-      .catch(() => {
-        setIsLogin(false);
-      });
+      .catch(() => setIsLogin(false));
   }, [isLogin]);
 
   return (
     <Router>
       <Container>
-        <Nav
-          handleModal={handleModal}
-          isLogin={isLogin}
-          handleMypage={handleMypage}
-          handleOffMypage={handleOffMypage}
-        />
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <Main
-                isModal={isModal}
-                handleModal={handleModal}
-                handleSignAndLogin={handleSignAndLogin}
-                signAndLogin={signAndLogin}
-                handleNavbar={handleNavbar}
-                switchBtn={switchBtn}
-                isMypage={isMypage}
-                userInfo={userInfo}
-              />
-            }
+        <Frame>
+          <Nav
+            isModal={isModal}
+            handleModal={handleModal}
+            isLogin={isLogin}
+            handleMypage={handleMypage}
+            handleOffMypage={handleOffMypage}
           />
-          <Route path="mypage" element={<MyPage />}>
-            <Route path="profile" element={<Profile />} />
+          <Routes>
             <Route
-              path="project-inprogress"
+              path="/"
               element={
-                <ProjectInProgress
+                <Main
+                  isModal={isModal}
+                  handleModal={handleModal}
+                  handleSignAndLogin={handleSignAndLogin}
+                  signAndLogin={signAndLogin}
+                  handleNavbar={handleNavbar}
+                  switchBtn={switchBtn}
+                  isMypage={isMypage}
+                  userInfo={userInfo}
+                  isOn={isOn}
                   userData={userData}
-                  setUserData={setUserData}
                 />
               }
             />
-            <Route path="project-done" element={<ProjectDone />} />
-          </Route>
-          <Route path="project" element={<Project />}>
-            {/* <Route path=":a" element={<GoalModal />} /> */}
-          </Route>
-        </Routes>
+            <Route path="mypage" element={<MyPage />}>
+              <Route path="profile" element={<Profile />} />
+              <Route
+                path="project-inprogress"
+                element={<ProjectInProgress />}
+              />
+              <Route path="project-done" element={<ProjectDone />} />
+            </Route>
+            <Route
+              path="project/:project_id"
+              element={<Project id={userInfo.id} />}
+            >
+              <Route path=":id" element={<GoalModal />} />
+            </Route>
+          </Routes>
+        </Frame>
       </Container>
     </Router>
   );
 }
 
 const Container = styled.div`
+  display:flex;
+  justify-content:center;
   width: 100vw;
   min-height: 100vh;
   position: relative;
+  overflow: auto;
+`;
+
+const Frame = styled.div`
+  width: 80vw;
+  border: 5px solid black;
+  margin: 3rem 0 3rem 0;
 `;

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 
-const Signup = ({ handleSignAndLogin }) => {
+const Signup = ({ handleSignAndLogin, isOn }) => {
   const [signupInfo, setSignupInfo] = useState({
     email: "",
     password: "",
@@ -85,7 +85,7 @@ const Signup = ({ handleSignAndLogin }) => {
   };
 
   return (
-    <Container>
+    <Container isOn={isOn}>
       <div>Create Account</div>
 
       <div>
@@ -131,11 +131,15 @@ const Signup = ({ handleSignAndLogin }) => {
 };
 
 const Container = styled.div`
+  flex: 0 0 50%;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  z-index: 0;
+  background-color: #efefef;
+  color: #222222;
   > :nth-child(1) {
     font-weight: bold;
     font-size: 3rem;
@@ -145,6 +149,7 @@ const Container = styled.div`
     background-color: #f3f3f4;
     height: 2rem;
     margin: 0.5rem;
+    z-index: 0;
   }
   & > :nth-child(2) {
     position: relative;

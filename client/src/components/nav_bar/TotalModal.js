@@ -4,30 +4,29 @@ import Login from "./Login";
 import Signup from "./Signup";
 import AsideLogin from "./AsideLogin";
 import AsideSignup from "./AsideSignup";
-import { useState } from "react";
+import image1 from "../mainComponents/img/image1.png";
+
 const TotalModal = ({
   handleModal,
   handleSignAndLogin,
   signAndLogin,
   handleNavbar,
+  isOn,
 }) => {
   return (
     <Modal onClick={handleModal}>
       <ContainerSign onClick={(e) => e.stopPropagation()}>
-        <LoginContainer>
-          {signAndLogin === "signup" ? (
-            <AsideSignup handleSignAndLogin={handleSignAndLogin} />
-          ) : (
-            <Login handleNavbar={handleNavbar} />
-          )}
-        </LoginContainer>
-        <SignupContainer>
-          {signAndLogin === "login" ? (
-            <AsideLogin handleSignAndLogin={handleSignAndLogin} />
-          ) : (
+        {signAndLogin === "signup" ? (
+          <>
+            <AsideSignup handleSignAndLogin={handleSignAndLogin} isOn={isOn} />
             <Signup handleSignAndLogin={handleSignAndLogin} />
-          )}
-        </SignupContainer>
+          </>
+        ) : (
+          <>
+            <Login handleNavbar={handleNavbar} isOn={isOn} />
+            <AsideLogin handleSignAndLogin={handleSignAndLogin} isOn={isOn} />
+          </>
+        )}
       </ContainerSign>
     </Modal>
   );
@@ -48,17 +47,9 @@ const Modal = styled.div`
 const ContainerSign = styled.div`
   width: 70%;
   height: 70%;
-  background-color: #ffffff;
   display: flex;
+  overflow: hidden;
+  border-radius: 20px;
 `;
 
-const LoginContainer = styled.div`
-  background-color: #ffffff;
-  width: 100%;
-`;
-
-const SignupContainer = styled.div`
-  background-color: #ffffff;
-  width: 100%;
-`;
 export default TotalModal;

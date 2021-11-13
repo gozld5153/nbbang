@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 
-const AsideLogin = ({ handleSignAndLogin }) => {
+const AsideLogin = ({ handleSignAndLogin, isOn }) => {
   return (
-    <AsideContainer>
+    <AsideContainer isOn={isOn}>
       <div>Hello, Friend!</div>
       <div>enter your personal details</div>
       <div>and start journey with us</div>
@@ -25,11 +25,17 @@ const SignupBtn = styled.button`
 `;
 
 const AsideContainer = styled.div`
+  flex: 0 0 50%;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  z-index: 1000;
+  color: #ffffff;
+  background-color: #222222;
+  transition: all 0.5s linear;
+  transform: ${(props) => (props.isOn ? "translateX(-100%)" : "")};
   > :nth-child(1) {
     font-size: 3rem;
     margin-bottom: 4rem;
