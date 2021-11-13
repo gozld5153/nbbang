@@ -9,8 +9,18 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      UsersProjects.belongsTo(models.User);
-      UsersProjects.belongsTo(models.Project);
+      UsersProjects.belongsTo(models.User, {
+        foreignKey: {
+          name: "userId",
+        },
+        onDelete: "CASCADE",
+      });
+      UsersProjects.belongsTo(models.Project, {
+        foreignKey: {
+          name: "projectId",
+        },
+        onDelete: "CASCADE",
+      });
     }
   }
   UsersProjects.init(

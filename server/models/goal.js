@@ -9,8 +9,18 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Goal.belongsTo(models.User);
-      Goal.belongsTo(models.Project);
+      Goal.belongsTo(models.User, {
+        foreignKey: {
+          name: "userId",
+        },
+        onDelete: "CASCADE",
+      });
+      Goal.belongsTo(models.Project, {
+        foreignKey: {
+          name: "projectId",
+        },
+        onDelete: "CASCADE",
+      });
       Goal.hasMany(models.Like);
       Goal.hasMany(models.Comment);
       Goal.hasMany(models.File);

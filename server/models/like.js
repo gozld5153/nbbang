@@ -9,15 +9,23 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Like.belongsTo(models.User);
-      Like.belongsTo(models.Project);
-      Like.belongsTo(models.Goal);
+      Like.belongsTo(models.User, {
+        foreignKey: {
+          name: "userId",
+        },
+        onDelete: "CASCADE",
+      });
+      Like.belongsTo(models.Goal, {
+        foreignKey: {
+          name: "GoalId",
+        },
+        onDelete: "CASCADE",
+      });
     }
   }
   Like.init(
     {
       userId: DataTypes.INTEGER,
-      projectId: DataTypes.INTEGER,
       goalId: DataTypes.INTEGER,
       agreement: DataTypes.BOOLEAN,
     },

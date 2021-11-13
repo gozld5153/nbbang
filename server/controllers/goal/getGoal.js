@@ -16,36 +16,38 @@ module.exports = async (req, res) => {
         where: {
           id: req.query.goalId,
         },
+        include: [File, Comment],
       });
-    } catch {
+    } catch (err) {
+      console.log(err);
       return res.status(500).json({ data: null, message: "데이터베이스 오류" });
     }
     // goalInfo에 file 과 comment 내용 다 담아줘야함
-    let fileInfo;
-    let commentInfo;
-    try {
-      fileInfo = await File.findAll({
-        where: {
-          goalId: req.query.goalId,
-        },
-      });
-      commentInfo = await Comment.findAll({
-        where: {
-          goalId: req.query.goalId,
-        },
-      });
-      likeInfo = await Like.findAndCountAll({
-        where: {
-          goalId: req.query.goalId,
-        },
-      });
-      goalInfo.dataValues.likeCount = likeInfo.count;
-      goalInfo.dataValues.files = fileInfo;
-      goalInfo.dataValues.comments = commentInfo;
-    } catch {
-      fileInfo = null;
-      commentInfo = null;
-    }
+    // let fileInfo;
+    // let commentInfo;
+    // try {
+    //   fileInfo = await File.findAll({
+    //     where: {
+    //       goalId: req.query.goalId,
+    //     },
+    //   });
+    //   commentInfo = await Comment.findAll({
+    //     where: {
+    //       goalId: req.query.goalId,
+    //     },
+    //   });
+    //   likeInfo = await Like.findAndCountAll({
+    //     where: {
+    //       goalId: req.query.goalId,
+    //     },
+    //   });
+    //   goalInfo.dataValues.likeCount = likeInfo.count;
+    //   goalInfo.dataValues.files = fileInfo;
+    //   goalInfo.dataValues.comments = commentInfo;
+    // } catch {
+    //   fileInfo = null;
+    //   commentInfo = null;
+    // }
 
     const data = goalInfo;
 

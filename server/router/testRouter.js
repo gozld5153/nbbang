@@ -14,11 +14,16 @@ const test = async (req, res) => {
   // TODO test 용도
   let data;
   try {
-    data = await User.findAll({
+    data = await User.findOne({
+      where: { id: 1 },
       include: {
         model: UsersProjects,
         include: {
           model: Project,
+          include: {
+            model: Goal,
+            include: [File, Comment, Like],
+          },
         },
       },
     });
