@@ -12,13 +12,19 @@ import styled from "styled-components";
 import Nav from "./components/nav_bar/Nav";
 import { InProgress } from "./mockdata/MyPageProjectData";
 import Project from "./pages/Project";
+import GoalModal from './components/project/GoalModal'
 import { set } from "date-fns/esm";
-
-// import GoalModal from './components/project/GoalModal'
 
 export default function App() {
   const [userData, setUserData] = useState(InProgress);
-  const [userInfo, setUserInfo] = useState({});
+  const [userInfo, setUserInfo] = useState({
+    id: 1,
+    username: "demouser",
+    email: "demouser@nbbang.com",
+    profile: null,
+    createdAt: "2021-11-09T14:20:45.000Z",
+    updatedAt: "2021-11-09T14:20:45.000Z",
+  });
   const [isModal, setIsModal] = useState(false);
   const [signAndLogin, setSignAndLogin] = useState("");
   const [isLogin, setIsLogin] = useState(false);
@@ -79,48 +85,64 @@ export default function App() {
   return (
     <Router>
       <Container>
-        <Nav
-          isModal={isModal}
-          handleModal={handleModal}
-          isLogin={isLogin}
-          handleMypage={handleMypage}
-          handleOffMypage={handleOffMypage}
-        />
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <Main
-                isModal={isModal}
-                handleModal={handleModal}
-                handleSignAndLogin={handleSignAndLogin}
-                signAndLogin={signAndLogin}
-                handleNavbar={handleNavbar}
-                switchBtn={switchBtn}
-                isMypage={isMypage}
-                userInfo={userInfo}
-                isOn={isOn}
-                userData={userData}
-              />
-            }
+        <Frame>
+          <Nav
+            isModal={isModal}
+            handleModal={handleModal}
+            isLogin={isLogin}
+            handleMypage={handleMypage}
+            handleOffMypage={handleOffMypage}
           />
-          <Route path="mypage" element={<MyPage />}>
-            <Route path="profile" element={<Profile />} />
-            <Route path="project-inprogress" element={<ProjectInProgress />} />
-            <Route path="project-done" element={<ProjectDone />} />
-          </Route>
-          <Route path="project" element={<Project />}>
-            {/* <Route path=":a" element={<GoalModal />} /> */}
-          </Route>
-        </Routes>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <Main
+                  isModal={isModal}
+                  handleModal={handleModal}
+                  handleSignAndLogin={handleSignAndLogin}
+                  signAndLogin={signAndLogin}
+                  handleNavbar={handleNavbar}
+                  switchBtn={switchBtn}
+                  isMypage={isMypage}
+                  userInfo={userInfo}
+                  isOn={isOn}
+                  userData={userData}
+                />
+              }
+            />
+            <Route path="mypage" element={<MyPage />}>
+              <Route path="profile" element={<Profile />} />
+              <Route
+                path="project-inprogress"
+                element={<ProjectInProgress />}
+              />
+              <Route path="project-done" element={<ProjectDone />} />
+            </Route>
+            <Route
+              path="project/:project_id"
+              element={<Project id={userInfo.id} />}
+            >
+              <Route path=":id" element={<GoalModal />} />
+            </Route>
+          </Routes>
+        </Frame>
       </Container>
     </Router>
   );
 }
 
 const Container = styled.div`
+  display:flex;
+  justify-content:center;
   width: 100vw;
   min-height: 100vh;
   position: relative;
   overflow: auto;
+`;
+
+const Frame = styled.div`
+  width: 80vw;
+  border: 5px solid black;
+  margin: 3rem 0 3rem 0;
 `;

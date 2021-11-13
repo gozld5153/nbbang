@@ -57,12 +57,11 @@ export default function Nav({
 }
 
 const NavBar = styled.div`
-  height: 7vh;
+  height: 6rem;
   width: 100%;
   display: flex;
-  border-bottom: solid 1px #f3f3f4;
+  border-bottom: 5px solid black;
   z-index: ${({ isModal }) => (isModal ? 0 : 1000)};
-  position: fixed;
   top: 0;
   background-color: #ffffff;
 `;

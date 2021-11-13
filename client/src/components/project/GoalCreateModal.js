@@ -1,5 +1,6 @@
 import React, { useState} from "react";
 import styled from "styled-components";
+import axios from 'axios'
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -11,7 +12,10 @@ export default function GoalCreateModal({
   createModalOpener,
   isTodo,
   setIsTodo,
+  projectId,
 }) {
+  // 기능 clear
+  let today = new Date();
   const [goalData, setGoalData] = useState({
     id: null,
     user_id: myInfo.id,
@@ -19,31 +23,89 @@ export default function GoalCreateModal({
     description: "",
     state: "Todo",
     important: 1,
-    deadline: {
-      startDate: new Date(),
-      endDate: new Date(),
-    },
+    deadline: `${today.toLocaleString().split(" ").join("").slice(0, 10)} ~ 
+              ${today.toLocaleString().split(" ").join("").slice(0, 10)}`,
     agreement: 0,
-    file: [],
-    coments: [],
+    file: 0,
+    comments: 0,
   });
-  const important = [["사소",1],["보통",2],["중요",3]]
-
+  const [selectDate, setSelectDate] = useState({
+    startDate: new Date(),
+    endDate: new Date(),
+  });
+  const important = [
+    ["사소", 1],
+    ["보통", 2],
+    ["중요", 3],
+  ];
 
   const goalDataHandler = (key, value) => {
     let newObject = goalData;
     newObject[key] = value;
     setGoalData({ ...newObject });
+  };
+
+  const modalCloser = () => {
+    createModalOpener();
+    setGoalData({
+      id: null,
+      user_id: myInfo.id,
+      goal_name: "",
+      description: "",
+      state: "Todo",
+      important: 1,
+      deadline: `${today.toLocaleString().split(" ").join("").slice(0, 10)} ~ 
+              ${today.toLocaleString().split(" ").join("").slice(0, 10)}`,
+      agreement: 0,
+      file: [],
+      comments: [],
+    });
+    setSelectDate({ startDate: new Date(), endDate: new Date() });
+
   }
 
   const todoAdder = () => {
-    setIsTodo([...isTodo, goalData]);
-    createModalOpener()
-  }
+    axios.post(
+      `http://server.nbbang.ml/goal`,
+      {
+        user_id: myInfo.id,
+        project_id: projectId,
+        goal_name: goalData.goal_name,
+        description: goalData.description,
+        state: "todo",
+        important: goalData.important,
+        deadline: goalData.deadline,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      }
+    ).then((res) => {
+      goalData.id = res.data.data.id;
+      setIsTodo([...isTodo, goalData]);
+      createModalOpener();
+      setGoalData({
+        id: null,
+        user_id: myInfo.id,
+        goal_name: "",
+        description: "",
+        state: "Todo",
+        important: 1,
+        deadline: `${today.toLocaleString().split(" ").join("").slice(0, 10)} ~ 
+              ${today.toLocaleString().split(" ").join("").slice(0, 10)}`,
+        agreement: 0,
+        file: 0,
+        comments: 0,
+      });
+      setSelectDate({ startDate: new Date(), endDate: new Date() });
+    });
+  };
   return (
     <Container isCreateOpen={isCreateOpen}>
       <ModalContainer>
-        <button onClick={createModalOpener}>close</button>
+        <button onClick={modalCloser}>close</button>
         미션이름
         <input
           onChange={(e) => goalDataHandler("goal_name", e.target.value)}
@@ -53,44 +115,54 @@ export default function GoalCreateModal({
         수행 기간
         <Daypicker>
           <StyleDatePicker
-            selected={goalData.deadline.startDate}
+            selected={selectDate.startDate}
             dateFormat="yyyy-MM-dd"
             minDate={new Date()}
             selectsStart
-            endDate={goalData.deadline.endDate}
+            endDate={selectDate.endDate}
             placeholderText="From"
             showPopperArrow={false}
             locale={ko}
             monthsShown={2}
-            onChange={(date) =>
-              goalDataHandler("deadline", {
-                ...goalData.deadline,
-                startDate: date,
-              })
-            }
+            onChange={(date) => {
+              setSelectDate({ ...selectDate, startDate: date });
+              goalDataHandler(
+                "deadline",
+                date.toLocaleString().split(" ").join("").slice(0, 10) +
+                  "~" +
+                  goalData.deadline.split("~")[1]
+              );
+            }}
           />
           <StyleDatePicker
-            selected={goalData.deadline.endDate}
+            selected={selectDate.endDate}
             dateFormat="yyyy-MM-dd"
             minDate={new Date()}
             selectsEnd
-            startDate={goalData.deadline.startDate}
+            startDate={selectDate.startDate}
             placeholderText="To"
             showPopperArrow={false}
             monthsShown={2}
-            onChange={(date) =>
-              goalDataHandler("deadline", {
-                ...goalData.deadline,
-                endDate: date,
-              })
-            }
+            onChange={(date) => {
+              setSelectDate({ ...selectDate, endDate: date });
+              goalDataHandler(
+                "deadline",
+                goalData.deadline.split("~")[0] +
+                  "~" +
+                  date.toLocaleString().split(" ").join("").slice(0, 10)
+              );
+            }}
           />
         </Daypicker>
         기여도
         <ul>
-          <li>{goalData.important}</li>
+          <li>
+            {important.filter((el) => el[1] === goalData.important)[0][0]}
+          </li>
           {important.map((el) => (
-            <li onClick={() => goalDataHandler("important", el[1])} key={el[1]}>{el[0]}</li>
+            <li onClick={() => goalDataHandler("important", el[1])} key={el[1]}>
+              {el[0]}
+            </li>
           ))}
         </ul>
         설명
