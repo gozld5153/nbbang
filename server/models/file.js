@@ -9,9 +9,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      // models.File.belongsTo(models.User, { foreignKey: "user_id" });
-      // models.File.belongsTo(models.Project, { foreignKey: "project_id" });
-      // models.File.belongsTo(models.Goal, { foreignKey: "goal_id" });
+      File.belongsTo(models.User);
+      File.belongsTo(models.Project);
+      File.belongsTo(models.Goal);
     }
   }
   File.init(

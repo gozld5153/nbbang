@@ -9,11 +9,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      // models.Goal.belongsTo(models.User, { foreignKey: "user_id" });
-      // models.Goal.belongsTo(models.Project, { foreignKey: "project_id" });
-      // models.Goal.hasMany(models.Like);
-      // models.Goal.hasMany(models.Comment);
-      // models.Goal.hasMany(models.File);
+      Goal.belongsTo(models.User);
+      Goal.belongsTo(models.Project);
+      Goal.hasMany(models.Like);
+      Goal.hasMany(models.Comment);
+      Goal.hasMany(models.File);
     }
   }
   Goal.init(

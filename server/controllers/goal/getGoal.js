@@ -24,30 +24,25 @@ module.exports = async (req, res) => {
     let fileInfo;
     let commentInfo;
     try {
-      console.log(1);
       fileInfo = await File.findAll({
         where: {
           goalId: req.query.goalId,
         },
       });
-      console.log(2);
       commentInfo = await Comment.findAll({
         where: {
           goalId: req.query.goalId,
         },
       });
-      console.log(3);
       likeInfo = await Like.findAndCountAll({
         where: {
           goalId: req.query.goalId,
         },
       });
-      console.log(likeInfo);
       goalInfo.dataValues.likeCount = likeInfo.count;
       goalInfo.dataValues.files = fileInfo;
       goalInfo.dataValues.comments = commentInfo;
-    } catch (err) {
-      console.log(err);
+    } catch {
       fileInfo = null;
       commentInfo = null;
     }
@@ -79,7 +74,8 @@ module.exports = async (req, res) => {
         },
       });
     }
-  } catch {
+  } catch (err) {
+    console.log(err);
     return res.status(500).json({ data: null, message: "데이터베이스 오류" });
   }
 
