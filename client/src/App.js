@@ -142,7 +142,7 @@ const Container = styled.div`
 `;
 
 const Frame = styled.div`
-  width: 80vw;
+  width: 88vw;
   border: 5px solid black;
-  margin: 3rem 0 3rem 0;
+  margin: 5rem 0 5rem 0;
 `;
