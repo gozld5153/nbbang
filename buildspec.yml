@@ -3,10 +3,7 @@ version: 0.2
 phases:
   pre_build:
     commands:
-      - ls
       - cd client
-      - ls
-      - echo $API_URL
       - npm install
   build:
     commands:

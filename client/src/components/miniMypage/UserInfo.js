@@ -6,7 +6,7 @@ const UserInfo = ({ userInfo }) => {
   const navigate = useNavigate();
   return (
     <Container>
-      <div onClick={() => navigate("/mypage")}>
+      <div onClick={() => navigate("/mypage/profile")}>
         <img src={`${process.env.PUBLIC_URL}/images/bbang.png`}></img>
       </div>
       <div>

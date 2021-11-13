@@ -56,17 +56,18 @@ export default function Nav({
 }
 
 const NavBar = styled.div`
-  height: 7vh;
-  width: 100%;
+  height: 100px;
+  width: calc(100% - 220px);
   display: flex;
-  border-bottom: solid 1px #f3f3f4;
+  border: solid 5px black;
+  margin: 0px 100px;
 `;
 
 const Logo = styled.img`
-  width: 10%;
+  width: 190px;
   height: 100%;
   object-fit: contain;
-  margin-left: 3rem;
+  padding: 10px;
   cursor: pointer;
 `;
 
@@ -75,19 +76,14 @@ const ContainerBtn = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  padding-right: 8rem;
 `;
 
 const LoginBtn = styled.button`
-  background-color: #f3f3f4;
-  margin-right: 2rem;
-  height: 2rem;
+  height: 100%;
+  font-family: "Anton", sans-serif;
+  font-size: 1.5rem;
+  border-left: 2px solid black;
   width: ${(props) => {
-    return props.isLogin ? "6rem" : "4rem";
+    return props.isLogin ? "6rem" : "150px";
   }};
-  border-radius: 0.5rem;
-  &:hover {
-    background-color: #e1e1e1;
-    font-weight: bold;
-  }
 `;
