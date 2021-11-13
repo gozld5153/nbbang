@@ -10,7 +10,7 @@ import {
 } from "./pages/MyPage";
 import styled from "styled-components";
 import Nav from "./components/nav_bar/Nav";
-import { InProgress } from "./mockdata/MyPageProjectData";
+import { InProgress } from "./mockData/MyPageProjectData";
 
 import Project from "./pages/Project";
 // import GoalModal from './components/project/GoalModal'

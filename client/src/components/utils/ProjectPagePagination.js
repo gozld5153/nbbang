@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styled, { css } from "styled-components";
-import { InProgress, InProgress2 } from "../../mockdata/MyPageProjectData";
+import { InProgress, InProgress2 } from "../../mockData/MyPageProjectData";
 const Pagination = styled.div`
   display: flex;
   margin: 40px 600px; ;
