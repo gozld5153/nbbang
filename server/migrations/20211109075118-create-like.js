@@ -11,6 +11,9 @@ module.exports = {
       user_id: {
         type: Sequelize.INTEGER,
       },
+      project_id: {
+        type: Sequelize.INTEGER,
+      },
       goal_id: {
         type: Sequelize.INTEGER,
       },
@@ -34,6 +37,17 @@ module.exports = {
       name: "Likes_fkey_from_Users",
       references: {
         table: "Users",
+        field: "id",
+      },
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    });
+    await queryInterface.addConstraint("Likes", {
+      fields: ["project_id"],
+      type: "foreign key",
+      name: "Likes_fkey_from_Projects",
+      references: {
+        table: "Projects",
         field: "id",
       },
       onDelete: "cascade",

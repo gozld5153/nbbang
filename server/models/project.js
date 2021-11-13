@@ -9,6 +9,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      // models.Project.hasMany(models.Users_Projects);
+      // models.Project.hasMany(models.Goal);
+      // models.Project.hasMany(models.Like);
+      // models.Project.hasMany(models.Comment);
+      // models.Project.hasMany(models.File);
     }
   }
   Project.init(
@@ -18,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       description: DataTypes.STRING,
       presentation: DataTypes.STRING,
       state: DataTypes.STRING,
-      progress: DataTypes.STRING,
+      deadline: DataTypes.STRING,
     },
     {
       sequelize,

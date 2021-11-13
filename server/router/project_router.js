@@ -1,16 +1,19 @@
-const { project_current, get_project } = require("../controllers");
+const {
+  get_project,
+  post_project,
+  delete_project,
+  update_project,
+  project_list,
+  project_member,
+} = require("../controllers");
 const express = require("express");
 const router = express.Router();
 
-router.get("/project/:project_id", get_project);
-// router.get("/current/:id", project_current);
-// app.get("/project/current/:id", controllers.project_current);
-// app.get("/project/complete/:id", controllers.complete_project);
-// app.delete("/project", controllers.delete_project);
-
-// app.post("/project", controllers.make_new_project);
-// app.delete("/project/:project_id", controllers.delete_project);
-// app.put("/project/:project_id", controllers.update_project);
-// app.get("/project/users", controllers.get_project_user);
+router.get("/:project_id/:user_id", get_project);
+router.post("/", post_project);
+router.delete("/:project_id", delete_project);
+router.put("/", update_project);
+router.get("/:user_id", project_list);
+router.get("/", project_member);
 
 module.exports = router;
