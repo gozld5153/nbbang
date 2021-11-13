@@ -10,9 +10,9 @@ import {
 } from "./pages/MyPage";
 import styled from "styled-components";
 import Nav from "./components/nav_bar/Nav";
-import { InProgress } from "./mockData/MyPageProjectData";
+import { InProgress } from "./mockdata/MyPageProjectData";
 import Project from "./pages/Project";
-import GoalModal from './components/project/GoalModal'
+import GoalModal from "./components/project/GoalModal";
 import { set } from "date-fns/esm";
 
 export default function App() {
@@ -116,7 +116,12 @@ export default function App() {
               <Route path="profile" element={<Profile />} />
               <Route
                 path="project-inprogress"
-                element={<ProjectInProgress />}
+                element={
+                  <ProjectInProgress
+                    userData={userData}
+                    setUserData={setUserData}
+                  />
+                }
               />
               <Route path="project-done" element={<ProjectDone />} />
             </Route>
@@ -134,16 +139,17 @@ export default function App() {
 }
 
 const Container = styled.div`
-  display:flex;
-  justify-content:center;
+  display: flex;
+  justify-content: center;
   width: 100vw;
   min-height: 100vh;
   position: relative;
   overflow: auto;
+  background-color: #f6f2f1;
 `;
 
 const Frame = styled.div`
-  width: 80vw;
+  width: 88vw;
   border: 5px solid black;
-  margin: 3rem 0 3rem 0;
+  margin: 5rem 0 5rem 0;
 `;

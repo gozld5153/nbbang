@@ -1,9 +1,9 @@
 import { useState } from "react";
 import styled, { css } from "styled-components";
-import { InProgress, InProgress2 } from "../../mockData/MyPageProjectData";
+import { InProgress, InProgress2 } from "../../mockdata/MyPageProjectData";
 const Pagination = styled.div`
   display: flex;
-  margin: 40px 600px; ;
+  margin: 0 550px;
 `;
 
 const Button = styled.button`
@@ -11,14 +11,13 @@ const Button = styled.button`
   height: 50px;
   color: gray;
   font-size: 1.6rem;
+  margin: 0 5px;
 `;
 
 const Page = styled.div`
   background: #dedede;
-  border-radius: 50%;
   width: 50px;
   height: 50px;
-  margin: 0 5px;
   font-size: 1.3rem;
   text-align: center;
   line-height: 2.3;
@@ -26,7 +25,7 @@ const Page = styled.div`
   ${(props) =>
     props.page === props.p &&
     css`
-      background: orange;
+      background: black;
       color: white;
       font-weight: 600;
     `}

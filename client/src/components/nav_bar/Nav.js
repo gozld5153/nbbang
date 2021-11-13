@@ -63,11 +63,10 @@ const NavBar = styled.div`
   border-bottom: 5px solid black;
   z-index: ${({ isModal }) => (isModal ? 0 : 1000)};
   top: 0;
-  background-color: #ffffff;
 `;
 
 const Logo = styled.img`
-  width: 20%;
+  width: 13%;
   height: 100%;
   object-fit: fill;
   cursor: pointer;
