@@ -6,7 +6,6 @@ const test = async (req, res) => {
   // TODO test 용도
   let data;
   try {
-    User.findAll({});
     data = await User.findAll({
       include: [UsersProjects],
     });
