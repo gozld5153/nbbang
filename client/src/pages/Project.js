@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { useNavigate, useParams } from "react-router-dom";
+import axios from 'axios'
+
 import ProjectInfo from "../components/project/ProjectInfo"
 import ProjectField from "../components/project/ProjectField"
 import ProjectModal from '../components/project/ProjectModal'
 import MemberModal from '../components/project/MemberModal'
-import projectMockData from '../mockData/ProjectMockData';
+// import projectMockData from '../mockData/ProjectMockdata';
 
-export default function Project() {
-  const [isProjectOpen, setIsProjectOpen] = useState(false)
+export default function Project({ id }) {
+  const params = useParams();
+
+  const [isProjectOpen, setIsProjectOpen] = useState(false);
   const [isMemberOpen, setIsMemberOpen] = useState(false);
-
-  const { user_data, project_info } = projectMockData.data
   const [myInfo, setMyInfo] = useState({
-    id: 0,
+    id: id,
     username: "",
     like_id: [],
   });
@@ -22,20 +25,18 @@ export default function Project() {
     captain_id: 0,
     state: "progress",
     total_important: 0,
-    progress: 0,
-    deadline: {
-      startDate: new Date(),
-      endDate: new Date(),
-    },
+    description:'',
+    important: 0,
+    deadline: 0,
   });
   const [member, setMember] = useState([
     {
       id: 0,
       username: "",
       email: "",
-      profile:"",
+      profile: "",
       color: "",
-      progress: 0,
+      important: 0,
     },
   ]);
 
@@ -46,49 +47,66 @@ export default function Project() {
   };
 
   useEffect(() => {
-    setMyInfo(user_data);
-    setProjectInfo({
-      id: project_info.id,
-      project_name: project_info.project_name,
-      captain_id: project_info.captain_id,
-      state: project_info.state,
-      description: project_info.description,
-      total_important: project_info.total_important,
-      progress: project_info.progress,
-      deadline: project_info.deadline,
-    });
-    setMember([...project_info.member]);
-  }, [myInfo]);
+    axios
+      .get(`http://server.nbbang.ml/project/${params.project_id}/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      })
+      .then((res) => {
+        setMyInfo(res.data.data.user_info);
+        setProjectInfo({
+          id: res.data.data.project_info.id,
+          project_name: res.data.data.project_info.project_name,
+          captain_id: res.data.data.project_info.captain_id,
+          state: res.data.data.project_info.state,
+          description: res.data.data.project_info.description,
+          total_important: 10,
+          important: res.data.data.project_info.important,
+          deadline: '2021.11.12~2021.11.13',
+        });
+        setMember([...res.data.data.project_info.members]);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   const projectModalOpener = () => {
-    setIsProjectOpen(!isProjectOpen)
-  }
+    setIsProjectOpen(!isProjectOpen);
+  };
   const memberModalOpener = () => {
     setIsMemberOpen(!isMemberOpen);
   };
   return (
     <Container>
-      <ProjectInfo
-        projectModalOpener={projectModalOpener}
-        memberModalOpener={memberModalOpener}
-        myInfo={myInfo}
-        projectInfo={projectInfo}
-        member={member}
-      />
-      <ProjectField myInfo={myInfo} />
-      <ProjectModal
-        isProjectOpen={isProjectOpen}
-        projectModalOpener={projectModalOpener}
-        member={member}
-        projectInfo={projectInfo}
-        DataHandler={DataHandler}
-      />
-      <MemberModal
-        isMemberOpen={isMemberOpen}
-        memberModalOpener={memberModalOpener}
-        member={member}
-        setMember={setMember}
-      />
+      <ProjectFrame>
+        <ProjectInfo
+          projectModalOpener={projectModalOpener}
+          memberModalOpener={memberModalOpener}
+          myInfo={myInfo}
+          projectInfo={projectInfo}
+          member={member}
+        />
+        <ProjectField
+          myInfo={myInfo}
+          projectId={projectInfo.id}
+          params={params}
+        />
+        <ProjectModal
+          isProjectOpen={isProjectOpen}
+          projectModalOpener={projectModalOpener}
+          member={member}
+          projectInfo={projectInfo}
+          DataHandler={DataHandler}
+        />
+        <MemberModal
+          isMemberOpen={isMemberOpen}
+          memberModalOpener={memberModalOpener}
+          member={member}
+          projectInfo={projectInfo}
+          setMember={setMember}
+        />
+      </ProjectFrame>
     </Container>
   );
 }
@@ -96,6 +114,10 @@ export default function Project() {
 const Container = styled.div`
   display:flex;
   flex-direction:column;
-  width:100vw;
+  width:93vw;
+  margin-top:7vh;
   min-height: 93vh;
+`;
+
+const ProjectFrame = styled.div`
 `;

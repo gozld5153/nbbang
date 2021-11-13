@@ -2,18 +2,19 @@ import React from "react";
 import styled from "styled-components";
 
 export default function Goal({ goalInfo }) {
+  // 기능 클리어
   const {
     goal_name,
     important,
     deadline,
     agreement,
     file,
-    coments,
+    comments,
     id,
     user_id,
   } = goalInfo;
 
-  const importantText = ['사소','보통','중요']
+  const importantText = ['사소', '보통', '중요']
 
   return (
     <Container>
@@ -27,23 +28,14 @@ export default function Goal({ goalInfo }) {
           </IconContainer>
           <IconContainer>
             <Icon src={`${process.env.PUBLIC_URL}/images/comments.png`} />
-            {coments.length}
+            {comments}
           </IconContainer>
           <IconContainer>
             <Icon src={`${process.env.PUBLIC_URL}/images/clip.png`} />
-            {file.length}
+            {file}
           </IconContainer>
         </ButtonContainer>
-        <Deadline>{`${deadline.startDate
-          .toLocaleString()
-          .split(" ")
-          .join("")
-          .slice(0, 10)} ~ 
-              ${deadline.endDate
-                .toLocaleString()
-                .split(" ")
-                .join("")
-                .slice(0, 10)}`}</Deadline>
+        <Deadline>{deadline}</Deadline>
       </DetailContainer>
     </Container>
   );

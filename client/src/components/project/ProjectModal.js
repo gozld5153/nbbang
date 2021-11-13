@@ -1,5 +1,6 @@
-import React from "react";
+import React, {useState} from "react";
 import styled from "styled-components";
+import axios from 'axios';
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -12,7 +13,57 @@ export default function ProjectModal({
   projectInfo,
   DataHandler,
 }) {
-  const captain = member.filter((el) => el.id === projectInfo.captain_id)[0].username;
+  // 기능 clear
+  const defaultStartDate = () => {
+    if (projectInfo.deadline) {
+      return new Date(projectInfo.deadline.split("~")[0].replaceAll('.','-'))
+    }
+    return null
+  }
+  const defaultendDate = () => {
+    if (projectInfo.deadline) {
+      return new Date(projectInfo.deadline.split("~")[1].replaceAll(".", "-"));
+    }
+    return null
+  };
+  const selectcap = () => {
+    if (member[0].id) {
+      return member.filter((el) => el.id === projectInfo.captain_id)[0].username;
+    }
+    return null
+  }
+  const captain = selectcap();
+  const [selectDate, setSelectDate] = useState({
+    startDate: defaultStartDate(),
+    endDate: defaultendDate(),
+  });
+
+  const closeHandler = () => {
+    axios
+      .put(
+        `http://server.nbbang.ml/project`,
+        {
+          id: projectInfo.id,
+          project_name: projectInfo.project_name,
+          captain_id: projectInfo.captain_id,
+          description: projectInfo.description,
+          state: projectInfo.state,
+          deadline: projectInfo.deadline,
+          member: member,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      )
+      .then((res) => {
+        if (res.data.message === 'ok') {
+          projectModalOpener();
+        }
+      });
+  }
   return (
     <Container isProjectOpen={isProjectOpen}>
       <ModalContainer>
@@ -25,37 +76,43 @@ export default function ProjectModal({
         프로젝트 마감 기한 변경
         <Daypicker>
           <StyleDatePicker
-            selected={projectInfo.deadline.startDate}
+            selected={selectDate.startDate}
             dateFormat="yyyy-MM-dd"
             minDate={new Date()}
             selectsStart
-            endDate={projectInfo.deadline.endDate}
+            endDate={selectDate.endDate}
             placeholderText="From"
             showPopperArrow={false}
             locale={ko}
             monthsShown={2}
-            onChange={(date) =>
-              DataHandler("deadline", {
-                ...projectInfo.deadline,
-                startDate: date,
-              })
-            }
+            onChange={(date) => {
+              setSelectDate({ ...selectDate, startDate: date });
+              DataHandler(
+                "deadline",
+                date.toLocaleString().split(" ").join("").slice(0, 10) +
+                  "~" +
+                  projectInfo.deadline.split("~")[1]
+              );
+            }}
           />
           <StyleDatePicker
-            selected={projectInfo.deadline.endDate}
+            selected={selectDate.endDate}
             dateFormat="yyyy-MM-dd"
             minDate={new Date()}
             selectsEnd
-            startDate={projectInfo.deadline.startDate}
+            startDate={selectDate.startDate}
             placeholderText="To"
             showPopperArrow={false}
             monthsShown={2}
-            onChange={(date) =>
-              DataHandler("deadline", {
-                ...projectInfo.deadline,
-                endDate: date,
-              })
-            }
+            onChange={(date) => {
+              setSelectDate({ ...selectDate, endDate: date });
+              DataHandler(
+                "deadline",
+                projectInfo.deadline.split("~")[0] +
+                  "~" +
+                  date.toLocaleString().split(" ").join("").slice(0, 10)
+              );
+            }}
           />
         </Daypicker>
         팀장 변경
@@ -67,7 +124,9 @@ export default function ProjectModal({
             </li>
           ))}
         </ul>
-        <div onClick={projectModalOpener}>close</div>
+        설명 변경
+        <textarea onClick={(e) => DataHandler("description", e.target.value)}/>
+        <div onClick={closeHandler}>close</div>
       </ModalContainer>
     </Container>
   );
