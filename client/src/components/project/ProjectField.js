@@ -58,7 +58,13 @@ export default function ProjectField({ myInfo, projectId, params }) {
             <div
               onClick={() =>
                 navigate(`./${goal.id}`, {
-                  state: { a:'b' },
+                  state: {
+                    myInfo: {
+                      id: myInfo.id,
+                      username: myInfo.username,
+                      like_id: myInfo.like_id
+                    }
+                  },
                   replace: false,
                 })
               }

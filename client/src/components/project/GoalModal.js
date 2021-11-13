@@ -1,24 +1,31 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/esm/locale";
 
+
 import getGoalId from '../../mockdata/GoalOneMockData'
 
-export default function GoalModal(props) {
+export default function GoalModal() {
   const params = useParams();
   const navigate = useNavigate();
-
-  const [goal, setGoal] = useState(getGoalId);
-  const [isEditing, setIsEditing] = useState(false);
+  const location = useLocation();
   const important = [
     ["사소", 1],
     ["보통", 2],
     ["중요", 3],
   ];
+
+  const [goal, setGoal] = useState(getGoalId);
+  const [isEditing, setIsEditing] = useState(false);
+  const [comment, setComment] = useState('')
+  const [selectDate, setSelectDate] = useState({
+    startDate: new Date(),
+    endDate: new Date(),
+  });
 
   const DataHandler = (key, value) => {
     let newObject = goal;
@@ -29,7 +36,24 @@ export default function GoalModal(props) {
   const onEdit = () => {
     setIsEditing(!isEditing);
   }
-console.log(props);
+
+  const commentHandler = (e) => {
+    if (e.key === "Enter" && comment) {
+      DataHandler("comments", [
+        ...goal.comments,
+        {
+          projectId: params.project_id,
+          userId: location.state.myInfo.id,
+          username: location.state.myInfo.username,
+          description: e.target.value,
+          created_at: new Date(),
+        },
+      ]);
+      setComment("");
+    }
+  }
+  console.log(params)
+  console.log(location.state);
   return (
     <Container>
       <ModalContainer>
@@ -50,51 +74,51 @@ console.log(props);
         기간
         <NoEditContainer isEditing={isEditing}>{goal.deadline}</NoEditContainer>
         <EditContainer isEditing={isEditing}>
-          {/* <Daypicker>
+          <Daypicker>
             <StyleDatePicker
-              selected={goal.startDate}
+              selected={selectDate.startDate}
               dateFormat="yyyy-MM-dd"
               minDate={new Date()}
               selectsStart
-              endDate={goal.endDate}
+              endDate={selectDate.endDate}
               placeholderText="From"
               showPopperArrow={false}
               locale={ko}
               monthsShown={2}
               onChange={(date) => {
-                setGoal({ ...goal, startDate: date });
+                setSelectDate({ ...selectDate, startDate: date });
                 DataHandler(
                   "deadline",
                   date.toLocaleString().split(" ").join("").slice(0, 10) +
                     "~" +
-                    projectInfo.deadline.split("~")[1]
+                    goal.deadline.split("~")[1]
                 );
               }}
             />
             <StyleDatePicker
-              selected={goal.endDate}
+              selected={selectDate.endDate}
               dateFormat="yyyy-MM-dd"
               minDate={new Date()}
               selectsEnd
-              startDate={goal.startDate}
+              startDate={selectDate.startDate}
               placeholderText="To"
               showPopperArrow={false}
               monthsShown={2}
               onChange={(date) => {
-                setGoal({ ...goal, endDate: date });
+                setSelectDate({ ...selectDate, endDate: date });
                 DataHandler(
                   "deadline",
-                  projectInfo.deadline.split("~")[0] +
+                  goal.deadline.split("~")[0] +
                     "~" +
                     date.toLocaleString().split(" ").join("").slice(0, 10)
                 );
               }}
             />
-          </Daypicker> */}
+          </Daypicker>
         </EditContainer>
         중요도
         <NoEditContainer isEditing={isEditing}>
-          {goal.important}
+          {important.filter((el) => goal.important === el[1])[0][0]}
         </NoEditContainer>
         <EditContainer isEditing={isEditing}>
           <ul>
@@ -127,14 +151,21 @@ console.log(props);
           <CommentContainer key={el.id}>
             <div>{el.username}</div>
             <div>{el.description}</div>
-            <div>{`${el.created_at
-              .toLocaleString()
-              .split(" ")
-              .join("")
-              .slice(0, 10)}`}</div>
+            <div>
+              {`${el.created_at
+                .toLocaleString()
+                .split(" ")
+                .join("")
+                .slice(0, 10)}`}
+            </div>
           </CommentContainer>
         ))}
-        <input type="text" />
+        <input
+          type="text"
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+          onKeyPress={commentHandler}
+        />
         <EditContainer isEditing={isEditing}>
           <button>submit</button>
         </EditContainer>

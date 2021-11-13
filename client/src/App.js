@@ -85,51 +85,64 @@ export default function App() {
   return (
     <Router>
       <Container>
-        <Nav
-          isModal={isModal}
-          handleModal={handleModal}
-          isLogin={isLogin}
-          handleMypage={handleMypage}
-          handleOffMypage={handleOffMypage}
-        />
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <Main
-                isModal={isModal}
-                handleModal={handleModal}
-                handleSignAndLogin={handleSignAndLogin}
-                signAndLogin={signAndLogin}
-                handleNavbar={handleNavbar}
-                switchBtn={switchBtn}
-                isMypage={isMypage}
-                userInfo={userInfo}
-                isOn={isOn}
-                userData={userData}
-              />
-            }
+        <Frame>
+          <Nav
+            isModal={isModal}
+            handleModal={handleModal}
+            isLogin={isLogin}
+            handleMypage={handleMypage}
+            handleOffMypage={handleOffMypage}
           />
-          <Route path="mypage" element={<MyPage />}>
-            <Route path="profile" element={<Profile />} />
-            <Route path="project-inprogress" element={<ProjectInProgress />} />
-            <Route path="project-done" element={<ProjectDone />} />
-          </Route>
-          <Route
-            path="project/:project_id"
-            element={<Project id={userInfo.id} />}
-          >
-            <Route path=":id" element={<GoalModal />} />
-          </Route>
-        </Routes>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <Main
+                  isModal={isModal}
+                  handleModal={handleModal}
+                  handleSignAndLogin={handleSignAndLogin}
+                  signAndLogin={signAndLogin}
+                  handleNavbar={handleNavbar}
+                  switchBtn={switchBtn}
+                  isMypage={isMypage}
+                  userInfo={userInfo}
+                  isOn={isOn}
+                  userData={userData}
+                />
+              }
+            />
+            <Route path="mypage" element={<MyPage />}>
+              <Route path="profile" element={<Profile />} />
+              <Route
+                path="project-inprogress"
+                element={<ProjectInProgress />}
+              />
+              <Route path="project-done" element={<ProjectDone />} />
+            </Route>
+            <Route
+              path="project/:project_id"
+              element={<Project id={userInfo.id} />}
+            >
+              <Route path=":id" element={<GoalModal />} />
+            </Route>
+          </Routes>
+        </Frame>
       </Container>
     </Router>
   );
 }
 
 const Container = styled.div`
+  display:flex;
+  justify-content:center;
   width: 100vw;
   min-height: 100vh;
   position: relative;
   overflow: auto;
+`;
+
+const Frame = styled.div`
+  width: 80vw;
+  border: 5px solid black;
+  margin: 3rem 0 3rem 0;
 `;

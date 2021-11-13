@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from 'axios'
 
-
 import ProjectInfo from "../components/project/ProjectInfo"
 import ProjectField from "../components/project/ProjectField"
 import ProjectModal from '../components/project/ProjectModal'
@@ -12,7 +11,6 @@ import MemberModal from '../components/project/MemberModal'
 
 export default function Project({ id }) {
   const params = useParams();
-  const navigate = useNavigate();
 
   const [isProjectOpen, setIsProjectOpen] = useState(false);
   const [isMemberOpen, setIsMemberOpen] = useState(false);
@@ -81,32 +79,34 @@ export default function Project({ id }) {
   };
   return (
     <Container>
-      <ProjectInfo
-        projectModalOpener={projectModalOpener}
-        memberModalOpener={memberModalOpener}
-        myInfo={myInfo}
-        projectInfo={projectInfo}
-        member={member}
-      />
-      <ProjectField
-        myInfo={myInfo}
-        projectId={projectInfo.id}
-        params={params}
-      />
-      <ProjectModal
-        isProjectOpen={isProjectOpen}
-        projectModalOpener={projectModalOpener}
-        member={member}
-        projectInfo={projectInfo}
-        DataHandler={DataHandler}
-      />
-      <MemberModal
-        isMemberOpen={isMemberOpen}
-        memberModalOpener={memberModalOpener}
-        member={member}
-        projectInfo={projectInfo}
-        setMember={setMember}
-      />
+      <ProjectFrame>
+        <ProjectInfo
+          projectModalOpener={projectModalOpener}
+          memberModalOpener={memberModalOpener}
+          myInfo={myInfo}
+          projectInfo={projectInfo}
+          member={member}
+        />
+        <ProjectField
+          myInfo={myInfo}
+          projectId={projectInfo.id}
+          params={params}
+        />
+        <ProjectModal
+          isProjectOpen={isProjectOpen}
+          projectModalOpener={projectModalOpener}
+          member={member}
+          projectInfo={projectInfo}
+          DataHandler={DataHandler}
+        />
+        <MemberModal
+          isMemberOpen={isMemberOpen}
+          memberModalOpener={memberModalOpener}
+          member={member}
+          projectInfo={projectInfo}
+          setMember={setMember}
+        />
+      </ProjectFrame>
     </Container>
   );
 }
@@ -114,6 +114,10 @@ export default function Project({ id }) {
 const Container = styled.div`
   display:flex;
   flex-direction:column;
-  width:100vw;
+  width:93vw;
+  margin-top:7vh;
   min-height: 93vh;
+`;
+
+const ProjectFrame = styled.div`
 `;

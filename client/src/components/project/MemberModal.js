@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import axios from 'axios'
 
+import { ColorPicker, useColor } from "react-color-palette";
+import "react-color-palette/lib/css/styles.css";
+
 import MemberMockData from '../../mockdata/MemberMockData'
 
 export default function MemberModal({
@@ -12,6 +15,8 @@ export default function MemberModal({
   projectInfo,
 }) {
   const [searchEmail, setSearchEmail] = useState("");
+  const [color, setColor] = useColor("hex", "#121212")
+    
   const [searchMember, setSearchMember] = useState([
     {
       id: 0,
@@ -25,6 +30,7 @@ export default function MemberModal({
     username: "",
     email: "",
     profile: "",
+    color:'#ffffff'
   });
 
   const searchHandler = (e) => {
@@ -36,6 +42,11 @@ export default function MemberModal({
     setSearchEmail(select.email);
     setSelectMember({ ...select });
   };
+
+  const selectColor = (data) => {
+    setColor(data)
+    setSelectMember({ ...selectMember, color: color.hex });
+  }
 
   const enterHandler = (e) => {
     // const email = e.target.value;
@@ -76,7 +87,6 @@ export default function MemberModal({
     setMember([...member, selectMember]);
     memberModalOpener();
   };
-
   return (
     <Container isMemberOpen={isMemberOpen}>
       <ModalContainer>
@@ -95,8 +105,14 @@ export default function MemberModal({
           ))}
         </ul>
         색깔 선택
-        <ColorChecker color={selectMember.color}/>
-        <input type="text" onChange={(e) => setSelectMember({...selectMember,color:e.target.value})} />
+        <ColorPicker
+          width={456}
+          height={228}
+          color={color}
+          onChange={selectColor}
+          hideHSV
+          dark
+        />
         <button onClick={closeHandler}>초대</button>
       </ModalContainer>
     </Container>
@@ -122,12 +138,3 @@ const ModalContainer = styled.div`
   border: 1px solid black;
   background-color: white;
 `;
-
-const ColorChecker = styled.div`
-  width:5rem;
-  height: 5rem;
-  border-radius:2.5rem;
-  background-color: ${(props) => { if (props.color && props.color[0] === "#" && props.color.length === 7) {
-    return props.color;
-  } }};
-`
