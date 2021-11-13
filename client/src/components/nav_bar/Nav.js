@@ -66,11 +66,10 @@ const NavBar = styled.div`
   border-bottom: 5px solid black;
   z-index: ${({ isModal }) => (isModal ? 0 : 1000)};
   top: 0;
-  background-color: #ffffff;
 `;
 
 const Logo = styled.img`
-  width: 20%;
+  width: 13%;
   height: 100%;
   object-fit: fill;
   cursor: pointer;
@@ -83,6 +82,7 @@ const ContainerBtn = styled.div`
   align-items: center;
 `;
 
+<<<<<<< HEAD
 const BtnSlideBox = styled.button`
   width: 6.5rem;
   height: 100%;
@@ -90,4 +90,14 @@ const BtnSlideBox = styled.button`
   align-items: center;
   border-left: 2px solid black;
   /* gap: 2rem; */
+=======
+const LoginBtn = styled.button`
+  height: 100%;
+  font-family: "Anton", sans-serif;
+  font-size: 1.5rem;
+  border-left: 2px solid black;
+  width: ${(props) => {
+    return props.isLogin ? "6rem" : "150px";
+  }};
+>>>>>>> 6c80a02a0c806a49d0fab926c0240bda9b21f746
 `;
