@@ -21,6 +21,7 @@ export default function Progressbar(props) {
         style={{
           marginLeft: `${((props.width || 300) * props.value) / 100 - 10}px`,
           marginTop: "5px",
+          fontFamily: "Anton",
         }}
       >
         {props.value} %
