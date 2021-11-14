@@ -20,6 +20,9 @@ module.exports = {
       profile: {
         type: Sequelize.STRING,
       },
+      mobile: {
+        type: Sequelize.STRING,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

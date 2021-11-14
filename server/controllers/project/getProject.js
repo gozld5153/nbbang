@@ -48,7 +48,7 @@ module.exports = async (req, res) => {
           },
           include: {
             model: User,
-            attributes: ["id", "username", "email", "profile"],
+            attributes: ["id", "username", "email", "profile", "mobile"],
             include: {
               model: Goal,
               where: {

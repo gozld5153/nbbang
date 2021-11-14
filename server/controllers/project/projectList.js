@@ -5,8 +5,7 @@ module.exports = async (req, res) => {
   // projectListByProgress
   // req.query.state
   // req.params.userId
-  // 한페이지에 5개
-  // req.query.page 에 페이지 정보 줄거임
+  // req.query.progresspage
 
   if (!req.params.userId) {
     return res.status(400).json({ data: null, message: "잘못된 요청입니다." });
@@ -126,8 +125,8 @@ module.exports = async (req, res) => {
       // TODO for문 탈출
     }
     if (!req.query.state) {
-      const complete = [];
-      const progress = [];
+      let complete = [];
+      let progress = [];
       for (let project of data) {
         if (project.dataValues.state === "complete") complete.push(project);
         if (project.dataValues.state === "progress") progress.push(project);
@@ -135,6 +134,9 @@ module.exports = async (req, res) => {
       totalCount = data.length;
       const progressCount = progress.length;
       const completeCount = complete.length;
+      progress = progress.slice(0, 5);
+      complete = complete.slice(0, 5);
+
       data = {
         progressCount,
         completeCount,
@@ -143,6 +145,13 @@ module.exports = async (req, res) => {
       };
     } else {
       totalCount = data.length;
+      // data 에 있음
+      if (req.query.page) {
+        // 페이지네이션
+        // state 랑 함께 사용해야 함
+        let page = req.query.page * 5;
+        data = data.slice(page - 5, page);
+      }
     }
   } catch {
     data = null;
