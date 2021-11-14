@@ -8,7 +8,7 @@ import { useLocation } from "react-router-dom";
 import { MdOutlineModeEditOutline } from "react-icons/md";
 import { FiCheck } from "react-icons/fi";
 import { FcCheckmark } from "react-icons/fc";
-import { FaSlideshare, FaTimes } from "react-icons/fa";
+import { FaTimes } from "react-icons/fa";
 import Progressbar from "../components/utils/Progressbar";
 import { Done } from "../mockdata/MyPageProjectData";
 import ProjectPagePagination from "../components/utils/ProjectPagePagination";
@@ -45,6 +45,21 @@ const loadingSpin = keyframes`
   }
 `;
 
+const strokeEffect = keyframes`
+0% {
+  stroke-dashoffset: 1040;
+  stroke-dasharray: 0px 999999px;
+  opacity: 0;
+}
+99% {
+  stroke-dasharray: 1350px 1050px;
+}
+100% {
+  stroke-dashoffset: 0.001;
+  stroke-dasharray: none;
+  opacity: 0.4;
+}
+`;
 const MyPageWrapper = styled.div`
   display: flex;
   width: 100%;
@@ -74,18 +89,22 @@ const NavItems = styled(Link)`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-size: 1.25rem;
-  transition: all 1s;
+  font-size: 1.3rem;
+  text-align: center;
+  /* transition: all 1s; */
   border-top: 2px solid black;
-
+`;
+const NavIcons = styled.div`
+  width: 100%;
+  position: relative;
+  top: -100px;
+  z-index: 10;
   svg {
     margin: 20px auto;
     font-size: 2rem;
     display: block;
-    text-align: center;
   }
 `;
-
 const ProfileWrapper = styled.div`
   width: 1470px;
   height: 100%;
@@ -103,7 +122,9 @@ const ProfileCardContainer = styled.div`
   box-shadow: 1px 1px 9px gray;
   padding: 20px;
   background: ${(props) =>
-    props.editMode ? props.cardColor.blur : props.cardColor.main};
+    props.editMode
+      ? props.cardColor.blur
+      : `linear-gradient(to right, ${props.cardColor.blur} 15%, ${props.cardColor.main} 100%) `};
 `;
 
 const ProfileCardEditLine = styled.div`
@@ -111,7 +132,7 @@ const ProfileCardEditLine = styled.div`
   height: 100%;
   border-radius: 20px;
   border: ${(props) =>
-    props.editMode ? "4px dotted gray" : `4px solid ${props.cardColor.main}`};
+    props.editMode ? "4px dotted gray" : `4px solid transparent`};
   background: transparent;
 `;
 
@@ -133,6 +154,7 @@ const ProfileCardNavHeadline = styled.div`
 const ProfileCardColorPicker = styled.div`
   margin: 5px 10px;
   display: flex;
+  z-index: 2;
 `;
 
 const Color = styled.div`
@@ -187,6 +209,7 @@ const ProfileImg = styled.div`
 
   > img {
     position: relative;
+    z-index: 0;
     left: -100px;
     top: -50px;
     width: 480px;
@@ -290,6 +313,7 @@ const ProfileItems = styled.div`
     display: inline-block;
   }
   input {
+    letter-spacing: 0.1rem;
     background: transparent;
     padding: 10px 0 25px 0;
     width: 350px;
@@ -419,25 +443,42 @@ const ProjectDescription = styled.div`
 `;
 
 const StrokeContainer = styled.div`
-  width: 150px;
+  width: 200px;
+  padding: 0 20px;
 
+  position: relative;
+  top: -100px;
   svg {
+    opacity: ${(props) => (props.equel ? 0.4 : 0)};
     position: relative;
-    top: 50px;
+    top: 180px;
+    z-index: 13;
+    stroke-dashoffset: 1040;
+
+    &:hover {
+      animation: ${(props) =>
+        props.equel
+          ? "none"
+          : css`
+              ${strokeEffect} 1s ease forwards
+            `};
+    }
   }
 `;
-function SvgStrokeComponent() {
+function SvgStrokeComponent({ color, here, now }) {
+  const equel = here === now;
+  console.log(equel);
   return (
-    <StrokeContainer>
-      <svg viewBox="0 0 195 54">
+    <StrokeContainer equel={equel}>
+      <svg viewBox="0 0 205 250">
         <path
           fill="none"
-          stroke="#0096ff"
-          stroke-width="10"
+          stroke={color}
+          stroke-width="23"
           stroke-linecap="round"
           stroke-linejoin="round"
           stroke-miterlimit="10"
-          d="M 189.935 6.842 L 23.903 16.45 c -2.439 0.243 -2.434 0.369 0.012 0.282 l 138.428 1.366 c 2.445 -0.088 2.448 -0.011 0.006 0.171 L 8.392 23.047 c -2.442 0.182 -2.439 0.262 0.006 0.178 l 152.087 1.094 c 2.446 -0.083 2.448 -0.001 0.007 0.184 L 6.895 29.432 c -2.442 0.184 -2.44 0.234 0.005 0.111 l 163.745 -1.816 c 2.444 -0.123 2.453 0.035 0.02 0.352 L 7.355 42.158"
+          d="M 189.935 5.842 L 13.903 24.45 c -2.439 0.243 -2.434 0.369 0.012 0.282 l 158.428 30.366 c 2.445 -0.088 2.448 -0.011 0.006 0.171 L 18.392 50.047 c -2.442 0.182 -2.439 0.262 0.006 0.178 l 162.087 25.094 c 2.446 -0.083 2.448 -0.001 0.007 0.184 L 16.895 80.432 c -2.442 0.184 -2.44 0.234 0.005 0.111 l 180.745 40.816 c 2.444 -0.123 2.453 0.035 0.02 0.352 L 7.355 130.158"
         />
       </svg>
     </StrokeContainer>
@@ -454,23 +495,42 @@ export function MyPage() {
 
 export function MyPageNav() {
   const { pathname } = useLocation();
+  console.log(pathname);
   return (
     <NavContainer>
       <NavProfileImg />
-      <NavItems to="profile" here={pathname}>
-        <SvgStrokeComponent />
-        <CgProfile />
-        프로필
+      <NavItems to="profile">
+        <SvgStrokeComponent
+          color={"#ffdd22"}
+          here={pathname}
+          now={"/mypage/profile"}
+        />
+        <NavIcons>
+          <CgProfile />
+          프로필
+        </NavIcons>
       </NavItems>
-      <NavItems to="project-inprogress" here={pathname}>
-        <SvgStrokeComponent />
-        <GrProjects />
-        진행중인 프로젝트
+      <NavItems to="project-inprogress">
+        <SvgStrokeComponent
+          color={"#d1ef39"}
+          here={pathname}
+          now={"/mypage/project-inprogress"}
+        />
+        <NavIcons>
+          <GrProjects />
+          진행중인 프로젝트
+        </NavIcons>
       </NavItems>
-      <NavItems to="project-done" here={pathname}>
-        <SvgStrokeComponent />
-        <VscProject />
-        완료한 프로젝트
+      <NavItems to="project-done">
+        <SvgStrokeComponent
+          color={"#00bfff"}
+          here={pathname}
+          now={"/mypage/project-done"}
+        />
+        <NavIcons>
+          <VscProject />
+          완료한 프로젝트
+        </NavIcons>
       </NavItems>
     </NavContainer>
   );
@@ -486,6 +546,11 @@ export function Profile() {
 
 export function ProfileCard() {
   const colorpick = {
+    pink: {
+      main: "#ffb1ee",
+      blur: "#fde6f8",
+      input: "#bb0092",
+    },
     red: {
       main: "#F7CA96",
       blur: "#f3ddc3",
@@ -500,6 +565,16 @@ export function ProfileCard() {
       main: "#E6EE89",
       blur: "#e4e7be",
       input: "#a5b100",
+    },
+    skyblue: {
+      main: "#72dbf5",
+      blur: "#c5f3ff",
+      input: "#007592",
+    },
+    purple: {
+      main: "#ac90fa",
+      blur: "#dbcffd",
+      input: "#3100b9",
     },
   };
   const [editMode, setEditMode] = useState(false);
@@ -554,6 +629,10 @@ export function ProfileCard() {
             {editMode ? (
               <ProfileCardColorPicker>
                 <Color
+                  color={colorpick.pink.main}
+                  onClick={() => handleColor(colorpick.pink)}
+                />
+                <Color
                   color={colorpick.red.main}
                   onClick={() => handleColor(colorpick.red)}
                 />
@@ -564,6 +643,14 @@ export function ProfileCard() {
                 <Color
                   color={colorpick.green.main}
                   onClick={() => handleColor(colorpick.green)}
+                />
+                <Color
+                  color={colorpick.skyblue.main}
+                  onClick={() => handleColor(colorpick.skyblue)}
+                />
+                <Color
+                  color={colorpick.purple.main}
+                  onClick={() => handleColor(colorpick.purple)}
                 />
               </ProfileCardColorPicker>
             ) : (
@@ -579,7 +666,7 @@ export function ProfileCard() {
                     {isComplete ? (
                       <FcCheckmark />
                     ) : isLoading ? (
-                      <svg class="loading-circle">
+                      <svg className="loading-circle">
                         <circle cx="50%" cy="50%" r="12"></circle>
                       </svg>
                     ) : (
@@ -636,7 +723,10 @@ export function ProfileCard() {
                 <div className={"line"} />
               </ProfileItems>
 
-              <img src={`${process.env.PUBLIC_URL}/images/nbbang-logo.png`} />
+              <img
+                src={`${process.env.PUBLIC_URL}/images/nbbang-logo.png`}
+                alt=""
+              />
               <span>N 빵</span>
               <div className={"line"} />
             </ProfileItemsContainer>

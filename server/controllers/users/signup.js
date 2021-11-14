@@ -14,18 +14,18 @@ module.exports = async (req, res) => {
     });
   }
   // 데이터베이스에 seed 추가
-  let user_info;
+  let userInfo;
   try {
-    user_info = await User.create({
+    userInfo = await User.create({
       username: req.body.username,
       email: req.body.email,
       password: req.body.password,
     });
   } catch {
-    user_info = null;
+    userInfo = null;
   }
   // seed 추가가 제대로 이루어지지 않았다면
-  if (!user_info) {
+  if (!userInfo) {
     return res.status(500).json({ message: "데이터베이스 오류" });
   }
   // 회원가입이 제대로 진행되면

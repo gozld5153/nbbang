@@ -8,6 +8,7 @@ import {
   ProjectInProgress,
   ProjectDone,
 } from "./pages/MyPage";
+import { Complete, ProjectStatics } from "./pages/Complete";
 import styled from "styled-components";
 import Nav from "./components/nav_bar/Nav";
 import { InProgress } from "./mockdata/MyPageProjectData";
@@ -130,6 +131,9 @@ export default function App() {
               element={<Project id={userInfo.id} />}
             >
               <Route path=":id" element={<GoalModal />} />
+            </Route>
+            <Route path="complete" element={<Complete />}>
+              <Route path=":project_id" element={<ProjectStatics />} />
             </Route>
           </Routes>
         </Frame>

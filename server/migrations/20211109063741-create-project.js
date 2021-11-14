@@ -8,10 +8,10 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      project_name: {
+      projectName: {
         type: Sequelize.STRING,
       },
-      captain_id: {
+      captainId: {
         type: Sequelize.INTEGER,
       },
       description: {
