@@ -8,49 +8,23 @@ module.exports = async (req, res) => {
   // req.query.projectId 필수
   // req.query.userId 선택
   // goalId 가 존재하면 단독 검색
+  // req.query.details === true
 
   if (req.query.goalId) {
     let goalInfo;
+
     try {
       goalInfo = await Goal.findOne({
         where: {
           id: req.query.goalId,
         },
+        include: [File, Comment, Like],
       });
-    } catch {
-      return res.status(500).json({ data: null, message: "데이터베이스 오류" });
-    }
-    // goalInfo에 file 과 comment 내용 다 담아줘야함
-    let fileInfo;
-    let commentInfo;
-    try {
-      console.log(1);
-      fileInfo = await File.findAll({
-        where: {
-          goalId: req.query.goalId,
-        },
-      });
-      console.log(2);
-      commentInfo = await Comment.findAll({
-        where: {
-          goalId: req.query.goalId,
-        },
-      });
-      console.log(3);
-      likeInfo = await Like.findAndCountAll({
-        where: {
-          goalId: req.query.goalId,
-        },
-      });
-      console.log(likeInfo);
-      goalInfo.dataValues.likeCount = likeInfo.count;
-      goalInfo.dataValues.files = fileInfo;
-      goalInfo.dataValues.comments = commentInfo;
     } catch (err) {
       console.log(err);
-      fileInfo = null;
-      commentInfo = null;
+      return res.status(500).json({ data: null, message: "데이터베이스 오류" });
     }
+    goalInfo.dataValues.likeCount = goalInfo.dataValues.Likes.length;
 
     const data = goalInfo;
 
@@ -71,39 +45,19 @@ module.exports = async (req, res) => {
           userId: req.query.userId,
           projectId: req.query.projectId,
         },
+        include: [File, Comment, Like],
       });
     } else {
       goalInfo = await Goal.findAll({
         where: {
           projectId: req.query.projectId,
         },
+        include: [File, Comment, Like],
       });
     }
-  } catch {
+  } catch (err) {
+    console.log(err);
     return res.status(500).json({ data: null, message: "데이터베이스 오류" });
-  }
-
-  for (let info of goalInfo) {
-    // info.dataValues.id로 file 및 comment 검색
-    let fileInfo;
-    let commentInfo;
-    try {
-      fileInfo = await File.findAndCountAll({
-        where: {
-          goalId: info.dataValues.id,
-        },
-      });
-      commentInfo = await Comment.findAndCountAll({
-        where: {
-          goalId: info.dataValues.id,
-        },
-      });
-      info.dataValues.files = fileInfo.count;
-      info.dataValues.comments = commentInfo.count;
-    } catch {
-      fileInfo = null;
-      commentInfo = null;
-    }
   }
 
   const todo = [];
@@ -111,6 +65,11 @@ module.exports = async (req, res) => {
   const complete = [];
 
   for (let info of goalInfo) {
+    if (!req.query.details) {
+      info.dataValues.Files = info.dataValues.Files.length;
+      info.dataValues.Likes = info.dataValues.Likes.length;
+      info.dataValues.Comments = info.dataValues.Comments.length;
+    }
     if (info.dataValues.state === "todo") todo.push(info.dataValues);
     if (info.dataValues.state === "progress") progress.push(info.dataValues);
     if (info.dataValues.state === "complete") complete.push(info.dataValues);

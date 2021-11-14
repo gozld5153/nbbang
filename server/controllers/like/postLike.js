@@ -52,7 +52,8 @@ module.exports = async (req, res) => {
       },
     });
     req.body.projectId = projectId.dataValues.projectId;
-  } catch {
+  } catch (err) {
+    console.log(err);
     return res.status(500).json({ data: null, message: "데이터베이스 에러" });
   }
   try {

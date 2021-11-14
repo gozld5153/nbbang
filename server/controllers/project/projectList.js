@@ -62,16 +62,13 @@ module.exports = async (req, res) => {
             projectId: info.dataValues.projectId,
           },
         });
-        // console.log("goalInfo", goalInfo);
         let allImportant = 0;
         let completeImportant = 0;
         for (let el of goalInfo) {
-          console.log("el", el);
           if (el.dataValues.state === "complete")
             completeImportant += el.dataValues.important;
           allImportant += el.dataValues.important;
         }
-        console.log("allImportant", allImportant);
         projectInfo.dataValues.allImportant = allImportant;
         projectInfo.dataValues.completeImportant = completeImportant;
       } catch {

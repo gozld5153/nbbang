@@ -1,4 +1,4 @@
-const { UsersProjects, Comment, File, Like, Goal } = require("../../models");
+const { Project } = require("../../models");
 
 module.exports = async (req, res) => {
   // TODO 프로젝트 삭제 api 구현
@@ -9,29 +9,9 @@ module.exports = async (req, res) => {
     return res.status(400).json({ data: null, message: "잘못된 요청입니다." });
   }
   try {
-    await UsersProjects.destroy({
+    await Project.destroy({
       where: {
-        projectId: req.params.projectId,
-      },
-    });
-    await Comment.destroy({
-      where: {
-        projectId: req.params.projectId,
-      },
-    });
-    await File.destroy({
-      where: {
-        projectId: req.params.projectId,
-      },
-    });
-    await Like.destroy({
-      where: {
-        projectId: req.params.projectId,
-      },
-    });
-    await Goal.destroy({
-      where: {
-        projectId: req.params.projectId,
+        id: req.params.projectId,
       },
     });
   } catch {

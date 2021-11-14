@@ -10,9 +10,19 @@ module.exports = {
       },
       userId: {
         type: Sequelize.INTEGER,
+        onDelete: "CASCADE",
+        references: {
+          model: "Users",
+          key: "id",
+        },
       },
       projectId: {
         type: Sequelize.INTEGER,
+        onDelete: "CASCADE",
+        references: {
+          model: "Projects",
+          key: "id",
+        },
       },
       color: {
         type: Sequelize.STRING,
@@ -25,29 +35,6 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
-    });
-    // 관계설정 Users_Projects의 user_id와 project_id 조인테이블
-    await queryInterface.addConstraint("UsersProjects", {
-      fields: ["userId"],
-      type: "foreign key",
-      name: "UsersProjectsFkeyFromUsers",
-      references: {
-        table: "Users",
-        field: "id",
-      },
-      onDelete: "cascade",
-      onUpdate: "cascade",
-    });
-    await queryInterface.addConstraint("UsersProjects", {
-      fields: ["projectId"],
-      type: "foreign key",
-      name: "UsersProjectsFkeyFromProjects",
-      references: {
-        table: "Projects",
-        field: "id",
-      },
-      onDelete: "cascade",
-      onUpdate: "cascade",
     });
   },
   down: async (queryInterface, Sequelize) => {

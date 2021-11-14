@@ -10,12 +10,19 @@ module.exports = {
       },
       userId: {
         type: Sequelize.INTEGER,
-      },
-      projectId: {
-        type: Sequelize.INTEGER,
+        onDelete: "CASCADE",
+        references: {
+          model: "Users",
+          key: "id",
+        },
       },
       goalId: {
         type: Sequelize.INTEGER,
+        onDelete: "CASCADE",
+        references: {
+          model: "Goals",
+          key: "id",
+        },
       },
       content: {
         type: Sequelize.STRING,
@@ -28,39 +35,6 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
-    });
-    await queryInterface.addConstraint("Comments", {
-      fields: ["userId"],
-      type: "foreign key",
-      name: "CommentsFkeyFromUsers",
-      references: {
-        table: "Users",
-        field: "id",
-      },
-      onDelete: "cascade",
-      onUpdate: "cascade",
-    });
-    await queryInterface.addConstraint("Comments", {
-      fields: ["projectId"],
-      type: "foreign key",
-      name: "CommentsFkeyFromProjects",
-      references: {
-        table: "Projects",
-        field: "id",
-      },
-      onDelete: "cascade",
-      onUpdate: "cascade",
-    });
-    await queryInterface.addConstraint("Comments", {
-      fields: ["goalId"],
-      type: "foreign key",
-      name: "CommentsFkeyFromGoals",
-      references: {
-        table: "Goals",
-        field: "id",
-      },
-      onDelete: "cascade",
-      onUpdate: "cascade",
     });
   },
   down: async (queryInterface, Sequelize) => {
