@@ -3,6 +3,192 @@ import styled from "styled-components";
 import { useParams, Outlet } from "react-router-dom";
 import { MdArrowBackIosNew, MdArrowForwardIos } from "react-icons/md";
 import ChartStatics from "../components/utils/ChartStatics";
+import { CompletePageData } from "../mockdata/CompletePageData";
+
+export const Complete = () => {
+  return (
+    <CompletePageWrapper>
+      <Outlet />
+    </CompletePageWrapper>
+  );
+};
+
+export const ProjectStatics = () => {
+  // const params = useParams();
+  const crewScroll = useRef(null);
+  const [projectData, setProjectData] = useState(CompletePageData);
+  const params = { projectId: 1 };
+  // - projectId로 요청함
+
+  const { captain, crew } = projectData.usersGoal;
+
+  useEffect(() => {
+    window.addEventListener("wheel", handleMouseWheel, { passive: false });
+    return () => {
+      window.removeEventListener("wheel", handleMouseWheel, { passive: false });
+    };
+  }, []);
+
+  // useEffect 프로젝트 정보 가져오는 거 추가하기
+
+  const handleCrewScroll = (event) => {
+    const clsName = event.target.classList[0];
+
+    if (clsName === "goback") {
+      crewScroll.current.scrollBy({ top: 0, left: -345, behavior: "smooth" });
+    } else if (clsName === "goforward") {
+      crewScroll.current.scrollBy({ top: 0, left: 345, behavior: "smooth" });
+    }
+  };
+
+  const handleMouseWheel = (event) => {
+    event.preventDefault();
+    const Y = event.deltaY;
+
+    let top = window.scrollY;
+    if (top >= 0 && top < 1000 && Y < 0) return;
+    else if (top >= 0 && top < 1000 && Y > 0) {
+      top = 1000;
+    } else if (top >= 1000 && top < 1961 && Y < 0) {
+      top = 0;
+    } else if (top >= 1000 && top < 1961 && Y > 0) {
+      top = 1961;
+    } else if (top >= 1961 && Y < 0) {
+      top = 1000;
+    } else if (top >= 1961 && Y > 0) return;
+
+    window.scroll({ top, left: 0, behavior: "smooth" });
+  };
+
+  return (
+    <ProjectCompleteWrapper>
+      <ProjectPresentationContainer>
+        <ProjectPresentationHeadline>PRESENTATION</ProjectPresentationHeadline>
+        <ProjectPresentationContent>
+          <iframe
+            width="860"
+            height="505"
+            src="https://www.youtube.com/embed/zbllvQZRyh0"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullscreen
+          />
+          <ProjectPresentationDescription>
+            <h3>{projectData.projectName}</h3>
+            <p>{projectData.description}</p>
+          </ProjectPresentationDescription>
+        </ProjectPresentationContent>
+      </ProjectPresentationContainer>
+      <ProjectTeammatesContainer>
+        <ProjectTeammatesHeadline>
+          {projectData.totalNum} TEAMMATES
+        </ProjectTeammatesHeadline>
+        <ProjectTeammatesColumnName>
+          <span>{1} Leader</span>
+          <span>{crew.length} Crews</span>
+          <ProjectTeammatesCrewScroll crew={4}>
+            <div className="goback" onClick={handleCrewScroll}>
+              <MdArrowBackIosNew />
+            </div>
+            <div className="goforward" onClick={handleCrewScroll}>
+              <MdArrowForwardIos />
+            </div>
+          </ProjectTeammatesCrewScroll>
+        </ProjectTeammatesColumnName>
+        <ProjectTeammatesItemsList>
+          <ProjectTeammatesCards />
+          <ProjectTeammatesCrew ref={crewScroll}>
+            <ProjectTeammatesCards />
+            <ProjectTeammatesCards />
+            <ProjectTeammatesCards />
+            <ProjectTeammatesCards />
+            <ProjectTeammatesCards />
+          </ProjectTeammatesCrew>
+        </ProjectTeammatesItemsList>
+      </ProjectTeammatesContainer>
+      <ProjectStaticsContainer>
+        <ProjectStaticsHeadline>STATICS</ProjectStaticsHeadline>
+        <ProjectStaticsdetailComponent />
+      </ProjectStaticsContainer>
+    </ProjectCompleteWrapper>
+  );
+};
+
+export const ProjectTeammatesCards = () => {
+  return (
+    <ProjectTeammatesCardsContainer>
+      <ProjectTeammatesProfile>
+        <img
+          src={`${process.env.PUBLIC_URL}/images/profile-sample.jpg`}
+          alt=""
+        />
+        <ProjectTeammatesProfileDescription>
+          <span>석창환</span>
+          <span>미니언 1호</span>
+        </ProjectTeammatesProfileDescription>
+      </ProjectTeammatesProfile>
+      <ProjectTeammatesDetail>
+        <ProjectTeammatesDetailBox />
+        <ProjectTeammatesDetailBox />
+        <ProjectTeammatesDetailBox />
+        <ProjectTeammatesDetailBox />
+      </ProjectTeammatesDetail>
+      <ProjectGoalImportantSum>
+        <span>총 합계 :</span>
+        <span>77%</span>
+      </ProjectGoalImportantSum>
+    </ProjectTeammatesCardsContainer>
+  );
+};
+
+export const ProjectTeammatesDetailBox = () => {
+  return (
+    <ProjectTeammatesDetailBoxContainer>
+      <ProjectGoalDescription>
+        <div className="goal-name">나무에 물 주기</div>
+      </ProjectGoalDescription>
+    </ProjectTeammatesDetailBoxContainer>
+  );
+};
+
+export const ProjectStaticsdetailComponent = () => {
+  const [data, setData] = useState({});
+  const handleTeammateData = () => {
+    return;
+  };
+  return (
+    <>
+      <ProjectTeammateslist>
+        <img
+          src={`${process.env.PUBLIC_URL}/images/profile-sample.jpg`}
+          alt=""
+        />
+        <img
+          src={`${process.env.PUBLIC_URL}/images/profile-sample.jpg`}
+          alt=""
+        />
+        <img
+          src={`${process.env.PUBLIC_URL}/images/profile-sample.jpg`}
+          alt=""
+        />
+        <img
+          src={`${process.env.PUBLIC_URL}/images/profile-sample.jpg`}
+          alt=""
+        />
+        <img
+          src={`${process.env.PUBLIC_URL}/images/profile-sample.jpg`}
+          alt=""
+        />
+      </ProjectTeammateslist>
+      <ProjectStaticsdetail>
+        <ProjectStaticsGraph>
+          <ChartStatics />
+        </ProjectStaticsGraph>
+      </ProjectStaticsdetail>
+    </>
+  );
+};
 
 const CompletePageWrapper = styled.div`
   width: 100%;
@@ -168,7 +354,6 @@ const ProjectTeammatesDetailBoxContainer = styled.div`
   box-shadow: 1px 1px 7px gray;
   border-image: url(${process.env.PUBLIC_URL}/images/borderstyle.png) 20;
   padding: 20px;
-  /* background-color: #ffece9; */
 `;
 
 const ProjectGoalDescription = styled.div`
@@ -207,186 +392,6 @@ const ProjectStaticsHeadline = styled.h2`
   margin-bottom: 40px;
   letter-spacing: 0.1rem;
 `;
-export const Complete = () => {
-  return (
-    <CompletePageWrapper>
-      <Outlet />
-    </CompletePageWrapper>
-  );
-};
-
-export const ProjectStatics = () => {
-  const params = useParams();
-  const crewScroll = useRef(null);
-
-  useEffect(() => {
-    window.addEventListener("wheel", handleMouseWheel, { passive: false });
-    return () => {
-      window.removeEventListener("wheel", handleMouseWheel, { passive: false });
-    };
-  }, []);
-
-  const handleCrewScroll = (event) => {
-    const clsName = event.target.classList[0];
-
-    if (clsName === "goback") {
-      crewScroll.current.scrollBy({ top: 0, left: -345, behavior: "smooth" });
-    } else if (clsName === "goforward") {
-      crewScroll.current.scrollBy({ top: 0, left: 345, behavior: "smooth" });
-    }
-  };
-
-  const handleMouseWheel = (event) => {
-    event.preventDefault();
-    const Y = event.deltaY;
-
-    let top = window.scrollY;
-    if (top >= 0 && top < 1000 && Y < 0) return;
-    else if (top >= 0 && top < 1000 && Y > 0) {
-      top = 1000;
-    } else if (top >= 1000 && top < 1961 && Y < 0) {
-      top = 0;
-    } else if (top >= 1000 && top < 1961 && Y > 0) {
-      top = 1961;
-    } else if (top >= 1961 && Y < 0) {
-      top = 1000;
-    } else if (top >= 1961 && Y > 0) return;
-
-    window.scroll({ top, left: 0, behavior: "smooth" });
-  };
-
-  return (
-    <ProjectCompleteWrapper>
-      <ProjectPresentationContainer>
-        <ProjectPresentationHeadline>PRESENTATION</ProjectPresentationHeadline>
-        <ProjectPresentationContent>
-          <iframe
-            width="860"
-            height="505"
-            src="https://www.youtube.com/embed/zbllvQZRyh0"
-            title="YouTube video player"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullscreen
-          />
-          <ProjectPresentationDescription>
-            <h3>나의 프로젝트</h3>
-            <p>
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen book.
-            </p>
-          </ProjectPresentationDescription>
-        </ProjectPresentationContent>
-      </ProjectPresentationContainer>
-      <ProjectTeammatesContainer>
-        <ProjectTeammatesHeadline>{5} TEAMMATES</ProjectTeammatesHeadline>
-        <ProjectTeammatesColumnName>
-          <span>{1} Leader</span>
-          <span>{4} Crews</span>
-          <ProjectTeammatesCrewScroll crew={4}>
-            <div className="goback" onClick={handleCrewScroll}>
-              <MdArrowBackIosNew />
-            </div>
-            <div className="goforward" onClick={handleCrewScroll}>
-              <MdArrowForwardIos />
-            </div>
-          </ProjectTeammatesCrewScroll>
-        </ProjectTeammatesColumnName>
-        <ProjectTeammatesItemsList>
-          <ProjectTeammatesCards />
-          <ProjectTeammatesCrew ref={crewScroll}>
-            <ProjectTeammatesCards />
-            <ProjectTeammatesCards />
-            <ProjectTeammatesCards />
-            <ProjectTeammatesCards />
-            <ProjectTeammatesCards />
-          </ProjectTeammatesCrew>
-        </ProjectTeammatesItemsList>
-      </ProjectTeammatesContainer>
-      <ProjectStaticsContainer>
-        <ProjectStaticsHeadline>STATICS</ProjectStaticsHeadline>
-        <ProjectStaticsdetailComponent />
-      </ProjectStaticsContainer>
-    </ProjectCompleteWrapper>
-  );
-};
-
-export const ProjectTeammatesCards = () => {
-  return (
-    <ProjectTeammatesCardsContainer>
-      <ProjectTeammatesProfile>
-        <img
-          src={`${process.env.PUBLIC_URL}/images/profile-sample.jpg`}
-          alt=""
-        />
-        <ProjectTeammatesProfileDescription>
-          <span>석창환</span>
-          <span>미니언 1호</span>
-        </ProjectTeammatesProfileDescription>
-      </ProjectTeammatesProfile>
-      <ProjectTeammatesDetail>
-        <ProjectTeammatesDetailBox />
-        <ProjectTeammatesDetailBox />
-        <ProjectTeammatesDetailBox />
-        <ProjectTeammatesDetailBox />
-      </ProjectTeammatesDetail>
-      <ProjectGoalImportantSum>
-        <span>총 합계 :</span>
-        <span>77%</span>
-      </ProjectGoalImportantSum>
-    </ProjectTeammatesCardsContainer>
-  );
-};
-
-export const ProjectTeammatesDetailBox = () => {
-  return (
-    <ProjectTeammatesDetailBoxContainer>
-      <ProjectGoalDescription>
-        <div className="goal-name">나무에 물 주기</div>
-      </ProjectGoalDescription>
-    </ProjectTeammatesDetailBoxContainer>
-  );
-};
-
-export const ProjectStaticsdetailComponent = () => {
-  const [data, setData] = useState({});
-  const handleTeammateData = () => {
-    return;
-  };
-  return (
-    <>
-      <ProjectTeammateslist>
-        <img
-          src={`${process.env.PUBLIC_URL}/images/profile-sample.jpg`}
-          alt=""
-        />
-        <img
-          src={`${process.env.PUBLIC_URL}/images/profile-sample.jpg`}
-          alt=""
-        />
-        <img
-          src={`${process.env.PUBLIC_URL}/images/profile-sample.jpg`}
-          alt=""
-        />
-        <img
-          src={`${process.env.PUBLIC_URL}/images/profile-sample.jpg`}
-          alt=""
-        />
-        <img
-          src={`${process.env.PUBLIC_URL}/images/profile-sample.jpg`}
-          alt=""
-        />
-      </ProjectTeammateslist>
-      <ProjectStaticsdetail>
-        <ProjectStaticsGraph>
-          <ChartStatics />
-        </ProjectStaticsGraph>
-      </ProjectStaticsdetail>
-    </>
-  );
-};
 
 const ProjectTeammateslist = styled.div`
   width: 100%;
