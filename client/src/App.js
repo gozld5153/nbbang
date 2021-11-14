@@ -127,7 +127,7 @@ export default function App() {
               <Route path="project-done" element={<ProjectDone />} />
             </Route>
             <Route
-              path="project/:project_id"
+              path="project/:projectId"
               element={<Project id={userInfo.id} />}
             >
               <Route path=":id" element={<GoalModal />} />

@@ -14,6 +14,9 @@ export default function ProjectModal({
   DataHandler,
 }) {
   // 기능 clear
+
+  // console.log(projectInfo);
+  // console.log(member);
   const defaultStartDate = () => {
     if (projectInfo.deadline) {
       return new Date(projectInfo.deadline.split("~")[0].replaceAll('.','-'))

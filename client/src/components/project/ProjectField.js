@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import axios from 'axios'
 
 import Goal from './Goal'
@@ -18,7 +18,6 @@ export default function ProjectField({ myInfo, projectId, params }) {
   const goalList = [isTodo, isProgress, isComplete];
   const goalListText = ["To Do", "Progress", "Complete"];
 
-  const pathname = useLocation();
   const navigate = useNavigate();
 
   const createModalOpener = () => {

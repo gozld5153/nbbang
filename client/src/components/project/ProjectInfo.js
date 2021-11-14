@@ -7,45 +7,55 @@ export default function ProjectInfo({
   projectInfo,
   member,
 }) {
-  //기능 clear
   return (
     <Container>
       <ProjectInfomation>
         <ProjectInfoContainer>
-          <ProjectName>
-            <div>{projectInfo.project_name}</div>
-          </ProjectName>
-          <ProjectSettings>
-            <img
-              onClick={projectModalOpener}
-              src={`${process.env.PUBLIC_URL}/images/settings.png`}
-              alt="setting"
-            />
-          </ProjectSettings>
-          <ProjectDue>
-            {projectInfo.deadline}
-          </ProjectDue>
-          <button onClick={memberModalOpener}>초대버튼</button>
+          <ProjectNameContainer>
+            <ProjectName onClick={projectModalOpener}>
+              {projectInfo.projectName}
+            </ProjectName>
+          </ProjectNameContainer>
+          <ProjectDueContainer>
+            <ProjectDue>{projectInfo.deadline}</ProjectDue>
+          </ProjectDueContainer>
         </ProjectInfoContainer>
-        <ProjectMember>
-          {member.map((el) => (
-            <Profile len={5} key={el.id} src={el.profile} alt={el.username} />
-          ))}
-        </ProjectMember>
+        <MemberContainer>
+          <Invite onClick={memberModalOpener}>INVITE</Invite>
+          <ProjectMember>
+            {member.map((el) => (
+              <ProfileContainer len={5}>
+                <Profile
+                  len={5}
+                  key={el.id}
+                  src={el.profile}
+                  alt={el.username}
+                />
+              </ProfileContainer>
+            ))}
+          </ProjectMember>
+        </MemberContainer>
       </ProjectInfomation>
       <ProjectProgress>
         <RateContainer>
           <RateFrame>
             <RateName>프로젝트 진행률</RateName>
-            <RateBar important={projectInfo.progress} color="blue" />
-            <RateBar important={projectInfo.total_important} color="white" />
+            <RateBar
+              important={projectInfo.completeImportant}
+              color="#AFAFAF"
+            />
+            <RateBar important={projectInfo.allImportant} color="black" />
           </RateFrame>
         </RateContainer>
         <RateContainer>
           <RateFrame>
             <RateName>팀원 상대 진행률</RateName>
             {member.map((el) => (
-              <RateBar important={el.progress} color={el.color} key={el.id} />
+              <RateBar
+                important={el.myCompleteImportant}
+                color={el.color}
+                key={el.id}
+              />
             ))}
           </RateFrame>
         </RateContainer>
@@ -57,72 +67,114 @@ export default function ProjectInfo({
 const Container = styled.div`
   display:flex;
   flex-direction:column;
-  width: 100vw;
 `;
+
 
 const ProjectInfomation = styled.div`
-  display:inherit;
-  justify-content:space-between;
-  align-items:flex-end;
+  display: inherit;
+  justify-content: space-between;
+  align-items: center;
+  margin:1rem;
+  padding: 1rem;
+  background-color: #ffffff;
 `;
-
 const ProjectInfoContainer = styled.div`
   display:inherit;
 `;
-
+const ProjectNameContainer = styled.div`
+  display: inherit;
+  justify-content:center;
+  align-items:center;
+`;
 const ProjectName = styled.div`
-  width: 10rem;
+  font-family: "Anton", sans-serif;
+  font-size: 3rem;
+  color: white;
+  padding: 1rem;
+  background-color: black;
 `;
+// const ProjectSettings = styled.div`
+//   display: inherit;
+//   align-items: flex-start;
 
-const ProjectSettings = styled.div`
-  width: 10rem;
-
-  img{
-    width:5rem;
-  }
+//   img {
+//     width: 2rem;
+//     border-radius: 50%;
+//     cursor:pointer;
+//   }
+// `;
+const ProjectDueContainer = styled.div`
+  display: inherit;
+  align-items: center;
+  margin-left: 1rem;
 `;
-
 const ProjectDue = styled.div`
-  width: 10rem;
+  font-size: 3rem;
+  font-family: "Anton", sans-serif;
 `;
-
+const MemberContainer = styled.div`
+  display:flex;
+  align-items:flex-end;
+`;
+const Invite = styled.div`
+  font-size:1.5rem;
+  font-family: "Anton", sans-serif;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  margin-right:0.5rem;
+  padding-bottom:0.3rem;
+  cursor:pointer;
+`;
 const ProjectMember = styled.div`
 `;
-
+const ProfileContainer = styled.div`
+  width: ${(props) => `${props.len}rem`};
+  height: ${(props) => `${props.len}rem`};
+  border-radius: ${(props) => `${props.len / 2}rem`};
+  overflow: hidden;
+  background-color:black;
+`;
 const Profile = styled.img`
   width: ${(props) => `${props.len}rem`};
   height: ${(props) => `${props.len}rem`};
   border-radius:${(props) => `${props.len / 2}rem`};
-  overflow:hidden;
 `;
+
+
 
 const ProjectProgress = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 6rem;
+  margin-bottom: 2rem;
+  margin: 0 1rem 1rem;
+  padding: 1rem;
+  background-color: #ffffff;
 `;
-
 const RateContainer = styled.div`
-  width: 95vw;
+  width: 98%;
   height: 3rem;
+  background-color: black;
+
+  :first-child {
+    margin-bottom: 0.5rem;
+  }
 `;
-
-
-
 const RateFrame = styled.div`
   position:relative;
   display:flex;
-  width: inherit;
-  height: 2rem;
-  margin: 0.5rem 0 0.5rem 0;
+  height: 3rem;
+  border-radius: 0.5rem;
+  /* margin: 0.5rem 0 0.5rem 0; */
 `;
-
 const RateName = styled.div`
   position:absolute;
+  top: 0.5rem;
+  left: 0.5rem;
   font-size:2rem;
+  font-family: ;
+  color:#ffffff
 `;
-
 const RateBar = styled.div`
   flex-grow:${(props)=> props.important};
   height:inherit;
