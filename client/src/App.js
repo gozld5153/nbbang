@@ -78,7 +78,7 @@ export default function App() {
       })
       .then((data) => {
         console.log(data);
-        setUserInfo(data.data.data.user_info);
+        setUserInfo(data.data.data.userInfo);
         setIsLogin(true);
       })
       .catch(() => setIsLogin(false));
