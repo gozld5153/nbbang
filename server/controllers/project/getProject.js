@@ -1,4 +1,4 @@
-const { User, Project, UsersProjects, Like } = require("../../models");
+const { User, Project, UsersProjects, Like, Goal } = require("../../models");
 
 module.exports = async (req, res) => {
   // TODO 프로젝트 단독 요청 구현
@@ -16,82 +16,92 @@ module.exports = async (req, res) => {
   try {
     userInfo = await User.findOne({
       where: { id: req.params.userId },
+      include: {
+        model: Like,
+        attributes: ["id"],
+      },
     });
     delete userInfo.dataValues.password;
-  } catch {
-    userInfo = null;
-  }
-  if (!userInfo) {
+    userInfo.dataValues.likeId = [];
+    for (let el of userInfo.dataValues.Likes) {
+      userInfo.dataValues.likeId.push(el.dataValues.id);
+    }
+    delete userInfo.dataValues.Likes;
+  } catch (err) {
+    console.log(err);
     return res.status(500).json({
       data: null,
-      message: "데이터베이스 에러 또는 존재하지 않는 사용자입니다.",
+      message: "데이터베이스 에러",
     });
   }
-
-  // like table 검색
-  let likeInfo;
-  try {
-    likeInfo = await Like.findAll({
-      attributes: ["id"],
-      where: { userId: req.params.userId, agreement: true },
-    });
-  } catch {
-    likeInfo = null;
-  }
-
-  // likeId를 userInfo에 추가
-  if (likeInfo) {
-    likeInfo = likeInfo.map((el) => {
-      return el.dataValues.id;
-    });
-  }
-  userInfo.dataValues.likeId = likeInfo;
 
   // project table 검색
   let projectInfo;
   try {
     projectInfo = await Project.findOne({
       where: { id: req.params.projectId },
+      include: [
+        {
+          model: UsersProjects,
+          where: {
+            projectId: req.params.projectId,
+          },
+          include: {
+            model: User,
+            attributes: ["id", "username", "email", "profile"],
+            include: {
+              model: Goal,
+              where: {
+                projectId: req.params.projectId,
+              },
+            },
+          },
+        },
+        {
+          model: Goal,
+          attributes: ["important", "state"],
+        },
+      ],
     });
-  } catch {
-    projectInfo = null;
-  }
-  if (!projectInfo) {
+    // project 데이터 가공 important 집계
+    let allImportant = 0;
+    let completeImportant = 0;
+    for (let el of projectInfo.dataValues.Goals) {
+      if (el.dataValues.state === "complete")
+        completeImportant += el.dataValues.important;
+      allImportant += el.dataValues.important;
+    }
+    delete projectInfo.dataValues.Goals;
+    projectInfo.dataValues.allImportant = allImportant;
+    projectInfo.dataValues.completeImportant = completeImportant;
+
+    // members 데이터 가공
+    // color 추가 important 추가
+    projectInfo.dataValues.members = [];
+    for (let el of projectInfo.dataValues.UsersProjects) {
+      el.dataValues.User.dataValues.color = el.dataValues.color;
+      let myAllImportant = 0;
+      let myCompleteImportant = 0;
+      // important 추가
+      for (let goal of el.dataValues.User.dataValues.Goals) {
+        if (goal.dataValues.state === "complete")
+          myCompleteImportant += goal.dataValues.important;
+        myAllImportant += goal.dataValues.important;
+      }
+      el.dataValues.User.dataValues.myAllImportant = myAllImportant;
+      el.dataValues.User.dataValues.myCompleteImportant = myCompleteImportant;
+      projectInfo.dataValues.members.push(el.dataValues.User.dataValues);
+      delete el.dataValues.User.dataValues.Goals;
+    }
+
+    delete projectInfo.dataValues.UsersProjects;
+  } catch (err) {
+    console.log(err);
     return res.status(500).json({
       data: null,
-      message: "데이터베이스 에러 또는 존재하지 않는 프로젝트입니다.",
+      message: "데이터베이스 에러",
     });
   }
-  // usersProjects 검색
-  let usersProjectsInfo;
-  try {
-    usersProjectsInfo = await UsersProjects.findAll({
-      attributes: ["userId", "color"],
-      where: {
-        projectId: req.params.projectId,
-      },
-    });
-  } catch {
-    usersProjectsInfo = null;
-  }
-  // project에 포함된 멤버 검색
-  let memberInfo = [];
-  try {
-    for (let info of usersProjectsInfo) {
-      let temp = await User.findOne({
-        where: { id: info.userId },
-      });
-      // password 정보 삭제
-      delete temp.dataValues.password;
-      // color 정보 추가
-      temp.dataValues.color = info.color;
-      memberInfo.push(temp.dataValues);
-    }
-  } catch {
-    memberInfo = null;
-  }
-  // project_info에 members 추가
-  projectInfo.dataValues.members = memberInfo;
   const data = {
     userInfo,
     projectInfo,

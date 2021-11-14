@@ -12,6 +12,7 @@ module.exports = async (req, res) => {
   try {
     userInfo = await User.findAll({
       attributes: ["id", "username", "email", "profile"],
+      limit: 10,
       where: {
         email: {
           [Op.like]: `%${req.params.email}%`,
@@ -23,5 +24,5 @@ module.exports = async (req, res) => {
     return res.status(500).json({ data: null, message: "데이터베이스 오류" });
   }
 
-  return res.status(500).json({ data: userInfo, message: "ok" });
+  return res.status(200).json({ data: userInfo, message: "ok" });
 };
