@@ -63,11 +63,10 @@ const NavBar = styled.div`
   border-bottom: 5px solid black;
   z-index: ${({ isModal }) => (isModal ? 0 : 1000)};
   top: 0;
-  background-color: #ffffff;
 `;
 
 const Logo = styled.img`
-  width: 20%;
+  width: 13%;
   height: 100%;
   object-fit: fill;
   cursor: pointer;
@@ -78,19 +77,14 @@ const ContainerBtn = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  padding-right: 8rem;
 `;
 
 const LoginBtn = styled.button`
-  background-color: #f3f3f4;
-  margin-right: 2rem;
-  height: 2rem;
+  height: 100%;
+  font-family: "Anton", sans-serif;
+  font-size: 1.5rem;
+  border-left: 2px solid black;
   width: ${(props) => {
-    return props.isLogin ? "6rem" : "4rem";
+    return props.isLogin ? "6rem" : "150px";
   }};
-  border-radius: 0.5rem;
-  &:hover {
-    background-color: #e1e1e1;
-    font-weight: bold;
-  }
 `;
