@@ -7,6 +7,7 @@ module.exports = {
   duplicationCheck: require("./users/duplicationCheck"),
   updateUserInfo: require("./users/updateUserInfo"),
   deleteUser: require("./users/deleteUser"),
+  searchUser: require("./users/searchUser"),
   // project
   getProject: require("./project/getProject"),
   postProject: require("./project/postProject"),
