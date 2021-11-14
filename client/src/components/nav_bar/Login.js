@@ -13,12 +13,12 @@ const Login = ({ handleNavbar, isOn }) => {
     setLoginInfo({ ...loginInfo, [key]: e.target.value });
   };
 
-  const handleLogin = () => {
+  const handleLogin = (event) => {
     if (!loginInfo.email || !loginInfo.password) {
       setErrMsg("정보를 입력하세요!");
     } else {
       //todo axios 통신요청
-      axios //`${process.env.API_URL}/users/signin`
+      axios //
         .post(`${process.env.REACT_APP_API_URL}/users/signin`, loginInfo, {
           withCredentials: true,
         })

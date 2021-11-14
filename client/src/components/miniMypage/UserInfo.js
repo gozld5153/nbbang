@@ -6,9 +6,8 @@ const UserInfo = ({ userInfo }) => {
   const navigate = useNavigate();
   return (
     <Container>
-      <div onClick={() => navigate("/mypage")}>
-        {/* 유저정보 profile에서 사진을 가져와야 함 */}
-        <img src={`${process.env.PUBLIC_URL}/images/bbang.png`}></img>
+      <div onClick={() => navigate("/mypage/profile")}>
+        <img src={`${process.env.PUBLIC_URL}/images/bbang.png`} alt="" />
       </div>
       <div>
         <div>
