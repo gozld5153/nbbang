@@ -9,6 +9,7 @@ import Nav from "./components/nav_bar/Nav";
 import { InProgress } from "./mockdata/MyPageProjectData";
 import Project from "./pages/Project";
 import GoalModal from "./components/project/GoalModal";
+import { Complete, ProjectStatics } from "./pages/Complete";
 import {
   MyPage,
   Profile,
@@ -131,6 +132,9 @@ export default function App() {
               element={<Project id={userInfo.id} />}
             >
               <Route path=":id" element={<GoalModal />} />
+            </Route>
+            <Route path="complete" element={<Complete />}>
+              <Route path=":project_id" element={<ProjectStatics />} />
             </Route>
           </Routes>
         </Frame>

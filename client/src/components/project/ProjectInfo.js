@@ -172,7 +172,7 @@ const RateName = styled.div`
   top: 0.5rem;
   left: 0.5rem;
   font-size:2rem;
-  font-family: ;
+  /* font-family: ; */
   color:#ffffff
 `;
 const RateBar = styled.div`
