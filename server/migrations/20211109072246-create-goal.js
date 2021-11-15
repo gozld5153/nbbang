@@ -8,13 +8,23 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      user_id: {
+      userId: {
         type: Sequelize.INTEGER,
+        onDelete: "CASCADE",
+        references: {
+          model: "Users",
+          key: "id",
+        },
       },
-      project_id: {
+      projectId: {
         type: Sequelize.INTEGER,
+        onDelete: "CASCADE",
+        references: {
+          model: "Projects",
+          key: "id",
+        },
       },
-      goal_name: {
+      goalName: {
         type: Sequelize.STRING,
       },
       description: {
@@ -37,28 +47,6 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
-    });
-    await queryInterface.addConstraint("Goals", {
-      fields: ["user_id"],
-      type: "foreign key",
-      name: "Goals_fkey_from_Users",
-      references: {
-        table: "Users",
-        field: "id",
-      },
-      onDelete: "cascade",
-      onUpdate: "cascade",
-    });
-    await queryInterface.addConstraint("Goals", {
-      fields: ["project_id"],
-      type: "foreign key",
-      name: "Goals_fkey_from_Projects",
-      references: {
-        table: "Projects",
-        field: "id",
-      },
-      onDelete: "cascade",
-      onUpdate: "cascade",
     });
   },
   down: async (queryInterface, Sequelize) => {

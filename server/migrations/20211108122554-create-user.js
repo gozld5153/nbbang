@@ -20,6 +20,13 @@ module.exports = {
       profile: {
         type: Sequelize.STRING,
       },
+      profileColor: {
+        type: Sequelize.STRING,
+        defaultValue: "yellow",
+      },
+      mobile: {
+        type: Sequelize.STRING,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
