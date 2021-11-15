@@ -15,6 +15,7 @@ module.exports = {
   updateProject: require("./project/updateProject"),
   projectList: require("./project/projectList"),
   projectMember: require("./project/projectMember"),
+  addMember: require("./project/addMember"),
   // goal
   getGoal: require("./goal/getGoal"),
   postGoal: require("./goal/postGoal"),
@@ -33,4 +34,8 @@ module.exports = {
   postFile: require("./file/postFile"),
   updateFile: require("./file/updateFile"),
   deleteFile: require("./file/deleteFile"),
+  // invite
+  getInvite: require("./invite/getInvite"),
+  postInvite: require("./invite/postInvite"),
+  deleteInvite: require("./invite/deleteInvite"),
 };

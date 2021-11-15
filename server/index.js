@@ -13,6 +13,7 @@ const likeRouter = require("./router/likeRouter");
 const commentRouter = require("./router/commentRouter");
 const fileRouter = require("./router/fileRouter");
 const testRouter = require("./router/testRouter");
+const inviteRouter = require("./router/inviteRouter");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -35,6 +36,7 @@ app.use("/like", likeRouter);
 app.use("/comment", commentRouter);
 app.use("/file", fileRouter);
 app.use("/test", testRouter);
+app.use("/invite", inviteRouter);
 
 app.get("/", (req, res) => {
   res.status(201).send("Hello World");

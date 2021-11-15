@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.Like);
       User.hasMany(models.Comment);
       User.hasMany(models.File);
+      User.hasMany(models.Invite);
     }
   }
   User.init(
@@ -23,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
       email: DataTypes.STRING,
       password: DataTypes.STRING,
       profile: DataTypes.STRING,
+      profileColor: DataTypes.STRING,
       mobile: DataTypes.STRING,
     },
     {
