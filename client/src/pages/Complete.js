@@ -21,6 +21,7 @@ export const ProjectStatics = () => {
   // - projectId로 요청함
 
   const { captain, crew } = projectData.usersGoal;
+  const staticsData = [captain].concat(crew);
 
   useEffect(() => {
     window.addEventListener("wheel", handleMouseWheel, { passive: false });
@@ -46,8 +47,9 @@ export const ProjectStatics = () => {
     const Y = event.deltaY;
 
     let top = window.scrollY;
-    if (top >= 0 && top < 1000 && Y < 0) return;
-    else if (top >= 0 && top < 1000 && Y > 0) {
+    if (top >= 0 && top < 1000 && Y < 0) {
+      top = 0;
+    } else if (top >= 0 && top < 1000 && Y > 0) {
       top = 1000;
     } else if (top >= 1000 && top < 1961 && Y < 0) {
       top = 0;
@@ -68,13 +70,19 @@ export const ProjectStatics = () => {
           <iframe
             width="860"
             height="505"
-            src="https://www.youtube.com/embed/zbllvQZRyh0"
+            src={`https://www.youtube.com/embed/${projectData.presentation.slice(
+              -11
+            )}`}
             title="YouTube video player"
             frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullscreen
           />
           <ProjectPresentationDescription>
+            <img
+              src={`${process.env.PUBLIC_URL}/images/nbbang-logo.png`}
+              alt=""
+            />
             <h3>{projectData.projectName}</h3>
             <p>{projectData.description}</p>
           </ProjectPresentationDescription>
@@ -87,7 +95,7 @@ export const ProjectStatics = () => {
         <ProjectTeammatesColumnName>
           <span>{1} Leader</span>
           <span>{crew.length} Crews</span>
-          <ProjectTeammatesCrewScroll crew={4}>
+          <ProjectTeammatesCrewScroll isHidden={crew.length < 4}>
             <div className="goback" onClick={handleCrewScroll}>
               <MdArrowBackIosNew />
             </div>
@@ -97,94 +105,114 @@ export const ProjectStatics = () => {
           </ProjectTeammatesCrewScroll>
         </ProjectTeammatesColumnName>
         <ProjectTeammatesItemsList>
-          <ProjectTeammatesCards />
+          <ProjectTeammatesCards teammates={captain} />
           <ProjectTeammatesCrew ref={crewScroll}>
-            <ProjectTeammatesCards />
-            <ProjectTeammatesCards />
-            <ProjectTeammatesCards />
-            <ProjectTeammatesCards />
-            <ProjectTeammatesCards />
+            {crew.map((crew) => (
+              <ProjectTeammatesCards teammates={crew} key={crew.username} />
+            ))}
           </ProjectTeammatesCrew>
         </ProjectTeammatesItemsList>
       </ProjectTeammatesContainer>
       <ProjectStaticsContainer>
         <ProjectStaticsHeadline>STATICS</ProjectStaticsHeadline>
-        <ProjectStaticsdetailComponent />
+        <ProjectStaticsdetailComponent staticsData={staticsData} />
       </ProjectStaticsContainer>
     </ProjectCompleteWrapper>
   );
 };
 
-export const ProjectTeammatesCards = () => {
+export const ProjectTeammatesCards = ({ teammates }) => {
   return (
     <ProjectTeammatesCardsContainer>
       <ProjectTeammatesProfile>
-        <img
-          src={`${process.env.PUBLIC_URL}/images/profile-sample.jpg`}
-          alt=""
-        />
+        <img src={teammates.profile} alt="" />
         <ProjectTeammatesProfileDescription>
-          <span>석창환</span>
+          <span>{teammates.username}</span>
           <span>미니언 1호</span>
         </ProjectTeammatesProfileDescription>
       </ProjectTeammatesProfile>
       <ProjectTeammatesDetail>
-        <ProjectTeammatesDetailBox />
-        <ProjectTeammatesDetailBox />
-        <ProjectTeammatesDetailBox />
-        <ProjectTeammatesDetailBox />
+        {teammates.goal.map((goal) => (
+          <ProjectTeammatesDetailBox goal={goal} key={goal.username} />
+        ))}
       </ProjectTeammatesDetail>
-      <ProjectGoalImportantSum>
-        <span>총 합계 :</span>
-        <span>77%</span>
-      </ProjectGoalImportantSum>
     </ProjectTeammatesCardsContainer>
   );
 };
 
-export const ProjectTeammatesDetailBox = () => {
+export const ProjectTeammatesDetailBox = ({ goal }) => {
   return (
     <ProjectTeammatesDetailBoxContainer>
       <ProjectGoalDescription>
-        <div className="goal-name">나무에 물 주기</div>
+        <div className="goal-name">{goal.goalName}</div>
       </ProjectGoalDescription>
     </ProjectTeammatesDetailBoxContainer>
   );
 };
 
-export const ProjectStaticsdetailComponent = () => {
-  const [data, setData] = useState({});
-  const handleTeammateData = () => {
-    return;
+export const ProjectStaticsdetailComponent = ({ staticsData }) => {
+  const allData = staticsData.map((item) => {
+    return {
+      username: item.username,
+      totalGoal: item.goal.reduce((acc, cur) => acc + cur.important, 0),
+    };
+  });
+
+  const personalDatas = staticsData;
+  const [tempData, setTempData] = useState(allData);
+  const [guide, setGuide] = useState(true);
+  const [allMode, setAllMode] = useState(true);
+  const [selected, setSelected] = useState("allUser");
+
+  const handleTeammateData = (event) => {
+    const name = event.target.classList[0];
+    if (name === "allUser") {
+      setTempData(allData);
+      setAllMode(true);
+      setSelected("allUser");
+    } else {
+      staticsData.forEach((data) => {
+        if (data.username === name) {
+          setTempData(data);
+          setSelected(data.username);
+        }
+      });
+      setAllMode(false);
+    }
+    setGuide(true);
   };
+
   return (
     <>
-      <ProjectTeammateslist>
-        <img
-          src={`${process.env.PUBLIC_URL}/images/profile-sample.jpg`}
-          alt=""
-        />
-        <img
-          src={`${process.env.PUBLIC_URL}/images/profile-sample.jpg`}
-          alt=""
-        />
-        <img
-          src={`${process.env.PUBLIC_URL}/images/profile-sample.jpg`}
-          alt=""
-        />
-        <img
-          src={`${process.env.PUBLIC_URL}/images/profile-sample.jpg`}
-          alt=""
-        />
-        <img
-          src={`${process.env.PUBLIC_URL}/images/profile-sample.jpg`}
-          alt=""
-        />
+      <ProjectTeammateslist selected={selected}>
+        <div className={"allUser"} onClick={handleTeammateData}>
+          <img
+            src={`${process.env.PUBLIC_URL}/images/ALL_logo.svg`}
+            alt=""
+            title={"ALL"}
+            style={{ opacity: selected === "allUser" ? "100%" : "50%" }}
+          />
+        </div>
+        {personalDatas.map((data) => {
+          return (
+            <div className={data.username} onClick={handleTeammateData}>
+              <img
+                src={data.profile}
+                alt=""
+                title={data.username}
+                style={{ opacity: selected === data.username ? "100%" : "50%" }}
+              />
+            </div>
+          );
+        })}
       </ProjectTeammateslist>
       <ProjectStaticsdetail>
-        <ProjectStaticsGraph>
-          <ChartStatics />
-        </ProjectStaticsGraph>
+        <ChartStatics
+          tempData={tempData}
+          guide={guide}
+          setGuide={setGuide}
+          allMode={allMode}
+        />
       </ProjectStaticsdetail>
     </>
   );
@@ -223,17 +251,28 @@ const ProjectPresentationDescription = styled.div`
   width: 515px;
   border: 5px solid black;
   padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgba(189, 189, 189, 0.5);
 
+  img {
+    width: 150px;
+    height: 100px;
+    top: -80px;
+    position: relative;
+  }
   h3 {
     font-weight: 600;
-    font-size: 2rem;
-    text-align: center;
-    margin-bottom: 20px;
+    font-size: 2.5rem;
+    /* text-align: center; */
+    margin: 50px 0;
     font-family: "Noto sans KR, sans-serif";
   }
 
   p {
     font-size: 1.5rem;
+    font-style: italic;
   }
 `;
 
@@ -280,7 +319,7 @@ const ProjectTeammatesCrewScroll = styled.div`
   margin-left: auto;
   margin-right: 10px;
 
-  display: ${(props) => props.crew < 4 && "none"};
+  display: ${(props) => props.isHidden && "none"};
 
   div {
     font-size: 2rem;
@@ -341,9 +380,10 @@ const ProjectTeammatesProfileDescription = styled.div`
   }
 `;
 const ProjectTeammatesDetail = styled.div`
-  height: 420px;
+  height: 500px;
   width: 305px;
   border-radius: 10px;
+  overflow: hidden;
 `;
 
 const ProjectTeammatesDetailBoxContainer = styled.div`
@@ -357,27 +397,11 @@ const ProjectTeammatesDetailBoxContainer = styled.div`
 `;
 
 const ProjectGoalDescription = styled.div`
-  display: flex;
+  text-align: center;
   font-family: "Nanum Brush Script", cursive;
   font-size: 1.8rem;
 `;
 
-const ProjectGoalImportantSum = styled.div`
-  height: 80px;
-  display: flex;
-  padding: 0 20px;
-  line-height: 3;
-
-  span {
-    font-size: 1.5rem;
-    font-weight: bold;
-  }
-
-  span:nth-of-type(1) {
-    margin-right: 120px;
-    color: gray;
-  }
-`;
 const ProjectStaticsContainer = styled.div`
   width: 100%;
   height: 98vh;
@@ -399,21 +423,26 @@ const ProjectTeammateslist = styled.div`
   margin-bottom: 40px;
   display: flex;
   justify-content: center;
+  .allUser {
+    img {
+      border: 2px dashed black;
+      padding: 5px;
+    }
+  }
+  div {
+    cursor: pointer;
 
-  img {
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    margin: 0 20px;
+    img {
+      pointer-events: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      margin: 0 15px;
+    }
   }
 `;
 
 const ProjectStaticsdetail = styled.div`
   width: 100%;
-  height: 400px;
-`;
-
-const ProjectStaticsGraph = styled.div`
-  width: 570px;
   height: 570px;
 `;
