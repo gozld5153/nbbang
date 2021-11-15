@@ -3,8 +3,8 @@ const getGoal = {
     todo: [
       {
         id: 0,
-        user_id: 0,
-        goal_name: "todo",
+        userId: 1,
+        goalName: "todo",
         description: "todo입니다",
         state: "todo",
         important: 1,
@@ -17,8 +17,8 @@ const getGoal = {
     progress: [
       {
         id: 1,
-        user_id: 0,
-        goal_name: "progress",
+        userId: 1,
+        goalName: "progress",
         description: "progress입니다",
         state: "progress",
         important: 2,
@@ -31,8 +31,8 @@ const getGoal = {
     complete: [
       {
         id: 2,
-        user_id: 0,
-        goal_name: "complete",
+        userId: 1,
+        goalName: "complete",
         description: "complete입니다",
         state: "complete",
         important: 3,
