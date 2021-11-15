@@ -9,9 +9,8 @@ module.exports = async (req, res) => {
     return res.status(500).json({ data: null, message: "잘못된 요청입니다." });
   }
 
-  let data;
   try {
-    data = await UsersProjects.findOrCreate({
+    await UsersProjects.findOrCreate({
       where: {
         userId: req.params.userId,
         projectId: req.params.projectId,
