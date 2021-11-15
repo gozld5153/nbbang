@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Project.hasMany(models.UsersProjects);
       Project.hasMany(models.Goal);
+      Project.hasMany(models.Invite);
     }
   }
   Project.init(
