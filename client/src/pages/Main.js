@@ -13,11 +13,11 @@ export default function Main({
   handleSignAndLogin,
   signAndLogin,
   handleNavbar,
-  switchBtn,
-  isMypage,
-  userInfo,
+  // switchBtn,
+  // isMypage,
+  // userInfo,
   isOn,
-  userData,
+  // userData,
 }) {
   return (
     <Container>
@@ -32,13 +32,13 @@ export default function Main({
       ) : (
         <>
           <Slide images={[image1, image2, image3]}></Slide>
-          {switchBtn ? (
+          {/* {switchBtn ? (
             <MiniMypage
               isMypage={isMypage}
               userInfo={userInfo}
               userData={userData}
             ></MiniMypage>
-          ) : null}
+          ) : null} */}
           <MainComponent />
           <MainComponent />
           <MainComponent />
@@ -49,10 +49,10 @@ export default function Main({
 }
 
 const Container = styled.div`
-  margin: 7vh auto 0 auto;
+  /* margin: 7vh auto 0 auto; */
   width: 80vw;
-  height: 100%;
-  height: 93vh;
+  /* height: 100%; */
+  margin: 0 auto;
   position: relative;
   /* white-space: nowrap; */
   /* overflow-x: hidden; */

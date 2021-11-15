@@ -2,8 +2,8 @@ import styled from "styled-components";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
 import { set } from "date-fns/esm";
+import MiniMypage from "../miniMypage/MiniMypage";
 
 export default function Nav({
   handleModal,
@@ -11,9 +11,14 @@ export default function Nav({
   handleMypage,
   handleOffMypage,
   isModal,
+  switchBtn,
+  isMypage,
+  userInfo,
+  userData,
 }) {
   const navigate = useNavigate();
   const [cookies, setCookie, removeCookie] = useCookies([]);
+  const signUp = true;
 
   const handleLogout = () => {
     axios
@@ -38,20 +43,37 @@ export default function Nav({
       <ContainerBtn>
         {isLogin ? (
           <>
-            <BtnSlideBox isLogin={isLogin}>새 프로젝트</BtnSlideBox>
-            <BtnSlideBox isLogin={isLogin} onClick={handleMypage}>
-              마이 페이지
-            </BtnSlideBox>
-            <BtnSlideBox onClick={handleLogout}>Logout</BtnSlideBox>
+            <BtnMenu isLogin={isLogin}>Project</BtnMenu>
+            <BtnMenu isLogin={isLogin} onClick={handleMypage}>
+              My Page
+            </BtnMenu>
+            <BtnMenu onClick={handleLogout}>Logout</BtnMenu>
+            {switchBtn ? (
+              <MiniMypage
+                isMypage={isMypage}
+                userInfo={userInfo}
+                userData={userData}
+              ></MiniMypage>
+            ) : null}
           </>
         ) : (
           <>
-            <BtnSlideBox onClick={handleModal} isLogin={isLogin}>
-              Login
-            </BtnSlideBox>
-            <BtnSlideBox onClick={handleModal} isLogin={isLogin}>
-              Sign up
-            </BtnSlideBox>
+            <LoginBtn className="login" onClick={handleModal} isLogin={isLogin}>
+              <BigWrapper>
+                <Wrapper>
+                  <div>Login</div>
+                  <div>Login</div>
+                </Wrapper>
+              </BigWrapper>
+            </LoginBtn>
+            <LoginBtn onClick={handleModal} isLogin={isLogin}>
+              <BigWrapper>
+                <Wrapper signUp={signUp}>
+                  <div>Sign up</div>
+                  <div>Sign up</div>
+                </Wrapper>
+              </BigWrapper>
+            </LoginBtn>
           </>
         )}
       </ContainerBtn>
@@ -60,6 +82,8 @@ export default function Nav({
 }
 
 const NavBar = styled.div`
+  background-color: #f6f2f1;
+  position: sticky;
   height: 6rem;
   width: 100%;
   display: flex;
@@ -80,24 +104,77 @@ const ContainerBtn = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  position: relative;
 `;
 
-<<<<<<< HEAD
-const BtnSlideBox = styled.button`
-  width: 6.5rem;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
-  border-left: 2px solid black;
-  /* gap: 2rem; */
-=======
-const LoginBtn = styled.button`
+const BtnMenu = styled.button`
   height: 100%;
   font-family: "Anton", sans-serif;
   font-size: 1.5rem;
   border-left: 2px solid black;
   width: ${(props) => {
-    return props.isLogin ? "6rem" : "150px";
+    return props.isLogin ? "10rem" : "150px";
   }};
->>>>>>> 6c80a02a0c806a49d0fab926c0240bda9b21f746
+  cursor: pointer;
+  &:hover {
+    background-color: #222222;
+    color: #efefef;
+  }
+`;
+
+const LoginBtn = styled.div`
+  height: 100%;
+  font-family: "Anton", sans-serif;
+  font-size: 1.5rem;
+  border-left: 2px solid black;
+  width: ${(props) => {
+    return props.isLogin ? "10rem" : "150px";
+  }};
+  display: flex;
+`;
+
+const BigWrapper = styled.div`
+  display: flex;
+  height: inherit;
+  overflow: hidden;
+  cursor: pointer;
+`;
+const Wrapper = styled.div`
+  width: 20rem;
+  height: inherit;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  position: relative;
+  /* background-color: blue; */
+  &:hover {
+    animation-name: ${({ signUp }) =>
+      signUp ? "slideMoving" : "slideMoving2"};
+    animation-duration: 2s;
+    animation-timing-function: linear;
+    animation-direction: normal;
+    animation-iteration-count: infinite;
+  }
+  @keyframes slideMoving2 {
+    0% {
+      left: 0;
+    }
+    100% {
+      left: -99px;
+    }
+  }
+  @keyframes slideMoving {
+    0% {
+      left: 0;
+    }
+    100% {
+      left: -111px;
+    }
+  }
+
+  > div {
+    text-align: center;
+    margin-left: ${({ signUp }) => (signUp ? "2.5rem" : "3rem")};
+    flex-shrink: 0;
+  }
 `;

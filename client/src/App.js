@@ -50,7 +50,10 @@ export default function App() {
   };
 
   const handleModal = (e) => {
-    if (e.target.innerHTML === "Login") {
+    if (
+      e.target.firstChild.innerText === "Login" ||
+      e.target.innerText === "Login"
+    ) {
       setSignAndLogin("login");
     } else {
       setSignAndLogin("signup");
@@ -76,11 +79,13 @@ export default function App() {
         withCredentials: true,
       })
       .then((data) => {
-        console.log(data);
         setUserInfo(data.data.data.user_info);
         setIsLogin(true);
       })
-      .catch(() => setIsLogin(false));
+      .catch((err) => {
+        console.log(`쿠키 ${err.response.data.message}`);
+        setIsLogin(false);
+      });
   }, [isLogin]);
 
   return (
@@ -93,6 +98,10 @@ export default function App() {
             isLogin={isLogin}
             handleMypage={handleMypage}
             handleOffMypage={handleOffMypage}
+            isMypage={isMypage}
+            userInfo={userInfo}
+            userData={userData}
+            switchBtn={switchBtn}
           />
           <Routes>
             <Route
@@ -104,11 +113,11 @@ export default function App() {
                   handleSignAndLogin={handleSignAndLogin}
                   signAndLogin={signAndLogin}
                   handleNavbar={handleNavbar}
-                  switchBtn={switchBtn}
-                  isMypage={isMypage}
-                  userInfo={userInfo}
+                  // switchBtn={switchBtn}
+                  // isMypage={isMypage}
+                  // userInfo={userInfo}
                   isOn={isOn}
-                  userData={userData}
+                  // userData={userData}
                 />
               }
             />
@@ -144,7 +153,6 @@ const Container = styled.div`
   width: 100vw;
   min-height: 100vh;
   position: relative;
-  overflow: auto;
   background-color: #f6f2f1;
 `;
 

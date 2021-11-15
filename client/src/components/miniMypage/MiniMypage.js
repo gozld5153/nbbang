@@ -37,41 +37,43 @@ export default MiniMypage;
 
 const moveLeft = keyframes`
   0% {
-    transform: translateX(0)
+    transform: scaleY(0)
   }
   50% {
-    transform: translateX(-50%)
+    transform: scaleY(50%)
   }
   100% {
-    transform: translateX(-100%)
+    transform: scaleY(100%)
   }
 `;
 
 const moveHide = keyframes`
   0% {
-    transform: translateX(0)
+    transform: scaleY(100%)
   }
   50% {
-    transform: translateX(50%)
+    transform: scaleY(50%)
   }
   100% {
-    transform: translateX(100%)
+    transform: scaleY(0)
   }
 `;
 
 const Container = styled.div`
-  position: fixed;
-  height: 93vh;
-  width: 30%;
-
-  right: ${(props) => (props.isMypage ? "-30%" : "0")};
-  top: 7vh;
-  background-color: #e7ecf0;
+  position: absolute;
+  height: 80vh;
+  width: 470px;
+  transform-origin: top;
+  top: 6rem;
+  right: 0;
+  background-color: #f6f2f1;
+  border-left: 4px solid black;
+  border-bottom: 3px solid black;
   &.hide {
     animation: ${moveHide} 0.4s linear forwards;
   }
   &.add {
-    animation: ${moveLeft} 0.4s linear forwards;
+    animation: ${moveLeft} 0.5s linear forwards;
   }
 `;
 
