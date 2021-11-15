@@ -7,27 +7,35 @@ import styled, { keyframes } from "styled-components";
 const MiniMypage = ({ userInfo, isMypage, userData }) => {
   const [progress, setProgress] = useState([]);
   const [complete, setComplete] = useState([]);
-  const [members, setMember] = useState([]);
+  const [progressMembers, setProgressMember] = useState([]);
+  const [completeMembers, setCompleteMember] = useState([]);
   useEffect(() => {
     let newProgress = [];
     let newComplete = [];
-    let newMembers = [];
+    let newProgressMembers = [];
+    let newCompleteMembers = [];
 
     for (let i = 0; i < 3; i++) {
+      //실제 코드 userData.data.progress[i].projectName
+      //테스트용 코드
       newProgress.push(userData[i].project_name);
-      newComplete.push(userData[i].project_name);
-      newMembers.push(userData[i].users);
+
+      //실제 코드 userData.data.complete[i].projectName
+      //userData.data.progres[i].members
+      newProgressMembers.push(userData[i].users);
+      //newCompleteMembers.push(userData.data.complete[i].members)
     }
     setProgress(newProgress);
     setComplete(newComplete);
-    setMember(newMembers);
+    setProgressMember(newProgressMembers);
+    setCompleteMember(newCompleteMembers);
   }, []);
   return (
     <Container className={isMypage ? "add" : "hide"} isMypage={isMypage}>
       <MiniContainer>
         <UserInfo userInfo={userInfo} />
-        <MiniProject progress={progress} members={members} />
-        <ResultProject complete={complete} members={members} />
+        <MiniProject progress={progress} members={progressMembers} />
+        <ResultProject complete={complete} members={completeMembers} />
       </MiniContainer>
     </Container>
   );

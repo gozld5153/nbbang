@@ -62,8 +62,6 @@ export default function App() {
   };
 
   const handleMypage = () => {
-    //axios 요청으로 유저의 프로젝트 정보를 받아 와서 스테이트 관리해준다!
-    console.log(userData);
     setSwitchBtn(true);
     setIsMypage(!isMypage);
   };
@@ -75,17 +73,26 @@ export default function App() {
   // 토큰이 유효하면 로그인 상태 유지 아니면 로그아웃
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}/users/users`, {
+      .get(`${process.env.REACT_APP_API_URL}/users`, {
         withCredentials: true,
       })
       .then((data) => {
-        setUserInfo(data.data.data.user_info);
+        setUserInfo(data.data.data.data);
         setIsLogin(true);
       })
+      .then((data) => {
+        axios
+          .get(
+            `${process.env.REACT_APP_API_URL}/project/${data.data.data.data.id}`
+          )
+          .then((data) => setUserData(data.data.data))
+          .catch((err) => console.log(err));
+      })
       .catch((err) => {
-        console.log(`쿠키 ${err.response.data.message}`);
+        console.log(`쿠키 ${err.response.message}`);
         setIsLogin(false);
       });
+    //axios 요청으로 유저의 프로젝트 정보를 받아 와서 스테이트 관리해준다!
   }, [isLogin]);
 
   return (
@@ -113,11 +120,7 @@ export default function App() {
                   handleSignAndLogin={handleSignAndLogin}
                   signAndLogin={signAndLogin}
                   handleNavbar={handleNavbar}
-                  // switchBtn={switchBtn}
-                  // isMypage={isMypage}
-                  // userInfo={userInfo}
                   isOn={isOn}
-                  // userData={userData}
                 />
               }
             />

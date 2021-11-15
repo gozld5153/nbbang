@@ -32,9 +32,9 @@ export default function Nav({
   };
 
   return (
-    <NavBar isModal={isModal}>
+    <NavBar isModal={isModal} path={window.location.pathname}>
       <Logo
-        src={`${process.env.PUBLIC_URL}/images/logo.png`}
+        src={`${process.env.PUBLIC_URL}/images/logo11.png`}
         onClick={() => {
           handleOffMypage();
           navigate("/");
@@ -44,9 +44,13 @@ export default function Nav({
         {isLogin ? (
           <>
             <BtnMenu isLogin={isLogin}>Project</BtnMenu>
-            <BtnMenu isLogin={isLogin} onClick={handleMypage}>
+            <MypageBtn
+              isLogin={isLogin}
+              isMypage={isMypage}
+              onClick={handleMypage}
+            >
               My Page
-            </BtnMenu>
+            </MypageBtn>
             <BtnMenu onClick={handleLogout}>Logout</BtnMenu>
             {switchBtn ? (
               <MiniMypage
@@ -83,7 +87,7 @@ export default function Nav({
 
 const NavBar = styled.div`
   background-color: #f6f2f1;
-  position: sticky;
+  position: ${({ path }) => (path === "/" ? "sticky" : null)};
   height: 6rem;
   width: 100%;
   display: flex;
@@ -93,10 +97,11 @@ const NavBar = styled.div`
 `;
 
 const Logo = styled.img`
-  width: 13%;
+  width: 12rem;
   height: 100%;
   object-fit: fill;
   cursor: pointer;
+  border-right: 5px solid black;
 `;
 
 const ContainerBtn = styled.div`
@@ -115,6 +120,23 @@ const BtnMenu = styled.button`
   width: ${(props) => {
     return props.isLogin ? "10rem" : "150px";
   }};
+  cursor: pointer;
+  &:hover {
+    background-color: #222222;
+    color: #efefef;
+  }
+`;
+
+const MypageBtn = styled.button`
+  height: 100%;
+  font-family: "Anton", sans-serif;
+  font-size: 1.5rem;
+  border-left: 2px solid black;
+  width: ${(props) => {
+    return props.isLogin ? "10rem" : "150px";
+  }};
+  background-color: ${({ isMypage }) => (isMypage ? "red" : null)};
+  color: ${({ isMypage }) => (isMypage ? "#efefef" : null)};
   cursor: pointer;
   &:hover {
     background-color: #222222;
