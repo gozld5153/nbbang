@@ -34,7 +34,7 @@ module.exports = async (req, res) => {
             attributes: ["username", "profile"],
             include: {
               model: Goal,
-              attributes: ["goalName", "important", "description"],
+              attributes: ["goalName", "important", "description", "deadline"],
             },
           },
         },
