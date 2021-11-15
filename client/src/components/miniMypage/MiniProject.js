@@ -26,11 +26,10 @@ const Project = ({ progress, members }) => {
 const MiniProject = ({ progress, members }) => {
   return (
     <Container>
-      {/* 테스트용 실제동작은 div와 Project 자리 체인지  */}
       {progress.length > 0 ? (
-        <div>진행 중인 프로젝트가 없습니다.</div>
-      ) : (
         <Project progress={progress} members={members} />
+      ) : (
+        <div>진행 중인 프로젝트가 없습니다.</div>
       )}
     </Container>
   );
