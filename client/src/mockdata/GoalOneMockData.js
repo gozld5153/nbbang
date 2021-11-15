@@ -1,7 +1,7 @@
 const getGoalId = {
   id: 0,
-  user_id: 0,
-  goal_name: "todo",
+  userId: 0,
+  goalName: "todo",
   description: "todo입니다",
   state: "todo",
   important: 1,
@@ -18,8 +18,8 @@ const getGoalId = {
       id: 0,
       user_id: 0,
       username: "AAA",
-      description: "에베베베베ㅔㅂ",
-      created_at: new Date(),
+      content: "에베베베베ㅔㅂ",
+      createdAt: new Date(),
     },
   ],
 };

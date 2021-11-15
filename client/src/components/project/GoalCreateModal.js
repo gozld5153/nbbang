@@ -18,8 +18,8 @@ export default function GoalCreateModal({
   let today = new Date();
   const [goalData, setGoalData] = useState({
     id: null,
-    user_id: myInfo.id,
-    goal_name: "",
+    userId: myInfo.id,
+    goalName: "",
     description: "",
     state: "Todo",
     important: 1,
@@ -33,6 +33,8 @@ export default function GoalCreateModal({
     startDate: new Date(),
     endDate: new Date(),
   });
+  const [isOpen, setIsOpen] = useState(false)
+
   const important = [
     ["사소", 1],
     ["보통", 2],
@@ -49,8 +51,8 @@ export default function GoalCreateModal({
     createModalOpener();
     setGoalData({
       id: null,
-      user_id: myInfo.id,
-      goal_name: "",
+      userId: myInfo.id,
+      goalName: "",
       description: "",
       state: "Todo",
       important: 1,
@@ -68,9 +70,9 @@ export default function GoalCreateModal({
     axios.post(
       `http://server.nbbang.ml/goal`,
       {
-        user_id: myInfo.id,
-        project_id: projectId,
-        goal_name: goalData.goal_name,
+        userId: myInfo.id,
+        projectId: projectId,
+        goalName: goalData.goalName,
         description: goalData.description,
         state: "todo",
         important: goalData.important,
@@ -88,16 +90,16 @@ export default function GoalCreateModal({
       createModalOpener();
       setGoalData({
         id: null,
-        user_id: myInfo.id,
-        goal_name: "",
+        userId: myInfo.id,
+        goalName: "",
         description: "",
         state: "Todo",
         important: 1,
         deadline: `${today.toLocaleString().split(" ").join("").slice(0, 10)} ~ 
               ${today.toLocaleString().split(" ").join("").slice(0, 10)}`,
         agreement: 0,
-        file: 0,
-        comments: 0,
+        file: [],
+        comments: [],
       });
       setSelectDate({ startDate: new Date(), endDate: new Date() });
     });
@@ -105,14 +107,18 @@ export default function GoalCreateModal({
   return (
     <Container isCreateOpen={isCreateOpen}>
       <ModalContainer>
-        <button onClick={modalCloser}>close</button>
-        미션이름
+        <CloseButton
+          src={`${process.env.PUBLIC_URL}/images/close.png`}
+          alt="close"
+          onClick={modalCloser}
+        />
+        Mission Name
         <input
-          onChange={(e) => goalDataHandler("goal_name", e.target.value)}
-          value={goalData.goal_name}
+          onChange={(e) => goalDataHandler("goalName", e.target.value)}
+          value={goalData.goalName}
           type="text"
         />
-        수행 기간
+        Deadline
         <Daypicker>
           <StyleDatePicker
             selected={selectDate.startDate}
@@ -154,49 +160,68 @@ export default function GoalCreateModal({
             }}
           />
         </Daypicker>
-        기여도
+        Important
         <ul>
-          <li>
+          <li onClick={()=>setIsOpen(!isOpen)}>
             {important.filter((el) => el[1] === goalData.important)[0][0]}
           </li>
-          {important.map((el) => (
-            <li onClick={() => goalDataHandler("important", el[1])} key={el[1]}>
+          {isOpen ? important.map((el) => (
+            <li onClick={() => {
+              goalDataHandler("important", el[1])
+              setIsOpen(!isOpen);
+            }} key={el[1]}>
               {el[0]}
             </li>
-          ))}
+          )) : null}
         </ul>
-        설명
+        Description
         <textarea
           onChange={(e) => goalDataHandler("description", e.target.value)}
           value={goalData.description}
         ></textarea>
-        <button onClick={todoAdder}>생성</button>
+        <button onClick={todoAdder}>Create</button>
       </ModalContainer>
     </Container>
   );
 }
 
 const Container = styled.div`
-  position: absolute;
+  position: fixed;
   top: 0;
-  left:0;
+  left: 0;
   display: ${(props) => (props.isCreateOpen ? "flex" : "none")};
   justify-content: center;
   align-items: center;
   width: 100vw;
   height: 100vh;
+  font-size: 1.4rem;
+  padding:1rem;
   background-color: rgba(0, 0, 0, 0.3);
+  z-index: 9999999;
+`;
+
+const CloseButton = styled.img`
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 1rem;
 `;
 
 const ModalContainer = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   width: 50vw;
   height: 50vh;
-  border: 1px solid black;
+  border: 0.4rem solid black;
   background-color: white;
 `;
 
-const Daypicker = styled.div``;
+const Daypicker = styled.div`
+  display: flex;
+  justify-content:flex-start;
+`;
 
-const StyleDatePicker = styled(DatePicker)``;
+const StyleDatePicker = styled(DatePicker)`
+width:5rem;
+border:1px solid black`;

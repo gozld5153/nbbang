@@ -1,7 +1,10 @@
 import styled from "styled-components";
 import axios from "axios";
 import { useCookies } from "react-cookie";
+
 import { useNavigate } from "react-router-dom";
+import { set } from "date-fns/esm";
+import MiniMypage from "../miniMypage/MiniMypage";
 
 export default function Nav({
   handleModal,
@@ -9,9 +12,17 @@ export default function Nav({
   handleMypage,
   handleOffMypage,
   isModal,
+  switchBtn,
+  isMypage,
+  userInfo,
+  userData,
 }) {
   const navigate = useNavigate();
+  const location = useLocation();
   const [cookies, setCookie, removeCookie] = useCookies([]);
+  const signUp = true;
+
+
   const handleLogout = () => {
     axios
       .post(`${process.env.REACT_APP_API_URL}/users/signout`, null, {
@@ -23,10 +34,21 @@ export default function Nav({
       });
   };
 
+
+  const handleProject = () => {
+    axios
+      .post(`${process.env.REACT_APP_API_URL}/project`, {
+        projectName: "새로운 프로젝트",
+        captainId: userInfo.id,
+      })
+      .then((data) => navigate(`/project/${data.data.data.id}`))
+      .catch((err) => console.log(err));
+  };
+
   return (
-    <NavBar isModal={isModal}>
+    <NavBar isModal={isModal} path={window.location.pathname}>
       <Logo
-        src={`${process.env.PUBLIC_URL}/images/logo.png`}
+        src={`${process.env.PUBLIC_URL}/images/logo11.png`}
         onClick={() => {
           handleOffMypage();
           navigate("/");
@@ -35,19 +57,42 @@ export default function Nav({
       <ContainerBtn>
         {isLogin ? (
           <>
-            <LoginBtn isLogin={isLogin}>새 프로젝트</LoginBtn>
-            <LoginBtn isLogin={isLogin} onClick={handleMypage}>
-              마이 페이지
-            </LoginBtn>
-            <LoginBtn onClick={handleLogout}>Logout</LoginBtn>
+            <BtnMenu isLogin={isLogin} onClick={handleProject}>
+              Project
+            </BtnMenu>
+            <MypageBtn
+              isLogin={isLogin}
+              isMypage={isMypage}
+              onClick={handleMypage}
+            >
+              My Page
+            </MypageBtn>
+            <BtnMenu onClick={handleLogout}>Logout</BtnMenu>
+            {switchBtn ? (
+              <MiniMypage
+                isMypage={isMypage}
+                userInfo={userInfo}
+                userData={userData}
+              ></MiniMypage>
+            ) : null}
           </>
         ) : (
           <>
-            <LoginBtn onClick={handleModal} isLogin={isLogin}>
-              Login
+            <LoginBtn className="login" onClick={handleModal} isLogin={isLogin}>
+              <BigWrapper>
+                <Wrapper>
+                  <div>Login</div>
+                  <div>Login</div>
+                </Wrapper>
+              </BigWrapper>
             </LoginBtn>
             <LoginBtn onClick={handleModal} isLogin={isLogin}>
-              Sign up
+              <BigWrapper>
+                <Wrapper signUp={signUp}>
+                  <div>Sign up</div>
+                  <div>Sign up</div>
+                </Wrapper>
+              </BigWrapper>
             </LoginBtn>
           </>
         )}
@@ -56,7 +101,44 @@ export default function Nav({
   );
 }
 
+const BigWrapper = styled.div`
+  display: flex;
+  height: inherit;
+  overflow: hidden;
+`;
+const Wrapper = styled.div`
+  display: inherit;
+  align-items: center;
+  position: relative;
+
+  &:hover {
+    animation-name: slideMoving;
+    animation-duration: 2s;
+    animation-timing-function: linear;
+    animation-direction: normal;
+    animation-iteration-count: infinite;
+  }
+
+  @keyframes slideMoving {
+    0% {
+      left: 0;
+    }
+    100% {
+      left: -100%;
+    }
+  }
+`;
+const Text = styled.div`
+  text-align: center;
+  width: 9.25rem;
+  flex-shrink: 0;
+`;
+
 const NavBar = styled.div`
+  background-color: #f6f2f1;
+  position: ${({ path }) => (path === "/" ? "sticky" : null)};
+
+
   height: 6rem;
   width: 100%;
   display: flex;
@@ -66,10 +148,12 @@ const NavBar = styled.div`
 `;
 
 const Logo = styled.img`
-  width: 13%;
+  flex-shrink: 0;
+  width: 200px;
   height: 100%;
-  object-fit: fill;
+  object-fit: contain;
   cursor: pointer;
+  border-right: 5px solid black;
 `;
 
 const ContainerBtn = styled.div`
@@ -77,14 +161,97 @@ const ContainerBtn = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  position: relative;
 `;
 
-const LoginBtn = styled.button`
+const BtnMenu = styled.button`
   height: 100%;
   font-family: "Anton", sans-serif;
   font-size: 1.5rem;
   border-left: 2px solid black;
   width: ${(props) => {
-    return props.isLogin ? "6rem" : "150px";
+    return props.isLogin ? "10rem" : "150px";
   }};
+  cursor: pointer;
+  &:hover {
+    background-color: #222222;
+    color: #efefef;
+  }
 `;
+
+const MypageBtn = styled.button`
+  height: 100%;
+  font-family: "Anton", sans-serif;
+  font-size: 1.5rem;
+  border-left: 2px solid black;
+  width: ${(props) => {
+    return props.isLogin ? "10rem" : "150px";
+  }};
+  background-color: ${({ isMypage }) => (isMypage ? "red" : null)};
+  color: ${({ isMypage }) => (isMypage ? "#efefef" : null)};
+  cursor: pointer;
+  &:hover {
+    background-color: #222222;
+    color: #efefef;
+  }
+`;
+
+const LoginBtn = styled.div`
+  height: 100%;
+  font-family: "Anton", sans-serif;
+  font-size: 1.5rem;
+  border-left: 2px solid black;
+  width: ${(props) => {
+    return props.isLogin ? "10rem" : "150px";
+  }};
+  display: flex;
+
+`;
+
+const BigWrapper = styled.div`
+  display: flex;
+  height: inherit;
+  overflow: hidden;
+  cursor: pointer;
+`;
+const Wrapper = styled.div`
+  width: 20rem;
+  height: inherit;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  position: relative;
+  /* background-color: blue; */
+  &:hover {
+    animation-name: ${({ signUp }) =>
+      signUp ? "slideMoving" : "slideMoving2"};
+    animation-duration: 2s;
+    animation-timing-function: linear;
+    animation-direction: normal;
+    animation-iteration-count: infinite;
+  }
+  @keyframes slideMoving2 {
+    0% {
+      left: 0;
+    }
+    100% {
+      left: -99px;
+    }
+  }
+  @keyframes slideMoving {
+    0% {
+      left: 0;
+    }
+    100% {
+      left: -111px;
+    }
+  }
+
+  > div {
+    text-align: center;
+    margin-left: ${({ signUp }) => (signUp ? "2.5rem" : "3rem")};
+    flex-shrink: 0;
+  }
+
+`;
+

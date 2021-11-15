@@ -7,27 +7,55 @@ import styled, { keyframes } from "styled-components";
 const MiniMypage = ({ userInfo, isMypage, userData }) => {
   const [progress, setProgress] = useState([]);
   const [complete, setComplete] = useState([]);
-  const [members, setMember] = useState([]);
+  const [progressMembers, setProgressMember] = useState([]);
+  const [completeMembers, setCompleteMember] = useState([]);
   useEffect(() => {
     let newProgress = [];
     let newComplete = [];
-    let newMembers = [];
+    let newProgressMembers = [];
+    let newCompleteMembers = [];
 
-    for (let i = 0; i < 3; i++) {
-      newProgress.push(userData[i].project_name);
-      newComplete.push(userData[i].project_name);
-      newMembers.push(userData[i].users);
+    if (
+      userData.data.progress.length === 0 &&
+      userData.data.complete.length === 0
+    ) {
+      return;
+    } else if (
+      userData.data.progress.length === 0 &&
+      userData.data.complete.length !== 0
+    ) {
+      for (let i = 0; i < 3; i++) {
+        newComplete.push(userData.data.complete[i].projectName);
+        newCompleteMembers.push(userData.data.complete[i].members);
+      }
+    } else if (
+      userData.data.progress.length !== 0 &&
+      userData.data.complete.length === 0
+    ) {
+      for (let i = 0; i < 3; i++) {
+        newProgress.push(userData.data.progress[i].projectName);
+        newProgressMembers.push(userData.data.progres[i].members);
+      }
+    } else {
+      for (let i = 0; i < 3; i++) {
+        newProgress.push(userData.data.progress[i].projectName);
+        newComplete.push(userData.data.complete[i].projectName);
+        newProgressMembers.push(userData.data.progres[i].members);
+        newCompleteMembers.push(userData.data.complete[i].members);
+      }
     }
+
     setProgress(newProgress);
     setComplete(newComplete);
-    setMember(newMembers);
+    setProgressMember(newProgressMembers);
+    setCompleteMember(newCompleteMembers);
   }, []);
   return (
     <Container className={isMypage ? "add" : "hide"} isMypage={isMypage}>
       <MiniContainer>
         <UserInfo userInfo={userInfo} />
-        <MiniProject progress={progress} members={members} />
-        <ResultProject complete={complete} members={members} />
+        <MiniProject progress={progress} members={progressMembers} />
+        <ResultProject complete={complete} members={completeMembers} />
       </MiniContainer>
     </Container>
   );
@@ -37,41 +65,44 @@ export default MiniMypage;
 
 const moveLeft = keyframes`
   0% {
-    transform: translateX(0)
+    transform: scaleY(0)
   }
   50% {
-    transform: translateX(-50%)
+    transform: scaleY(50%)
   }
   100% {
-    transform: translateX(-100%)
+    transform: scaleY(100%)
   }
 `;
 
 const moveHide = keyframes`
   0% {
-    transform: translateX(0)
+    transform: scaleY(100%)
   }
   50% {
-    transform: translateX(50%)
+    transform: scaleY(50%)
   }
   100% {
-    transform: translateX(100%)
+    transform: scaleY(0)
   }
 `;
 
 const Container = styled.div`
-  position: fixed;
-  height: 93vh;
-  width: 30%;
-
-  right: ${(props) => (props.isMypage ? "-30%" : "0")};
-  top: 7vh;
-  background-color: #e7ecf0;
+  position: absolute;
+  height: 80vh;
+  width: 470px;
+  transform-origin: top;
+  top: 6rem;
+  right: 0;
+  z-index: 990;
+  background-color: #f6f2f1;
+  border-left: 4px solid black;
+  border-bottom: 3px solid black;
   &.hide {
     animation: ${moveHide} 0.4s linear forwards;
   }
   &.add {
-    animation: ${moveLeft} 0.4s linear forwards;
+    animation: ${moveLeft} 0.5s linear forwards;
   }
 `;
 
@@ -79,6 +110,7 @@ const MiniContainer = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
+
   flex-direction: column;
   > :nth-child(1) {
     flex: 30%;

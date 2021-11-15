@@ -13,7 +13,7 @@ const ResultProject = ({ complete, members }) => {
           <div>
             <ul>
               {complete.map((project, idx) => (
-                <li key={idx} onClick={() => navigate("project-done")}>
+                <li key={idx} onClick={() => navigate("/mypage/project-done")}>
                   <p>{project}</p>
                   {members[idx].map((name, idx) => (
                     <span key={idx}>{name.username} &nbsp;</span>

@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
+import axios from 'axios'
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -42,18 +43,30 @@ export default function GoalModal() {
       DataHandler("comments", [
         ...goal.comments,
         {
-          projectId: params.project_id,
+          projectId: params.projectId,
           userId: location.state.myInfo.id,
           username: location.state.myInfo.username,
-          description: e.target.value,
-          created_at: new Date(),
+          content: e.target.value,
+          createdAt: new Date(),
         },
       ]);
       setComment("");
     }
   }
-  console.log(params)
-  console.log(location.state);
+
+  useEffect(() => {
+    axios.get(`http://server.nbbang.ml/goal?goalId=${params.id}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      withCredentials: true,
+    }).then((res) => {
+      console.log(res.data.data)
+      setGoal(res.data.data);
+    });
+    
+  },[]);
+  console.log(goal.Comments)
   return (
     <Container>
       <ModalContainer>
@@ -141,25 +154,25 @@ export default function GoalModal() {
           />
         </EditContainer>
         파일
-        {goal.file.map((el) => el.filename)}
+        {goal.Files ? goal.Files.map((el) => el.fileName) : null}
         <input type="file" />
         {
           // 파일 업로드 하는 방법 찾기
         }
         코멘트
-        {goal.comments.map((el) => (
+        {goal.Comments ? goal.Comments.map((el) => (
           <CommentContainer key={el.id}>
-            <div>{el.username}</div>
-            <div>{el.description}</div>
+            <div>{el.userId}</div>
+            <div>{el.content}</div>
             <div>
-              {`${el.created_at
+              {`${el.createdAt
                 .toLocaleString()
                 .split(" ")
                 .join("")
                 .slice(0, 10)}`}
             </div>
           </CommentContainer>
-        ))}
+        )) : null}
         <input
           type="text"
           value={comment}
@@ -176,9 +189,9 @@ export default function GoalModal() {
 }
 
 const Container = styled.div`
-  position: absolute;
+  position: fixed;
   top: 0;
-  left:0;
+  left: 0;
   display: flex;
   justify-content: center;
   align-items: center;

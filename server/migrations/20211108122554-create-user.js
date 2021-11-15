@@ -18,7 +18,11 @@ module.exports = {
         type: Sequelize.STRING,
       },
       profile: {
+        type: Sequelize.STRING(5000),
+      },
+      profileColor: {
         type: Sequelize.STRING,
+        defaultValue: "yellow",
       },
       mobile: {
         type: Sequelize.STRING,
