@@ -76,8 +76,12 @@ const Signup = ({ handleSignAndLogin, isOn }) => {
         .post(`${process.env.REACT_APP_API_URL}/users/duplication`, {
           email: signupInfo.email,
         })
-        .then(() => setIsChecked(true))
+        .then((data) => {
+          console.log(data);
+          setIsChecked(true);
+        })
         .catch((err) => {
+          console.log(err.response);
           setIsChecked(false);
           setShowErr("It's a duplicate email.");
         });

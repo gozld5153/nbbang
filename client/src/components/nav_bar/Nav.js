@@ -31,6 +31,16 @@ export default function Nav({
       });
   };
 
+  const handleProject = () => {
+    axios
+      .post(`${process.env.REACT_APP_API_URL}/project`, {
+        projectName: "새로운 프로젝트",
+        captainId: userInfo.id,
+      })
+      .then((data) => navigate(`/project/${data.data.data.id}`))
+      .catch((err) => console.log(err));
+  };
+
   return (
     <NavBar isModal={isModal} path={window.location.pathname}>
       <Logo
@@ -43,7 +53,9 @@ export default function Nav({
       <ContainerBtn>
         {isLogin ? (
           <>
-            <BtnMenu isLogin={isLogin}>Project</BtnMenu>
+            <BtnMenu isLogin={isLogin} onClick={handleProject}>
+              Project
+            </BtnMenu>
             <MypageBtn
               isLogin={isLogin}
               isMypage={isMypage}
@@ -97,9 +109,10 @@ const NavBar = styled.div`
 `;
 
 const Logo = styled.img`
-  width: 12rem;
+  flex-shrink: 0;
+  width: 200px;
   height: 100%;
-  object-fit: fill;
+  object-fit: contain;
   cursor: pointer;
   border-right: 5px solid black;
 `;

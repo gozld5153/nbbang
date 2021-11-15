@@ -15,16 +15,36 @@ const MiniMypage = ({ userInfo, isMypage, userData }) => {
     let newProgressMembers = [];
     let newCompleteMembers = [];
 
-    for (let i = 0; i < 3; i++) {
-      //실제 코드 userData.data.progress[i].projectName
-      //테스트용 코드
-      newProgress.push(userData[i].project_name);
-
-      //실제 코드 userData.data.complete[i].projectName
-      //userData.data.progres[i].members
-      newProgressMembers.push(userData[i].users);
-      //newCompleteMembers.push(userData.data.complete[i].members)
+    if (
+      userData.data.progress.length === 0 &&
+      userData.data.complete.length === 0
+    ) {
+      return;
+    } else if (
+      userData.data.progress.length === 0 &&
+      userData.data.complete.length !== 0
+    ) {
+      for (let i = 0; i < 3; i++) {
+        newComplete.push(userData.data.complete[i].projectName);
+        newCompleteMembers.push(userData.data.complete[i].members);
+      }
+    } else if (
+      userData.data.progress.length !== 0 &&
+      userData.data.complete.length === 0
+    ) {
+      for (let i = 0; i < 3; i++) {
+        newProgress.push(userData.data.progress[i].projectName);
+        newProgressMembers.push(userData.data.progres[i].members);
+      }
+    } else {
+      for (let i = 0; i < 3; i++) {
+        newProgress.push(userData.data.progress[i].projectName);
+        newComplete.push(userData.data.complete[i].projectName);
+        newProgressMembers.push(userData.data.progres[i].members);
+        newCompleteMembers.push(userData.data.complete[i].members);
+      }
     }
+
     setProgress(newProgress);
     setComplete(newComplete);
     setProgressMember(newProgressMembers);
@@ -74,6 +94,7 @@ const Container = styled.div`
   transform-origin: top;
   top: 6rem;
   right: 0;
+  z-index: 990;
   background-color: #f6f2f1;
   border-left: 4px solid black;
   border-bottom: 3px solid black;
@@ -89,6 +110,7 @@ const MiniContainer = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
+
   flex-direction: column;
   > :nth-child(1) {
     flex: 30%;

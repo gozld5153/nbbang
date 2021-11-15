@@ -8,7 +8,6 @@ import {
   ProjectInProgress,
   ProjectDone,
 } from "./pages/MyPage";
-import { Complete, ProjectStatics } from "./pages/Complete";
 import styled from "styled-components";
 import Nav from "./components/nav_bar/Nav";
 import { InProgress } from "./mockdata/MyPageProjectData";
@@ -72,27 +71,31 @@ export default function App() {
   };
 
   // 토큰이 유효하면 로그인 상태 유지 아니면 로그아웃
-  useEffect(() => {
-    axios
+  useEffect(async () => {
+    await axios
       .get(`${process.env.REACT_APP_API_URL}/users`, {
         withCredentials: true,
       })
       .then((data) => {
-        setUserInfo(data.data.data.data);
+        setUserInfo(data.data.data.userInfo);
         setIsLogin(true);
+        return data.data.data.userInfo.id;
       })
       .then((data) => {
-        axios
-          .get(
-            `${process.env.REACT_APP_API_URL}/project/${data.data.data.data.id}`
-          )
-          .then((data) => setUserData(data.data.data))
-          .catch((err) => console.log(err));
+        axios(`${process.env.REACT_APP_API_URL}/project/${data}}`)
+          .then((data) => setUserData(data.data))
+          .catch((err) => console.log(err.response));
+        console.log(userData);
       })
       .catch((err) => {
-        console.log(`쿠키 ${err.response.message}`);
+        console.log(`쿠키 ${err.response}`);
         setIsLogin(false);
       });
+
+    // await axios
+    //   .get(`${process.env.REACT_APP_API_URL}/project/${userInfo.id}`)
+    //   .then((data) => setUserData(data.data.data))
+    //   .catch((err) => console.log(err));
     //axios 요청으로 유저의 프로젝트 정보를 받아 와서 스테이트 관리해준다!
   }, [isLogin]);
 
@@ -143,9 +146,6 @@ export default function App() {
               element={<Project id={userInfo.id} />}
             >
               <Route path=":id" element={<GoalModal />} />
-            </Route>
-            <Route path="complete" element={<Complete />}>
-              <Route path=":project_id" element={<ProjectStatics />} />
             </Route>
           </Routes>
         </Frame>
