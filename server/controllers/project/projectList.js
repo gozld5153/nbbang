@@ -6,9 +6,72 @@ module.exports = async (req, res) => {
   // req.query.state
   // req.params.userId
   // req.query.progresspage
+  // req.query.completePage
 
   if (!req.params.userId) {
     return res.status(400).json({ data: null, message: "잘못된 요청입니다." });
+  }
+  // TODO 컴플리트 페이지 구현
+  if (req.query.completePage) {
+    let data = {};
+    let projectInfo;
+    try {
+      projectInfo = await Project.findOne({
+        where: {
+          id: req.params.userId,
+        },
+        attributes: [
+          "id",
+          "projectName",
+          "description",
+          "presentation",
+          "captainId",
+        ],
+        include: {
+          model: UsersProjects,
+          include: {
+            model: User,
+            attributes: ["username", "profile"],
+            include: {
+              model: Goal,
+              attributes: ["goalName", "important", "description"],
+            },
+          },
+        },
+      });
+      // project 정보는 모두 다 받아옴 이제 가공만 하면 됨
+      // projectInfo.dataValues.UsersProjects 돌면서 id가 captainId 면 가공 후 captain으로 보냄
+      // captainId가 아니면 가공 후 crew에 push
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({ data: null, message: "데이터베이스 에러" });
+    }
+    let captain = {};
+    let crew = [];
+    for (let el of projectInfo.dataValues.UsersProjects) {
+      let tempObj = {
+        username: el.dataValues.User.dataValues.username,
+        profile: el.dataValues.User.dataValues.profile,
+        goal: el.dataValues.User.dataValues.Goals,
+      };
+      if (el.id === projectInfo.dataValues.captainId) {
+        captain = tempObj;
+      } else {
+        crew.push(tempObj);
+      }
+    }
+    data = {
+      projectId: projectInfo.dataValues.id,
+      projectName: projectInfo.dataValues.projectName,
+      description: projectInfo.dataValues.description,
+      presentation: projectInfo.dataValues.presentation,
+      totalNum: projectInfo.dataValues.UsersProjects.length,
+      usersGoal: {
+        captain: captain,
+        crew: crew,
+      },
+    };
+    return res.status(200).json({ data: data, message: "ok" });
   }
 
   // userId로 usersProjects 테이블에서 projectsId 가져옴
