@@ -1,11 +1,18 @@
 import React from "react";
 import styled from "styled-components";
 
+import ProjectModal from "./ProjectModal";
+import MemberModal from "./MemberModal";
+
 export default function ProjectInfo({
   projectModalOpener,
   memberModalOpener,
   projectInfo,
   member,
+  isProjectOpen,
+  DataHandler,
+  isMemberOpen,
+  setMember,
 }) {
   return (
     <Container>
@@ -15,6 +22,13 @@ export default function ProjectInfo({
             <ProjectName onClick={projectModalOpener}>
               {projectInfo.projectName}
             </ProjectName>
+            <ProjectModal
+              isProjectOpen={isProjectOpen}
+              projectModalOpener={projectModalOpener}
+              member={member}
+              projectInfo={projectInfo}
+              DataHandler={DataHandler}
+            />
           </ProjectNameContainer>
           <ProjectDueContainer>
             <ProjectDue>{projectInfo.deadline}</ProjectDue>
@@ -24,7 +38,7 @@ export default function ProjectInfo({
           <Invite onClick={memberModalOpener}>INVITE</Invite>
           <ProjectMember>
             {member.map((el) => (
-              <ProfileContainer len={5}>
+              <ProfileContainer len={5} color={el.color}>
                 <Profile
                   len={5}
                   key={el.id}
@@ -33,6 +47,13 @@ export default function ProjectInfo({
                 />
               </ProfileContainer>
             ))}
+            <MemberModal
+              isMemberOpen={isMemberOpen}
+              memberModalOpener={memberModalOpener}
+              member={member}
+              projectInfo={projectInfo}
+              setMember={setMember}
+            />
           </ProjectMember>
         </MemberContainer>
       </ProjectInfomation>
@@ -82,6 +103,7 @@ const ProjectInfoContainer = styled.div`
   display:inherit;
 `;
 const ProjectNameContainer = styled.div`
+  position: relative;
   display: inherit;
   justify-content:center;
   align-items:center;
@@ -93,16 +115,6 @@ const ProjectName = styled.div`
   padding: 1rem;
   background-color: black;
 `;
-// const ProjectSettings = styled.div`
-//   display: inherit;
-//   align-items: flex-start;
-
-//   img {
-//     width: 2rem;
-//     border-radius: 50%;
-//     cursor:pointer;
-//   }
-// `;
 const ProjectDueContainer = styled.div`
   display: inherit;
   align-items: center;
@@ -126,13 +138,20 @@ const Invite = styled.div`
   cursor:pointer;
 `;
 const ProjectMember = styled.div`
+position: relative;
+display:flex;
 `;
 const ProfileContainer = styled.div`
   width: ${(props) => `${props.len}rem`};
   height: ${(props) => `${props.len}rem`};
   border-radius: ${(props) => `${props.len / 2}rem`};
   overflow: hidden;
-  background-color:black;
+  background-color: ${(props) => props.color};
+  margin-left: 0.5rem;
+
+  :first-child {
+    margin: 0;
+  }
 `;
 const Profile = styled.img`
   width: ${(props) => `${props.len}rem`};
@@ -168,12 +187,12 @@ const RateFrame = styled.div`
   /* margin: 0.5rem 0 0.5rem 0; */
 `;
 const RateName = styled.div`
-  position:absolute;
+  position: absolute;
   top: 0.5rem;
   left: 0.5rem;
-  font-size:2rem;
-  /* font-family: ; */
-  color:#ffffff
+  font-size: 2rem;
+  font-family: Architects + Daughter;
+  color: #ffffff;
 `;
 const RateBar = styled.div`
   flex-grow:${(props)=> props.important};

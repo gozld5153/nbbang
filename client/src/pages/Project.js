@@ -5,8 +5,6 @@ import axios from 'axios'
 
 import ProjectInfo from "../components/project/ProjectInfo"
 import ProjectField from "../components/project/ProjectField"
-import ProjectModal from '../components/project/ProjectModal'
-import MemberModal from '../components/project/MemberModal'
 
 export default function Project({ id }) {
   const params = useParams();
@@ -16,7 +14,7 @@ export default function Project({ id }) {
   const [myInfo, setMyInfo] = useState({
     id: id,
     username: "",
-    like_id: [],
+    likeId: [],
   });
   const [projectInfo, setProjectInfo] = useState({
     id: 0,
@@ -42,6 +40,7 @@ export default function Project({ id }) {
   const DataHandler = (key, value) => {
     let newObject = projectInfo;
     newObject[key] = value;
+    console.log(newObject.description)
     setProjectInfo({ ...newObject });
   };
 
@@ -58,7 +57,7 @@ export default function Project({ id }) {
         setProjectInfo({
           id: res.data.data.projectInfo.id,
           projectName: res.data.data.projectInfo.projectName,
-          captain_id: res.data.data.projectInfo.captainId,
+          captainId: res.data.data.projectInfo.captainId,
           state: res.data.data.projectInfo.state,
           description: res.data.data.projectInfo.description,
           allImportant: res.data.data.projectInfo.allImportant,
@@ -71,6 +70,7 @@ export default function Project({ id }) {
   }, []);
 
   const projectModalOpener = () => {
+    if(projectInfo.captainId === myInfo.id)
     setIsProjectOpen(!isProjectOpen);
   };
   const memberModalOpener = () => {
@@ -85,25 +85,17 @@ export default function Project({ id }) {
           myInfo={myInfo}
           projectInfo={projectInfo}
           member={member}
+          isProjectOpen={isProjectOpen}
+          DataHandler={DataHandler}
+          isMemberOpen={isMemberOpen}
+          setMember={setMember}
         />
         <ProjectField
           myInfo={myInfo}
           projectId={projectInfo.id}
           params={params}
-        />
-        <ProjectModal
-          isProjectOpen={isProjectOpen}
-          projectModalOpener={projectModalOpener}
           member={member}
-          projectInfo={projectInfo}
-          DataHandler={DataHandler}
-        />
-        <MemberModal
-          isMemberOpen={isMemberOpen}
-          memberModalOpener={memberModalOpener}
-          member={member}
-          projectInfo={projectInfo}
-          setMember={setMember}
+          myLike={myInfo.likeId}
         />
       </ProjectFrame>
     </Container>

@@ -147,7 +147,7 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   width: 100vw;
-  min-height: 100vh;
+  /* min-height: 100vh; */
   position: relative;
   overflow: auto;
   background-color: #f6f2f1;

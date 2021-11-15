@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import axios from "axios";
 import { useCookies } from "react-cookie";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { set } from "date-fns/esm";
 
@@ -13,6 +13,7 @@ export default function Nav({
   isModal,
 }) {
   const navigate = useNavigate();
+  const location = useLocation();
   const [cookies, setCookie, removeCookie] = useCookies([]);
 
   const handleLogout = () => {
@@ -25,9 +26,8 @@ export default function Nav({
         window.location.replace("/");
       });
   };
-
   return (
-    <NavBar isModal={isModal}>
+    <NavBar isModal={isModal} location={location}>
       <Logo
         src={`${process.env.PUBLIC_URL}/images/logo.png`}
         onClick={() => {
@@ -106,7 +106,8 @@ const Text = styled.div`
 
 const NavBar = styled.div`
   background-color: #f6f2f1;
-  position: sticky;
+  position: ${(props) =>
+    props.location.pathname.includes("/project") ? "default" : "sticky"};
   height: 6rem;
   width: 100%;
   display: flex;
