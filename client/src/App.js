@@ -20,17 +20,6 @@ import {
   ProjectInProgress,
   ProjectDone,
 } from "./pages/MyPage";
-<<<<<<< HEAD
-import { Complete, ProjectStatics } from "./pages/Complete";
-import styled from "styled-components";
-import Nav from "./components/nav_bar/Nav";
-import { InProgress } from "./mockdata/MyPageProjectData";
-import Project from "./pages/Project";
-import GoalModal from "./components/project/GoalModal";
-import { set } from "date-fns/esm";
-import Test from "./pages/Test";
-=======
->>>>>>> baa0de0b69da7b7b63e73473b79a46622a1c3d32
 
 export default function App() {
 
@@ -99,17 +88,8 @@ export default function App() {
   };
 
   // 토큰이 유효하면 로그인 상태 유지 아니면 로그아웃
-<<<<<<< HEAD
-  const location = window.location;
-=======
-
->>>>>>> baa0de0b69da7b7b63e73473b79a46622a1c3d32
   useEffect(() => {
-    // axios
-    //   .post(`http://localhost:4000/oauth/kakao`, {
-    //     code: location.href.slice(23),
-    //   })
-    //   .then((res) => console.log(res.data));
+
     axios
       .get(`${process.env.REACT_APP_API_URL}/users`, {
         withCredentials: true,
@@ -156,7 +136,6 @@ export default function App() {
             handleInvitedList={handleInvitedList}
           />
           <Routes>
-            <Route path="test" element={<Test />} />
             <Route
               path="/"
               element={
