@@ -1,13 +1,26 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Main from "./pages/Main";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route
+} from "react-router-dom";
+import styled from "styled-components";
 import axios from "axios";
+import disableScroll from "disable-scroll";
+
+import Main from "./pages/Main";
+import { Complete, ProjectStatics } from "./pages/Complete";
+import Project from "./pages/Project";
+
+import Nav from "./components/nav_bar/Nav";
+import GoalModal from "./components/project/GoalModal";
 import {
   MyPage,
   Profile,
   ProjectInProgress,
   ProjectDone,
 } from "./pages/MyPage";
+<<<<<<< HEAD
 import { Complete, ProjectStatics } from "./pages/Complete";
 import styled from "styled-components";
 import Nav from "./components/nav_bar/Nav";
@@ -16,27 +29,35 @@ import Project from "./pages/Project";
 import GoalModal from "./components/project/GoalModal";
 import { set } from "date-fns/esm";
 import Test from "./pages/Test";
+=======
+>>>>>>> baa0de0b69da7b7b63e73473b79a46622a1c3d32
 
 export default function App() {
-  const [userData, setUserData] = useState(InProgress);
-  const [userInfo, setUserInfo] = useState({
-    id: 1,
-    username: "demouser",
-    email: "demouser@nbbang.com",
-    profile: null,
-    createdAt: "2021-11-09T14:20:45.000Z",
-    updatedAt: "2021-11-09T14:20:45.000Z",
+
+  const [userData, setUserData] = useState({
+    data: { completeCount: 0, progressCount: 0 },
   });
+  const [userInfo, setUserInfo] = useState({});
   const [isModal, setIsModal] = useState(false);
   const [signAndLogin, setSignAndLogin] = useState("");
   const [isLogin, setIsLogin] = useState(false);
   const [isMypage, setIsMypage] = useState(false);
   const [switchBtn, setSwitchBtn] = useState(false);
   const [isOn, setIsOn] = useState(false);
+  const [invited, setInvited] = useState({});
 
+  const handleInvitedList = () => {
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/invite/${userInfo.id}`)
+      .then((data) => {
+        setInvited(data.data);
+      })
+      .catch((err) => console.log(err.response));
+  };
   const handleNavbar = () => {
     setIsLogin(true);
     setIsModal(!isModal);
+    disableScroll.off();
   };
 
   const handleSignAndLogin = () => {
@@ -52,17 +73,23 @@ export default function App() {
   };
 
   const handleModal = (e) => {
-    if (e.target.innerHTML === "Login") {
+    if (
+      e.target.firstChild.innerText === "Login" ||
+      e.target.innerText === "Login"
+    ) {
       setSignAndLogin("login");
     } else {
       setSignAndLogin("signup");
     }
     setIsModal(!isModal);
+    if (isModal !== true) {
+      disableScroll.on();
+    } else {
+      disableScroll.off();
+    }
   };
 
   const handleMypage = () => {
-    //axios 요청으로 유저의 프로젝트 정보를 받아 와서 스테이트 관리해준다!
-    console.log(userData);
     setSwitchBtn(true);
     setIsMypage(!isMypage);
   };
@@ -72,7 +99,11 @@ export default function App() {
   };
 
   // 토큰이 유효하면 로그인 상태 유지 아니면 로그아웃
+<<<<<<< HEAD
   const location = window.location;
+=======
+
+>>>>>>> baa0de0b69da7b7b63e73473b79a46622a1c3d32
   useEffect(() => {
     // axios
     //   .post(`http://localhost:4000/oauth/kakao`, {
@@ -80,17 +111,33 @@ export default function App() {
     //   })
     //   .then((res) => console.log(res.data));
     axios
-      .get(`${process.env.REACT_APP_API_URL}/users/users`, {
+      .get(`${process.env.REACT_APP_API_URL}/users`, {
         withCredentials: true,
       })
       .then((data) => {
-        console.log(data);
-        setUserInfo(data.data.data.user_info);
+        setUserInfo(data.data.data.userInfo);
         setIsLogin(true);
+        return data.data.data.userInfo.id;
       })
-      .catch(() => setIsLogin(false));
-  }, [isLogin]);
+      .then((data) => {
+        axios(`${process.env.REACT_APP_API_URL}/project/${data}}`)
+          .then((data) => {
+            setUserData(data.data);
+          })
+          .catch((err) => console.log(err.response));
 
+        axios
+          .get(`${process.env.REACT_APP_API_URL}/invite/${data}`)
+          .then((data) => {
+            setInvited(data.data);
+          })
+          .catch((err) => console.log(err.response));
+      })
+      .catch((err) => {
+        console.log(`쿠키 ${err.response}`);
+        setIsLogin(false);
+      });
+  }, [isLogin]);
   return (
     <Router>
       <Container>
@@ -101,6 +148,12 @@ export default function App() {
             isLogin={isLogin}
             handleMypage={handleMypage}
             handleOffMypage={handleOffMypage}
+            isMypage={isMypage}
+            userInfo={userInfo}
+            userData={userData}
+            switchBtn={switchBtn}
+            invited={invited}
+            handleInvitedList={handleInvitedList}
           />
           <Routes>
             <Route path="test" element={<Test />} />
@@ -113,33 +166,47 @@ export default function App() {
                   handleSignAndLogin={handleSignAndLogin}
                   signAndLogin={signAndLogin}
                   handleNavbar={handleNavbar}
-                  switchBtn={switchBtn}
-                  isMypage={isMypage}
-                  userInfo={userInfo}
                   isOn={isOn}
-                  userData={userData}
                 />
               }
             />
-            <Route path="mypage" element={<MyPage />}>
-              <Route path="profile" element={<Profile />} />
-              <Route
-                path="project-inprogress"
-                element={
-                  <ProjectInProgress
-                    userData={userData}
-                    setUserData={setUserData}
-                  />
-                }
-              />
-              <Route path="project-done" element={<ProjectDone />} />
-            </Route>
+
+            {userInfo.id && (
+              <Route path="mypage" element={<MyPage userInfo={userInfo} />}>
+                <Route
+                  path="profile"
+                  element={<Profile userInfo={userInfo} />}
+                />
+                <Route
+                  path="project-inprogress"
+                  element={
+                    <ProjectInProgress
+                      userData={userData}
+                      setUserData={setUserData}
+                      userId={userInfo.id}
+                    />
+                  }
+                />
+                <Route
+                  path="project-done"
+                  element={
+                    <ProjectDone
+                      userData={userData}
+                      setUserData={setUserData}
+                      userId={userInfo.id}
+                    />
+                  }
+                />
+              </Route>
+            )}
+
             <Route
-              path="project/:project_id"
+              path="project/:projectId"
               element={<Project id={userInfo.id} />}
             >
               <Route path=":id" element={<GoalModal />} />
             </Route>
+
             <Route path="complete" element={<Complete />}>
               <Route path=":project_id" element={<ProjectStatics />} />
             </Route>
@@ -153,14 +220,15 @@ export default function App() {
 const Container = styled.div`
   display: flex;
   justify-content: center;
-  width: 100vw;
-  min-height: 100vh;
+  /* width: 100vw; */
+  /* min-height: 100vh; */
+  width: 100%;
   position: relative;
-  overflow: auto;
   background-color: #f6f2f1;
 `;
 
 const Frame = styled.div`
+  position: relative;
   width: 88vw;
   border: 5px solid black;
   margin: 5rem 0 5rem 0;

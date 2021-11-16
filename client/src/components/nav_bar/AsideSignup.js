@@ -13,11 +13,13 @@ const AsideSignup = ({ handleSignAndLogin, isOn }) => {
 };
 
 const SignupBtn = styled.button`
+  font-family: "Anton", sans-serif;
   background-color: #f3f3f4;
   margin-top: 4rem;
   height: 2rem;
   width: 4rem;
-  border-radius: 0.5rem;
+  /* border-radius: 0.5rem; */
+  color: #222222;
   &:hover {
     background-color: #e1e1e1;
     font-weight: bold;
@@ -25,6 +27,7 @@ const SignupBtn = styled.button`
 `;
 
 const AsideContainer = styled.div`
+  font-family: "Anton", sans-serif;
   flex: 0 0 50%;
   height: 100%;
   display: flex;
@@ -35,6 +38,9 @@ const AsideContainer = styled.div`
   z-index: 10;
   color: #ffffff;
   background-color: #222222;
+
+  letter-spacing: 0.1rem;
+  font-size: 1rem;
   transition: all 0.5s linear;
   left: ${(props) => (props.isOn ? "50%" : "0")};
   > :nth-child(1) {
@@ -43,7 +49,11 @@ const AsideContainer = styled.div`
     font-weight: bold;
   }
   > :nth-child(2) {
+    font-size: 1.2rem;
     margin-bottom: 2rem;
+  }
+  > :nth-child(3) {
+    font-size: 1.2rem;
   }
 `;
 export default AsideSignup;

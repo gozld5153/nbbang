@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import axios from 'axios'
+import { Outlet, useNavigate } from "react-router-dom";
+import axios from "axios";
 
-import Goal from './Goal'
+import Goal from "./Goal";
 import GoalCreateModal from "./GoalCreateModal";
 
-import GoalMockData from '../../mockdata/GoalMockData'
 
-export default function ProjectField({ myInfo, projectId, params }) {
-  const { todo, progress, complete } = GoalMockData.data;
+export default function ProjectField({ myInfo, projectId, params, member, myLike }) {
   const [isTodo, setIsTodo] = useState([]);
   const [isProgress, setIsProgress] = useState([]);
   const [isComplete, setIsComplete] = useState([]);
@@ -18,7 +16,6 @@ export default function ProjectField({ myInfo, projectId, params }) {
   const goalList = [isTodo, isProgress, isComplete];
   const goalListText = ["To Do", "Progress", "Complete"];
 
-  const pathname = useLocation();
   const navigate = useNavigate();
 
   const createModalOpener = () => {
@@ -26,83 +23,111 @@ export default function ProjectField({ myInfo, projectId, params }) {
   };
 
   useEffect(() => {
-    setIsTodo([...todo]);
-    setIsProgress([...progress]);
-    setIsComplete([...complete]);
     axios
-      .get(`http://server.nbbang.ml/goal?project_id=${params}`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      })
+      .get(
+        `${process.env.REACT_APP_API_URL}/goal?projectId=${params.projectId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      )
       .then((res) => {
-        console.log("axios 요청 결과: ", res.data.data);
-        // setIsTodo([...res.data.data.todo]);
-        // setIsProgress([...res.data.data.progress]);
-        // setIsComplete([...res.data.data.complete]);
+        setIsTodo([...res.data.data.todo]);
+        setIsProgress([...res.data.data.progress]);
+        setIsComplete([...res.data.data.complete]);
       });
   }, []);
 
+  console.log(isProgress);
   return (
     <Container>
-      {goalList.map((el, idx) => (
-        <GoalList key={idx}>
-          <GoalState>{goalListText[Number(idx)]}</GoalState>
-          <PlusButton
-            isVisible={goalListText[Number(idx)]}
-            src={`${process.env.PUBLIC_URL}/images/add.png`}
-            onClick={createModalOpener}
-          />
-          {el.map((goal) => (
-            <div
-              onClick={() =>
-                navigate(`./${goal.id}`, {
-                  state: {
-                    myInfo: {
-                      id: myInfo.id,
-                      username: myInfo.username,
-                      like_id: myInfo.like_id
-                    }
-                  },
-                  replace: false,
-                })
-              }
-              key={goal.id}
-            >
-              <Goal goalInfo={goal} />
-            </div>
-          ))}
-        </GoalList>
-      ))}
-      <GoalCreateModal
-        isCreateOpen={isCreateOpen}
-        createModalOpener={createModalOpener}
-        isTodo={isTodo}
-        myInfo={myInfo}
-        setIsTodo={setIsTodo}
-        projectId={projectId}
-      />
-      <Outlet />
+      <Frame>
+        {goalList.map((el, idx) => (
+          <GoalList key={idx}>
+            <GoalState>{goalListText[Number(idx)]}</GoalState>
+            <PlusButton
+              isVisible={goalListText[Number(idx)]}
+              src={`${process.env.PUBLIC_URL}/images/add.png`}
+              onClick={createModalOpener}
+            />
+            {el.length ? (
+              <>
+                <GoalContainer>
+                  {el.map((goal) => (
+                    <div
+                      onClick={() =>
+                        navigate(`./${goal.id}`, {
+                          state: {
+                            myInfo: {
+                              id: myInfo.id,
+                              username: myInfo.username,
+                              likeId: myInfo.likeId,
+                            },
+                          },
+                          replace: false,
+                        })
+                      }
+                      key={goal.id}
+                    >
+                      <Goal goalInfo={goal} member={member} myLike={myLike} />
+                    </div>
+                  ))}
+                </GoalContainer>
+              </>
+            ) : (
+              <NothingHereContainer>
+                <NothingHere
+                  src={`${process.env.PUBLIC_URL}/images/empty.jpeg`}
+                />
+              </NothingHereContainer>
+            )}
+          </GoalList>
+        ))}
+        <GoalCreateModal
+          isCreateOpen={isCreateOpen}
+          createModalOpener={createModalOpener}
+          isTodo={isTodo}
+          myInfo={myInfo}
+          setIsTodo={setIsTodo}
+          projectId={projectId}
+        />
+        <Outlet />
+      </Frame>
     </Container>
   );
 }
 
 const Container = styled.div`
-  display:flex;
-  justify-content:space-between;
-  width:100vw;
-  min-height: 70vh;
-  padding: 0 10rem 0 10rem;
+  display: flex;
+  flex-direction: column;
+`;
+
+const Frame = styled.div`
+  display: flex;
+  justify-content: space-around;
 `;
 
 const GoalList = styled.div`
   position: relative;
-  width: 26rem;
+  width: 28rem;
+  height: 40rem;
+  margin-bottom: 3rem;
+  padding: 1rem 2rem;
+  background-color: #ffffff;
+`;
+
+const GoalContainer = styled.div`
+  height: 32.5rem;
+  overflow: scroll;
 `;
 
 const GoalState = styled.div`
-  height:3rem;
+  height: 3rem;
+  font-size: 3rem;
+  font-family: anton;
+  margin: 0.5rem 0 1rem 0.5rem;
 `;
 
 const PlusButton = styled.img`
@@ -111,4 +136,44 @@ const PlusButton = styled.img`
   top: 0.5rem;
   right: 0.5rem;
   width: 2rem;
+  cursor: pointer;
+`;
+
+const NothingHereContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 32.5rem;
+`;
+
+const NothingHere = styled.img`
+  width: 10rem;
+
+  :hover {
+    animation-name: wave;
+    animation-duration: 0.5s;
+    animation-timing-function: ease-out;
+    animation-direction: normal;
+    animation-iteration-count: 2;
+  }
+
+  @keyframes wave {
+    0% {
+      transform: rotate(0deg);
+    }
+    25% {
+      transform: rotate(20deg);
+    }
+
+    50% {
+      transform: rotate(0deg);
+    }
+
+    75% {
+      transform: rotate(-20deg);
+    }
+    100% {
+      transform: rotate(0deg);
+    }
+  }
 `;

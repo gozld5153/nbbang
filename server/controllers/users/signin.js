@@ -26,6 +26,11 @@ module.exports = async (req, res) => {
       .status(400)
       .json({ data: null, message: "존재하지 않는 사용자입니다." });
   }
+<<<<<<< HEAD
+=======
+  // 데이터에서 password 제거
+  // delete userInfo.dataValues.password;
+>>>>>>> baa0de0b69da7b7b63e73473b79a46622a1c3d32
   // accessToken 발급
   const accessToken = jwt.sign(
     { email: userInfo.dataValues.email },

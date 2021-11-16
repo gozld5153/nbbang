@@ -2,9 +2,12 @@ import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-const ResultProject = ({ complete, members }) => {
+const ResultProject = ({ complete, members, handleMypage }) => {
   const navigate = useNavigate();
-
+  const handleMoveMypage = () => {
+    navigate("/mypage/project-done");
+    handleMypage();
+  };
   return (
     <Container>
       {complete.length > 0 ? (
@@ -13,7 +16,7 @@ const ResultProject = ({ complete, members }) => {
           <div>
             <ul>
               {complete.map((project, idx) => (
-                <li key={idx} onClick={() => navigate("project-done")}>
+                <li key={idx} onClick={handleMoveMypage}>
                   <p>{project}</p>
                   {members[idx].map((name, idx) => (
                     <span key={idx}>{name.username} &nbsp;</span>

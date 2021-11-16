@@ -15,15 +15,16 @@ const Login = ({ handleNavbar, isOn }) => {
 
   const handleLogin = (event) => {
     if (!loginInfo.email || !loginInfo.password) {
-      setErrMsg("정보를 입력하세요!");
+      setErrMsg("Please enter information");
     } else {
       //todo axios 통신요청
+      console.log(`${process.env.REACT_APP_API_URL}`);
       axios //
         .post(`${process.env.REACT_APP_API_URL}/users/signin`, loginInfo, {
           withCredentials: true,
         })
         .then(() => handleNavbar())
-        .catch((err) => console.log(err));
+        .catch((err) => setErrMsg("You are Wrong!!"));
     }
   };
   return (
@@ -33,19 +34,25 @@ const Login = ({ handleNavbar, isOn }) => {
         type="text"
         placeholder="email"
         onChange={handleValue("email")}
+        errMsg={errMsg}
       ></input>
       <input
         type="password"
         placeholder="password"
         onChange={handleValue("password")}
+        errMsg={errMsg}
       ></input>
-      <div>{errMsg}</div>
-      <LoginBtn onClick={handleLogin}>Login</LoginBtn>
+
+      <ErrBox>
+        <LoginBtn onClick={handleLogin}>Login</LoginBtn>
+        <ErrMsg errMsg={errMsg}>{errMsg}</ErrMsg>
+      </ErrBox>
     </Container>
   );
 };
 
 const Container = styled.div`
+  font-family: "Anton", sans-serif;
   flex: 0 0 50%;
   height: 100%;
   display: flex;
@@ -60,26 +67,48 @@ const Container = styled.div`
     font-weight: bold;
     font-size: 3rem;
     margin-bottom: 4rem;
+    letter-spacing: 0.1rem;
   }
   input {
+    width: 14rem;
+    height: 2rem;
+    letter-spacing: 0.05rem;
+    font-size: 1rem;
+    font-family: "Anton", sans-serif;
     z-index: 0;
     background-color: #f3f3f4;
     height: 2rem;
     margin: 0.5rem;
+    border: 1px solid black;
   }
 `;
 
 const LoginBtn = styled.button`
-  background-color: #f3f3f4;
-  margin-right: 2rem;
+  font-family: "Anton", sans-serif;
+  background-color: #222222;
+  color: #efefef;
+
   height: 2rem;
   width: 4rem;
-  border-radius: 0.5rem;
+  /* border-radius: 0.5rem; */
   margin-top: 3rem;
   &:hover {
-    background-color: #e1e1e1;
     font-weight: bold;
   }
+`;
+
+const ErrBox = styled.div`
+  position: relative;
+  display: flex;
+  width: 50%;
+  justify-content: center;
+`;
+
+const ErrMsg = styled.div`
+  top: ${({ errMsg }) => (errMsg ? 0 : "1rem")};
+  opacity: ${({ errMsg }) => (errMsg ? 1 : 0)};
+  transition: all 0.5s linear;
+  position: absolute;
 `;
 
 export default Login;

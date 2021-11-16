@@ -18,8 +18,8 @@ export default function GoalCreateModal({
   let today = new Date();
   const [goalData, setGoalData] = useState({
     id: null,
-    user_id: myInfo.id,
-    goal_name: "",
+    userId: myInfo.id,
+    goalName: "",
     description: "",
     state: "Todo",
     important: 1,
@@ -33,6 +33,8 @@ export default function GoalCreateModal({
     startDate: new Date(),
     endDate: new Date(),
   });
+  const [isOpen, setIsOpen] = useState(false)
+
   const important = [
     ["사소", 1],
     ["보통", 2],
@@ -49,10 +51,10 @@ export default function GoalCreateModal({
     createModalOpener();
     setGoalData({
       id: null,
-      user_id: myInfo.id,
-      goal_name: "",
+      userId: myInfo.id,
+      goalName: "",
       description: "",
-      state: "Todo",
+      state: "todo",
       important: 1,
       deadline: `${today.toLocaleString().split(" ").join("").slice(0, 10)} ~ 
               ${today.toLocaleString().split(" ").join("").slice(0, 10)}`,
@@ -61,58 +63,69 @@ export default function GoalCreateModal({
       comments: [],
     });
     setSelectDate({ startDate: new Date(), endDate: new Date() });
-
   }
 
   const todoAdder = () => {
-    axios.post(
-      `http://server.nbbang.ml/goal`,
-      {
-        user_id: myInfo.id,
-        project_id: projectId,
-        goal_name: goalData.goal_name,
-        description: goalData.description,
-        state: "todo",
-        important: goalData.important,
-        deadline: goalData.deadline,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
+    axios
+      .post(
+        `${process.env.REACT_APP_API_URL}/goal`,
+        {
+          userId: myInfo.id,
+          projectId: projectId,
+          goalName: goalData.goalName,
+          description: goalData.description,
+          state: "todo",
+          important: goalData.important,
+          deadline: goalData.deadline,
         },
-        withCredentials: true,
-      }
-    ).then((res) => {
-      goalData.id = res.data.data.id;
-      setIsTodo([...isTodo, goalData]);
-      createModalOpener();
-      setGoalData({
-        id: null,
-        user_id: myInfo.id,
-        goal_name: "",
-        description: "",
-        state: "Todo",
-        important: 1,
-        deadline: `${today.toLocaleString().split(" ").join("").slice(0, 10)} ~ 
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      )
+      .then((res) => {
+        goalData.id = res.data.data.id;
+        setIsTodo([...isTodo, goalData]);
+        createModalOpener();
+        setGoalData({
+          id: null,
+          userId: myInfo.id,
+          goalName: "",
+          description: "",
+          state: "todo",
+          important: 1,
+          deadline: `${today
+            .toLocaleString()
+            .split(" ")
+            .join("")
+            .slice(0, 10)} ~ 
               ${today.toLocaleString().split(" ").join("").slice(0, 10)}`,
-        agreement: 0,
-        file: 0,
-        comments: 0,
+          agreement: 0,
+          file: [],
+          comments: [],
+        });
+        setSelectDate({ startDate: new Date(), endDate: new Date() });
       });
-      setSelectDate({ startDate: new Date(), endDate: new Date() });
-    });
   };
+
+
   return (
     <Container isCreateOpen={isCreateOpen}>
       <ModalContainer>
-        <button onClick={modalCloser}>close</button>
-        미션이름
+        <CloseButton
+          src={`${process.env.PUBLIC_URL}/images/close.png`}
+          alt="close"
+          onClick={modalCloser}
+        />
+        <Title>Mission Name</Title>
         <input
-          onChange={(e) => goalDataHandler("goal_name", e.target.value)}
-          value={goalData.goal_name}
+          onChange={(e) => goalDataHandler("goalName", e.target.value)}
+          value={goalData.goalName}
           type="text"
         />
-        수행 기간
+        <Title>Deadline</Title>
         <Daypicker>
           <StyleDatePicker
             selected={selectDate.startDate}
@@ -134,6 +147,7 @@ export default function GoalCreateModal({
               );
             }}
           />
+          ~
           <StyleDatePicker
             selected={selectDate.endDate}
             dateFormat="yyyy-MM-dd"
@@ -154,49 +168,108 @@ export default function GoalCreateModal({
             }}
           />
         </Daypicker>
-        기여도
+        <Title>Important</Title>
         <ul>
-          <li>
+          <li onClick={() => setIsOpen(!isOpen)}>
             {important.filter((el) => el[1] === goalData.important)[0][0]}
           </li>
-          {important.map((el) => (
-            <li onClick={() => goalDataHandler("important", el[1])} key={el[1]}>
-              {el[0]}
-            </li>
-          ))}
+          {isOpen
+            ? important.map((el) => (
+                <li
+                  onClick={() => {
+                    goalDataHandler("important", el[1]);
+                    setIsOpen(!isOpen);
+                  }}
+                  key={el[1]}
+                >
+                  {el[0]}
+                </li>
+              ))
+            : null}
         </ul>
-        설명
+        <Title>Description</Title>
         <textarea
           onChange={(e) => goalDataHandler("description", e.target.value)}
           value={goalData.description}
-        ></textarea>
-        <button onClick={todoAdder}>생성</button>
+        />
+        <button onClick={todoAdder}>Create</button>
       </ModalContainer>
     </Container>
   );
 }
 
 const Container = styled.div`
-  position: absolute;
+  position: fixed;
   top: 0;
-  left:0;
+  left: 0;
   display: ${(props) => (props.isCreateOpen ? "flex" : "none")};
   justify-content: center;
   align-items: center;
   width: 100vw;
   height: 100vh;
+  font-size: 1.4rem;
+  padding:1rem;
   background-color: rgba(0, 0, 0, 0.3);
+  z-index: 9999999;
+`;
+
+const CloseButton = styled.img`
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 1rem;
 `;
 
 const ModalContainer = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
-  width: 50vw;
-  height: 50vh;
-  border: 1px solid black;
+  align-items: flex-start;
+  width: 20rem;
+  border: 0.4rem solid black;
+  padding: 1rem;
   background-color: white;
+
+  input {
+    width: 8rem;
+    border-bottom: 0.2rem solid black;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+  ul {
+    display:flex;
+    align-items:flex-end;
+  }
+
+  li:first-child {
+    font-size: 1.4rem;
+    border-bottom: 0.2rem solid black;
+    margin: 0.1rem;
+  }
+
+  li {
+    font-size: 1rem;
+    margin-right: 0.2rem;
+  }
+
+  textarea {
+    width:17rem;
+    resize:none;
+    margin-bottom:1.3rem;
+  }
 `;
 
-const Daypicker = styled.div``;
+const Title = styled.div`
+  margin: 1rem 0 0.5rem 0;
+`;
 
-const StyleDatePicker = styled(DatePicker)``;
+const Daypicker = styled.div`
+  display: flex;
+  justify-content:flex-start;
+`;
+
+const StyleDatePicker = styled(DatePicker)`
+  width: 8rem;
+  font-size: 1.4rem;
+  border-bottom: 0.2rem solid black;
+`;

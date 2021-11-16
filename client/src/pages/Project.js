@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import disableScroll from "disable-scroll";
 import axios from 'axios'
 
 import ProjectInfo from "../components/project/ProjectInfo"
 import ProjectField from "../components/project/ProjectField"
-import ProjectModal from '../components/project/ProjectModal'
-import MemberModal from '../components/project/MemberModal'
-// import projectMockData from '../mockData/ProjectMockdata';
 
 export default function Project({ id }) {
   const params = useParams();
@@ -17,16 +15,16 @@ export default function Project({ id }) {
   const [myInfo, setMyInfo] = useState({
     id: id,
     username: "",
-    like_id: [],
+    likeId: [],
   });
   const [projectInfo, setProjectInfo] = useState({
     id: 0,
-    project_name: "",
-    captain_id: 0,
+    projectName: "",
+    captainId: 0,
     state: "progress",
-    total_important: 0,
-    description:'',
-    important: 0,
+    allImportant: 0,
+    completeImportant:0,
+    description: "",
     deadline: 0,
   });
   const [member, setMember] = useState([
@@ -43,40 +41,49 @@ export default function Project({ id }) {
   const DataHandler = (key, value) => {
     let newObject = projectInfo;
     newObject[key] = value;
+    console.log(newObject.description)
     setProjectInfo({ ...newObject });
   };
 
   useEffect(() => {
     axios
-      .get(`http://server.nbbang.ml/project/${params.project_id}/${id}`, {
+      .get(`${process.env.REACT_APP_API_URL}/project/${params.projectId}/${id}`, {
         headers: {
           "Content-Type": "application/json",
         },
         withCredentials: true,
       })
       .then((res) => {
-        setMyInfo(res.data.data.user_info);
+        setMyInfo(res.data.data.userInfo);
         setProjectInfo({
-          id: res.data.data.project_info.id,
-          project_name: res.data.data.project_info.project_name,
-          captain_id: res.data.data.project_info.captain_id,
-          state: res.data.data.project_info.state,
-          description: res.data.data.project_info.description,
-          total_important: 10,
-          important: res.data.data.project_info.important,
-          deadline: '2021.11.12~2021.11.13',
+          id: res.data.data.projectInfo.id,
+          projectName: res.data.data.projectInfo.projectName,
+          captainId: res.data.data.projectInfo.captainId,
+          state: res.data.data.projectInfo.state,
+          description: res.data.data.projectInfo.description,
+          allImportant: res.data.data.projectInfo.allImportant,
+          completeImportant: res.data.data.projectInfo.completeImportant,
+          deadline: res.data.data.projectInfo.deadline,
         });
-        setMember([...res.data.data.project_info.members]);
+        setMember([...res.data.data.projectInfo.members]);
       })
       .catch((err) => console.log(err));
   }, []);
 
+  if (Object.keys(params).length === 2) {
+    disableScroll.on();
+  } else {
+    disableScroll.off();
+  }
+
   const projectModalOpener = () => {
+    if(projectInfo.captainId === myInfo.id)
     setIsProjectOpen(!isProjectOpen);
   };
   const memberModalOpener = () => {
     setIsMemberOpen(!isMemberOpen);
   };
+  console.log(`${process.env.REACT_APP_API_URL}`)
   return (
     <Container>
       <ProjectFrame>
@@ -86,25 +93,17 @@ export default function Project({ id }) {
           myInfo={myInfo}
           projectInfo={projectInfo}
           member={member}
+          isProjectOpen={isProjectOpen}
+          DataHandler={DataHandler}
+          isMemberOpen={isMemberOpen}
+          setMember={setMember}
         />
         <ProjectField
           myInfo={myInfo}
           projectId={projectInfo.id}
           params={params}
-        />
-        <ProjectModal
-          isProjectOpen={isProjectOpen}
-          projectModalOpener={projectModalOpener}
           member={member}
-          projectInfo={projectInfo}
-          DataHandler={DataHandler}
-        />
-        <MemberModal
-          isMemberOpen={isMemberOpen}
-          memberModalOpener={memberModalOpener}
-          member={member}
-          projectInfo={projectInfo}
-          setMember={setMember}
+          myLike={myInfo.likeId}
         />
       </ProjectFrame>
     </Container>
@@ -114,8 +113,6 @@ export default function Project({ id }) {
 const Container = styled.div`
   display:flex;
   flex-direction:column;
-  width:93vw;
-  margin-top:7vh;
   min-height: 93vh;
 `;
 
