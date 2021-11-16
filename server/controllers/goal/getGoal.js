@@ -1,4 +1,5 @@
-const { Goal, File, Comment, Like, User } = require("../../models");
+const { Goal, File, Comment, Like } = require("../../models");
+const comment = require("../../models/comment");
 
 module.exports = async (req, res) => {
   // TODO 목표 받아오는 api 구현
@@ -17,27 +18,13 @@ module.exports = async (req, res) => {
         where: {
           id: req.query.goalId,
         },
-        include: [
-          File,
-          {
-            model: Comment,
-            include: {
-              model: User,
-              attributes: ["username"],
-            },
-          },
-          Like,
-        ],
+        include: [File, Comment, Like],
       });
     } catch (err) {
       console.log(err);
       return res.status(500).json({ data: null, message: "데이터베이스 오류" });
     }
     goalInfo.dataValues.likeCount = goalInfo.dataValues.Likes.length;
-    for (let el of goalInfo.dataValues.Comments) {
-      el.dataValues.username = el.dataValues.User.dataValues.username;
-      delete el.dataValues.User;
-    }
 
     const data = goalInfo;
 

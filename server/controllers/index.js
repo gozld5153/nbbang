@@ -38,6 +38,4 @@ module.exports = {
   getInvite: require("./invite/getInvite"),
   postInvite: require("./invite/postInvite"),
   deleteInvite: require("./invite/deleteInvite"),
-  // oauth
-  kakao: require("./oauth/kakao"),
 };

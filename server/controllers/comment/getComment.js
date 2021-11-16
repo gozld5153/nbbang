@@ -12,7 +12,6 @@ module.exports = async (req, res) => {
   let data;
   try {
     data = await Comment.findAll({
-      attributes: ["userId", "goalId", "content", "createdAt", "updatedAt"],
       where: {
         goalId: req.params.goalId,
       },
@@ -21,10 +20,13 @@ module.exports = async (req, res) => {
         attributes: ["username"],
       },
     });
+    console.log(data);
     for (let el of data) {
       el.dataValues.username = el.dataValues.User.dataValues.username;
       delete el.dataValues.User;
     }
+    // data.dataValues.username = data.dataValues.User.dataValues.username;
+    // delete data.dataValues.User;
   } catch (err) {
     console.log(err);
     return res.status(500).json({ data: null, message: "데이터베이스 에러" });
