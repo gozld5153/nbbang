@@ -12,6 +12,8 @@ import { FaTimes } from "react-icons/fa";
 import Progressbar from "../components/utils/Progressbar";
 import { Done } from "../mockdata/MyPageProjectData";
 import ProjectPagePagination from "../components/utils/ProjectPagePagination";
+import axios from "axios";
+import { colorpick } from "../components/utils/MyPageColor";
 
 const rotation = keyframes`
   0% {
@@ -123,8 +125,10 @@ const ProfileCardContainer = styled.div`
   padding: 20px;
   background: ${(props) =>
     props.editMode
-      ? props.cardColor.blur
-      : `linear-gradient(to right, ${props.cardColor.blur} 15%, ${props.cardColor.main} 100%) `};
+      ? colorpick[`${props.cardColor}`].blur
+      : `linear-gradient(to right, ${
+          colorpick[`${props.cardColor}`].blur
+        } 15%, ${colorpick[`${props.cardColor}`].main} 100%) `};
 `;
 
 const ProfileCardEditLine = styled.div`
@@ -152,7 +156,9 @@ const ProfileCardNavHeadline = styled.div`
 `;
 
 const ProfileCardColorPicker = styled.div`
-  margin: 5px 10px;
+  margin: 5px 0px;
+  margin-left: auto;
+  margin-right: 240px;
   display: flex;
   z-index: 2;
 `;
@@ -168,7 +174,7 @@ const Color = styled.div`
 
 const ProfileEditToggle = styled.div`
   height: 30px;
-  margin-left: auto;
+  /* margin-left: auto; */
   font-size: 2rem;
   cursor: pointer;
   color: gray;
@@ -249,7 +255,7 @@ const ProfileImgAdjust = styled.div`
       position: relative;
       bottom: -40px;
       border-radius: 20px;
-      background: ${(props) => props.cardColor.main};
+      background: ${(props) => colorpick[props.cardColor].main};
       width: 150px;
       height: 50px;
       text-align: center;
@@ -299,9 +305,9 @@ const ProfileItems = styled.div`
   margin: 20px;
   border-bottom: ${(props) => (props.editMode ? "1px solid #ddd" : "none")};
   &:focus-within {
-    border-bottom: 1px solid ${(props) => props.cardColor.input};
+    border-bottom: 1px solid ${(props) => colorpick[`${props.cardColor}`].input};
     label {
-      color: ${(props) => props.cardColor.input};
+      color: ${(props) => colorpick[`${props.cardColor}`].input};
     }
   }
   label {
@@ -313,15 +319,16 @@ const ProfileItems = styled.div`
     display: inline-block;
   }
   input {
-    letter-spacing: 0.1rem;
+    letter-spacing: 0.05rem;
     background: transparent;
-    padding: 10px 0 25px 0;
+    padding: 15px 0 25px 0;
     width: 350px;
     border: none;
-    height: 64px;
-    font-size: 1.4rem;
+    height: 80px;
+    font-size: 1.75rem;
     font-weight: bold;
   }
+
   div {
     position: relative;
     border-top: ${(props) => (props.editMode ? "none" : "3px dashed gray")};
@@ -467,7 +474,6 @@ const StrokeContainer = styled.div`
 `;
 function SvgStrokeComponent({ color, here, now }) {
   const equel = here === now;
-  console.log(equel);
   return (
     <StrokeContainer equel={equel}>
       <svg viewBox="0 0 205 250">
@@ -495,7 +501,7 @@ export function MyPage() {
 
 export function MyPageNav() {
   const { pathname } = useLocation();
-  console.log(pathname);
+
   return (
     <NavContainer>
       <NavProfileImg />
@@ -536,51 +542,23 @@ export function MyPageNav() {
   );
 }
 
-export function Profile() {
+export function Profile({ userInfo }) {
   return (
     <ProfileWrapper>
-      <ProfileCard />
+      <ProfileCard userInfo={userInfo} />
     </ProfileWrapper>
   );
 }
 
-export function ProfileCard() {
-  const colorpick = {
-    pink: {
-      main: "#ffb1ee",
-      blur: "#fde6f8",
-      input: "#bb0092",
-    },
-    red: {
-      main: "#F7CA96",
-      blur: "#f3ddc3",
-      input: "#e27d02",
-    },
-    yellow: {
-      main: "#ffec9d",
-      blur: "#fffce9",
-      input: "#eece00",
-    },
-    green: {
-      main: "#E6EE89",
-      blur: "#e4e7be",
-      input: "#a5b100",
-    },
-    skyblue: {
-      main: "#72dbf5",
-      blur: "#c5f3ff",
-      input: "#007592",
-    },
-    purple: {
-      main: "#ac90fa",
-      blur: "#dbcffd",
-      input: "#3100b9",
-    },
-  };
+export function ProfileCard({ userInfo }) {
+  const colorArr = ["pink", "red", "yellow", "green", "skyblue", "purple"];
+
   const [editMode, setEditMode] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
-  const [cardColor, setCardColor] = useState(colorpick.yellow);
+  const [cardColor, setCardColor] = useState(`${userInfo.profileColor}`);
+  const [mobile, setMobile] = useState(`${userInfo.mobile}`);
+  const [username, setUsername] = useState(`${userInfo.username}`);
   const [profileImg, setProfileImg] = useState(
     `${process.env.PUBLIC_URL}/images/profile-sample.jpg`
   );
@@ -595,12 +573,45 @@ export function ProfileCard() {
     setIsComplete(false);
   };
 
-  const handleEditComplete = () => {
+  const handleEditCancle = async () => {
+    setEditMode(!editMode);
+    setIsLoading(false);
+    setIsComplete(false);
+
+    const response = await axios({
+      method: "GET",
+      url: `${process.env.REACT_APP_API_URL}/users`,
+      withCredentials: true,
+    });
+
+    setMobile(`${response.data.data.userInfo.mobile}`);
+    setUsername(`${response.data.data.userInfo.username}`);
+    setCardColor(`${response.data.data.userInfo.profileColor}`);
+  };
+
+  const handleEditComplete = async () => {
     setIsLoading(true);
+    axios({
+      method: "PUT",
+      url: `${process.env.REACT_APP_API_URL}/users`,
+      data: {
+        id: userInfo.id,
+        profileColor: `${cardColor}`,
+        username,
+        mobile,
+      },
+    });
+
     setTimeout(() => {
       setIsLoading(false);
       setIsComplete(true);
     }, 2000);
+  };
+
+  const handleInputChange = (event) => {
+    const clsName = event.target.classList[0];
+    if (clsName === "username") setUsername(event.target.value);
+    else setMobile(event.target.value);
   };
 
   const onFileChange = (event) => {
@@ -624,34 +635,17 @@ export function ProfileCard() {
     <>
       <ProfileCardHeadline>내 프로필</ProfileCardHeadline>
       <ProfileCardContainer editMode={editMode} cardColor={cardColor}>
-        <ProfileCardEditLine editMode={editMode} cardColor={cardColor}>
+        <ProfileCardEditLine editMode={editMode}>
           <ProfileCardNav>
             {editMode ? (
               <ProfileCardColorPicker>
-                <Color
-                  color={colorpick.pink.main}
-                  onClick={() => handleColor(colorpick.pink)}
-                />
-                <Color
-                  color={colorpick.red.main}
-                  onClick={() => handleColor(colorpick.red)}
-                />
-                <Color
-                  color={colorpick.yellow.main}
-                  onClick={() => handleColor(colorpick.yellow)}
-                />
-                <Color
-                  color={colorpick.green.main}
-                  onClick={() => handleColor(colorpick.green)}
-                />
-                <Color
-                  color={colorpick.skyblue.main}
-                  onClick={() => handleColor(colorpick.skyblue)}
-                />
-                <Color
-                  color={colorpick.purple.main}
-                  onClick={() => handleColor(colorpick.purple)}
-                />
+                {colorArr.map((coloritem) => (
+                  <Color
+                    color={colorpick[coloritem].main}
+                    key={coloritem}
+                    onClick={() => handleColor(coloritem)}
+                  />
+                ))}
               </ProfileCardColorPicker>
             ) : (
               <ProfileCardNavHeadline>
@@ -673,7 +667,7 @@ export function ProfileCard() {
                       <FiCheck />
                     )}
                   </ProfileEditComplete>
-                  <div onClick={handleEditMode}>
+                  <div onClick={handleEditCancle}>
                     <FaTimes />
                   </div>
                 </>
@@ -707,20 +701,37 @@ export function ProfileCard() {
             <ProfileItemsContainer editMode={editMode}>
               <ProfileItems cardColor={cardColor} editMode={editMode}>
                 <label>
-                  이름&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+                  이메일&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
                 </label>
-                <input disabled={!editMode} />
-                <div className={"line"} />
+                <input
+                  disabled
+                  value={`${userInfo.email}`}
+                  spellCheck="false"
+                />
+                <div className="line" />
               </ProfileItems>
               <ProfileItems cardColor={cardColor} editMode={editMode}>
-                <label>닉네임&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</label>
-                <input disabled={!editMode} />
-                <div className={"line"} />
+                <label>
+                  닉네임&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+                </label>
+                <input
+                  className="username"
+                  disabled={!editMode}
+                  value={username}
+                  spellCheck="false"
+                  onChange={handleInputChange}
+                />
+                <div className="line" />
               </ProfileItems>
               <ProfileItems cardColor={cardColor} editMode={editMode}>
                 <label>전화번호&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</label>
-                <input disabled={!editMode} />
-                <div className={"line"} />
+                <input
+                  className="mobile"
+                  disabled={!editMode}
+                  value={mobile}
+                  onChange={handleInputChange}
+                />
+                <div className="line" />
               </ProfileItems>
 
               <img
@@ -728,7 +739,7 @@ export function ProfileCard() {
                 alt=""
               />
               <span>N 빵</span>
-              <div className={"line"} />
+              <div className="line" />
             </ProfileItemsContainer>
           </ProfileDetail>
         </ProfileCardEditLine>
@@ -737,6 +748,7 @@ export function ProfileCard() {
   );
 }
 export function ProjectInProgress({ userData, setUserData }) {
+  console.log(userData);
   return (
     <ProjectWrapper>
       <ProjectColumnName>
@@ -746,7 +758,7 @@ export function ProjectInProgress({ userData, setUserData }) {
         <span>현재 나의 기여도</span>
       </ProjectColumnName>
       <ProjectContainer>
-        {userData.map((project) => (
+        {userData.data.map((project) => (
           <ProjectInProgressItems project={project} />
         ))}
       </ProjectContainer>

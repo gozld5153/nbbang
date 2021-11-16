@@ -1,14 +1,20 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Outlet, useNavigate } from "react-router-dom";
-import axios from 'axios'
+import axios from "axios";
 
-import Goal from './Goal'
+import Goal from "./Goal";
 import GoalCreateModal from "./GoalCreateModal";
 
-import GoalMockData from '../../mockdata/GoalMockData'
+import GoalMockData from "../../mockdata/GoalMockData";
 
-export default function ProjectField({ myInfo, projectId, params, member, myLike }) {
+export default function ProjectField({
+  myInfo,
+  projectId,
+  params,
+  member,
+  myLike,
+}) {
   const { todo, progress, complete } = GoalMockData.data;
   const [isTodo, setIsTodo] = useState([]);
   const [isProgress, setIsProgress] = useState([]);
@@ -79,7 +85,9 @@ export default function ProjectField({ myInfo, projectId, params, member, myLike
               </>
             ) : (
               <NothingHereContainer>
-                <NothingHere src={`${process.env.PUBLIC_URL}/images/empty.jpeg`} />
+                <NothingHere
+                  src={`${process.env.PUBLIC_URL}/images/empty.jpeg`}
+                />
               </NothingHereContainer>
             )}
           </GoalList>
@@ -119,13 +127,13 @@ const GoalList = styled.div`
 
 const GoalContainer = styled.div`
   height: 32.5rem;
-  overflow:scroll;
+  overflow: scroll;
 `;
 
 const GoalState = styled.div`
-  height:3rem;
+  height: 3rem;
   font-size: 3rem;
-  font-family:anton;
+  font-family: anton;
   margin: 0.5rem 0 1rem 0.5rem;
 `;
 
@@ -135,7 +143,7 @@ const PlusButton = styled.img`
   top: 0.5rem;
   right: 0.5rem;
   width: 2rem;
-  cursor:pointer;
+  cursor: pointer;
 `;
 
 const NothingHereContainer = styled.div`

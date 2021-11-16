@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import styled from "styled-components";
-import { set } from "date-fns/esm";
 import axios from "axios";
 
 import Main from "./pages/Main";
@@ -19,14 +18,7 @@ import {
 
 export default function App() {
   const [userData, setUserData] = useState(InProgress);
-  const [userInfo, setUserInfo] = useState({
-    id: 1,
-    username: "demouser",
-    email: "demouser@nbbang.com",
-    profile: null,
-    createdAt: "2021-11-09T14:20:45.000Z",
-    updatedAt: "2021-11-09T14:20:45.000Z",
-  });
+  const [userInfo, setUserInfo] = useState({});
   const [isModal, setIsModal] = useState(false);
   const [signAndLogin, setSignAndLogin] = useState("");
   const [isLogin, setIsLogin] = useState(false);
@@ -74,8 +66,8 @@ export default function App() {
 
   // 토큰이 유효하면 로그인 상태 유지 아니면 로그아웃
 
-  useEffect(async () => {
-    await axios
+  useEffect(() => {
+    axios
       .get(`${process.env.REACT_APP_API_URL}/users`, {
         withCredentials: true,
       })
@@ -86,20 +78,15 @@ export default function App() {
       })
       .then((data) => {
         axios(`${process.env.REACT_APP_API_URL}/project/${data}}`)
-          .then((data) => setUserData(data.data))
+          .then((data) => {
+            setUserData(data.data);
+          })
           .catch((err) => console.log(err.response));
-        console.log(userData);
       })
       .catch((err) => {
         console.log(`쿠키 ${err.response}`);
         setIsLogin(false);
       });
-
-    // await axios
-    //   .get(`${process.env.REACT_APP_API_URL}/project/${userInfo.id}`)
-    //   .then((data) => setUserData(data.data.data))
-    //   .catch((err) => console.log(err));
-    //axios 요청으로 유저의 프로젝트 정보를 받아 와서 스테이트 관리해준다!
   }, [isLogin]);
 
   return (
@@ -132,7 +119,12 @@ export default function App() {
               }
             />
             <Route path="mypage" element={<MyPage />}>
-              <Route path="profile" element={<Profile />} />
+              {userInfo.id && (
+                <Route
+                  path="profile"
+                  element={<Profile userInfo={userInfo} />}
+                />
+              )}
               <Route
                 path="project-inprogress"
                 element={
@@ -149,6 +141,10 @@ export default function App() {
               element={<Project id={userInfo.id} />}
             >
               <Route path=":id" element={<GoalModal />} />
+            </Route>
+
+            <Route path="complete" element={<Complete />}>
+              <Route path=":project_id" element={<ProjectStatics />} />
             </Route>
           </Routes>
         </Frame>
