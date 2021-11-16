@@ -3,7 +3,6 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 
 import { useNavigate } from "react-router-dom";
-import { set } from "date-fns/esm";
 import MiniMypage from "../miniMypage/MiniMypage";
 
 export default function Nav({
@@ -16,9 +15,10 @@ export default function Nav({
   isMypage,
   userInfo,
   userData,
+  invited,
+  handleInvitedList,
 }) {
   const navigate = useNavigate();
-
   const [cookies, setCookie, removeCookie] = useCookies([]);
   const signUp = true;
 
@@ -68,10 +68,12 @@ export default function Nav({
             <BtnMenu onClick={handleLogout}>Logout</BtnMenu>
             {switchBtn ? (
               <MiniMypage
+                invited={invited}
                 handleMypage={handleMypage}
                 isMypage={isMypage}
                 userInfo={userInfo}
                 userData={userData}
+                handleInvitedList={handleInvitedList}
               ></MiniMypage>
             ) : null}
           </>

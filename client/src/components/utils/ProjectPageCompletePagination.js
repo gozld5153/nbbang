@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styled, { css } from "styled-components";
-import { InProgress, InProgress2 } from "../../mockdata/MyPageProjectData";
+import axios from "axios";
+
 const Pagination = styled.div`
   display: flex;
   margin: 0 550px;
@@ -31,20 +32,30 @@ const Page = styled.div`
     `}
 `;
 
-export default function ProjectPagePagination({ setUserData }) {
+export default function ProjectPageCompletePagination({
+  setCompleteProjects,
+  totalCount,
+  userId,
+}) {
   const [pageNum, setPageNum] = useState(1);
+  const total = Math.ceil(totalCount / 5);
+  const PageArr = new Array(total).fill(0).map((_, idx) => idx + 1);
 
-  const handleButton = (event) => {
+  const handleButton = async (event) => {
     const clsName = event.target.classList[2];
 
     const newPageNum = clsName === "next-page" ? pageNum + 1 : pageNum - 1;
-    if (newPageNum < 1) return;
+    if (newPageNum < 1 || newPageNum > total) return;
     setPageNum(newPageNum);
-    if (newPageNum === 1) setUserData(InProgress);
-    else setUserData(InProgress2);
+    const { data } = await axios({
+      method: "GET",
+      url: `${process.env.REACT_APP_API_URL}/project/${userId}/?state=complete&page=${newPageNum}`,
+      withCredentials: true,
+    });
+
+    setCompleteProjects(data.data);
   };
-  const total = 2;
-  const PageArr = new Array(total).fill(0).map((_, idx) => idx + 1);
+
   return (
     <Pagination>
       <Button className="previous-page" onClick={handleButton}>
