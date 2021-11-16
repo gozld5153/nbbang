@@ -10,16 +10,20 @@ module.exports = async (req, res) => {
   }
   let response;
   try {
-    response = await Project.create(req.body);
-  } catch {
-    return res.status(500).json({ data: null, message: "데이터베이스 오류" });
-  }
-  try {
+    let date = new Date();
+    date =
+      date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+
+    response = await Project.create({
+      deadline: date + "~" + date,
+      ...req.body,
+    });
     await UsersProjects.create({
       userId: req.body.captainId,
       projectId: response.dataValues.id,
     });
-  } catch {
+  } catch (err) {
+    console.log(err);
     return res.status(500).json({ data: null, message: "데이터베이스 오류" });
   }
   return res.status(201).json({ data: response, message: "ok" });
