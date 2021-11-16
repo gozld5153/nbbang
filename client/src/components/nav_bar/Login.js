@@ -23,7 +23,7 @@ const Login = ({ handleNavbar, isOn }) => {
           withCredentials: true,
         })
         .then(() => handleNavbar())
-        .catch((err) => console.log(err));
+        .catch((err) => setErrMsg("You are Wrong!!"));
     }
   };
   return (
@@ -66,13 +66,19 @@ const Container = styled.div`
     font-weight: bold;
     font-size: 3rem;
     margin-bottom: 4rem;
+    letter-spacing: 0.1rem;
   }
   input {
+    width: 14rem;
+    height: 2rem;
+    letter-spacing: 0.05rem;
+    font-size: 1rem;
     font-family: "Anton", sans-serif;
     z-index: 0;
     background-color: #f3f3f4;
     height: 2rem;
     margin: 0.5rem;
+    border: 1px solid black;
   }
 `;
 

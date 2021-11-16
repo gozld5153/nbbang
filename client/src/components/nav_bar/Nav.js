@@ -18,10 +18,9 @@ export default function Nav({
   userData,
 }) {
   const navigate = useNavigate();
-  const location = useLocation();
+
   const [cookies, setCookie, removeCookie] = useCookies([]);
   const signUp = true;
-
 
   const handleLogout = () => {
     axios
@@ -33,7 +32,6 @@ export default function Nav({
         window.location.replace("/");
       });
   };
-
 
   const handleProject = () => {
     axios
@@ -70,6 +68,7 @@ export default function Nav({
             <BtnMenu onClick={handleLogout}>Logout</BtnMenu>
             {switchBtn ? (
               <MiniMypage
+                handleMypage={handleMypage}
                 isMypage={isMypage}
                 userInfo={userInfo}
                 userData={userData}
@@ -101,49 +100,15 @@ export default function Nav({
   );
 }
 
-const BigWrapper = styled.div`
-  display: flex;
-  height: inherit;
-  overflow: hidden;
-`;
-const Wrapper = styled.div`
-  display: inherit;
-  align-items: center;
-  position: relative;
-
-  &:hover {
-    animation-name: slideMoving;
-    animation-duration: 2s;
-    animation-timing-function: linear;
-    animation-direction: normal;
-    animation-iteration-count: infinite;
-  }
-
-  @keyframes slideMoving {
-    0% {
-      left: 0;
-    }
-    100% {
-      left: -100%;
-    }
-  }
-`;
-const Text = styled.div`
-  text-align: center;
-  width: 9.25rem;
-  flex-shrink: 0;
-`;
-
 const NavBar = styled.div`
   background-color: #f6f2f1;
   position: ${({ path }) => (path === "/" ? "sticky" : null)};
-
 
   height: 6rem;
   width: 100%;
   display: flex;
   border-bottom: 5px solid black;
-  z-index: ${({ isModal }) => (isModal ? 0 : 1000)};
+  z-index: 999;
   top: 0;
 `;
 
@@ -205,7 +170,6 @@ const LoginBtn = styled.div`
     return props.isLogin ? "10rem" : "150px";
   }};
   display: flex;
-
 `;
 
 const BigWrapper = styled.div`
@@ -225,7 +189,7 @@ const Wrapper = styled.div`
   &:hover {
     animation-name: ${({ signUp }) =>
       signUp ? "slideMoving" : "slideMoving2"};
-    animation-duration: 2s;
+    animation-duration: 1s;
     animation-timing-function: linear;
     animation-direction: normal;
     animation-iteration-count: infinite;
@@ -252,6 +216,4 @@ const Wrapper = styled.div`
     margin-left: ${({ signUp }) => (signUp ? "2.5rem" : "3rem")};
     flex-shrink: 0;
   }
-
 `;
-

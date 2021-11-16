@@ -2,11 +2,15 @@ import React from "react";
 import { useNavigate } from "react-router";
 import styled from "styled-components";
 
-const UserInfo = ({ userInfo }) => {
+const UserInfo = ({ userInfo, handleMypage }) => {
   const navigate = useNavigate();
+  const handleMoveMypage = () => {
+    navigate("/mypage/profile");
+    handleMypage();
+  };
   return (
     <Container>
-      <div onClick={() => navigate("/mypage/profile")}>
+      <div onClick={handleMoveMypage}>
         <img src={`${process.env.PUBLIC_URL}/images/bbang.png`} alt="" />
       </div>
       <div>
@@ -31,13 +35,13 @@ const Container = styled.div`
   color: #2e3032;
 
   > :nth-child(1) {
-    /* flex-grow: 1; */
+    flex-shrink: 0;
     text-align: center;
     height: 150px;
     width: 150px;
     background-color: #191123;
     border-radius: 50%;
-    margin: 0 2rem 0 2rem;
+    margin: 0 1rem 0 1rem;
     cursor: pointer;
     img {
       width: 100%;
@@ -46,11 +50,12 @@ const Container = styled.div`
     }
   }
   > :nth-child(2) {
-    flex: 60%;
+    width: 100%;
     > div {
+      word-break: break-all;
       margin: 2rem;
       font-weight: bold;
-      font-size: 2rem;
+      font-size: 1rem;
     }
   }
 `;
