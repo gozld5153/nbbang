@@ -17,10 +17,6 @@ export default function Nav({
   userData,
 }) {
   const navigate = useNavigate();
-<<<<<<< HEAD
-=======
-
->>>>>>> 3be99b4bac2f7e27e6e3641950dce4287bdb2dcb
   const [cookies, setCookie, removeCookie] = useCookies([]);
   const signUp = true;
 
