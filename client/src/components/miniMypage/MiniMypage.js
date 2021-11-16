@@ -4,7 +4,14 @@ import MiniProject from "./MiniProject";
 import ResultProject from "./ResultProject";
 import styled, { keyframes } from "styled-components";
 
-const MiniMypage = ({ userInfo, isMypage, userData, handleMypage }) => {
+const MiniMypage = ({
+  userInfo,
+  isMypage,
+  userData,
+  handleMypage,
+  invited,
+  handleInvitedList,
+}) => {
   const [progress, setProgress] = useState([]);
   const [complete, setComplete] = useState([]);
   const [progressMembers, setProgressMember] = useState([]);
@@ -61,7 +68,12 @@ const MiniMypage = ({ userInfo, isMypage, userData, handleMypage }) => {
   return (
     <Container className={isMypage ? "add" : "hide"} isMypage={isMypage}>
       <MiniContainer>
-        <UserInfo userInfo={userInfo} handleMypage={handleMypage} />
+        <UserInfo
+          userInfo={userInfo}
+          handleMypage={handleMypage}
+          invited={invited}
+          handleInvitedList={handleInvitedList}
+        />
         <MiniProject
           progress={progress}
           members={progressMembers}
