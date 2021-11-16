@@ -79,16 +79,16 @@ export default function App() {
     //     code: location.href.slice(23),
     //   })
     //   .then((res) => console.log(res.data));
-    // axios
-    //   .get(`${process.env.REACT_APP_API_URL}/users/users`, {
-    //     withCredentials: true,
-    //   })
-    //   .then((data) => {
-    //     console.log(data);
-    //     setUserInfo(data.data.data.user_info);
-    //     setIsLogin(true);
-    //   })
-    //   .catch(() => setIsLogin(false));
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/users/users`, {
+        withCredentials: true,
+      })
+      .then((data) => {
+        console.log(data);
+        setUserInfo(data.data.data.user_info);
+        setIsLogin(true);
+      })
+      .catch(() => setIsLogin(false));
   }, [isLogin]);
 
   return (

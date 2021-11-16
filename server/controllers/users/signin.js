@@ -37,9 +37,13 @@ module.exports = async (req, res) => {
 
   return res
     .status(200)
-    .cookie("accessToken", accessToken, {
-      httpOnly: true,
-    })
+    .cookie(
+      "accessToken",
+      { nbbangAccessToken: accessToken },
+      {
+        httpOnly: true,
+      }
+    )
     .json({
       message: "ok",
       data: null,
