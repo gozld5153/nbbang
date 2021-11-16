@@ -17,6 +17,10 @@ export default function Nav({
   userData,
 }) {
   const navigate = useNavigate();
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3be99b4bac2f7e27e6e3641950dce4287bdb2dcb
   const [cookies, setCookie, removeCookie] = useCookies([]);
   const signUp = true;
 
@@ -66,6 +70,7 @@ export default function Nav({
             <BtnMenu onClick={handleLogout}>Logout</BtnMenu>
             {switchBtn ? (
               <MiniMypage
+                handleMypage={handleMypage}
                 isMypage={isMypage}
                 userInfo={userInfo}
                 userData={userData}
@@ -105,7 +110,7 @@ const NavBar = styled.div`
   width: 100%;
   display: flex;
   border-bottom: 5px solid black;
-  z-index: ${({ isModal }) => (isModal ? 0 : 1000)};
+  z-index: 999;
   top: 0;
 `;
 
@@ -186,7 +191,7 @@ const Wrapper = styled.div`
   &:hover {
     animation-name: ${({ signUp }) =>
       signUp ? "slideMoving" : "slideMoving2"};
-    animation-duration: 2s;
+    animation-duration: 1s;
     animation-timing-function: linear;
     animation-direction: normal;
     animation-iteration-count: infinite;

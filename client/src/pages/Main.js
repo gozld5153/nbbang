@@ -118,29 +118,30 @@ export default function Main({
   }, [isModal]);
 
   return (
-    <Container ref={containerEle}>
-      {isModal ? (
-        <TotalModal
-          handleModal={handleModal}
-          handleSignAndLogin={handleSignAndLogin}
-          signAndLogin={signAndLogin}
-          handleNavbar={handleNavbar}
-          isOn={isOn}
-        ></TotalModal>
-      ) : (
-        <>
-          <Slide images={[image1, image2, image3]}></Slide>
-          <MainContainer ref={divF}>
-            <MainComponent />
-          </MainContainer>
-          <MainContainer ref={divS}>
-            <MainComponent />
-          </MainContainer>
-          <MainContainer ref={divT}>
-            <MainComponent />
-          </MainContainer>
-        </>
-      )}
+    <Container ref={containerEle} isModal={isModal}>
+      <>
+        {isModal ? (
+          <ModalContainer>
+            <TotalModal
+              handleModal={handleModal}
+              handleSignAndLogin={handleSignAndLogin}
+              signAndLogin={signAndLogin}
+              handleNavbar={handleNavbar}
+              isOn={isOn}
+            ></TotalModal>
+          </ModalContainer>
+        ) : null}
+        <Slide images={[image1, image2, image3]}></Slide>
+        <MainContainer ref={divF}>
+          <MainComponent />
+        </MainContainer>
+        <MainContainer ref={divS}>
+          <MainComponent />
+        </MainContainer>
+        <MainContainer ref={divT}>
+          <MainComponent />
+        </MainContainer>
+      </>
       <DotContainer>
         {Array(4)
           .fill(0)
@@ -156,16 +157,13 @@ export default function Main({
 }
 
 const Container = styled.div`
-  /* margin: 7vh auto 0 auto; */
   width: 80vw;
-  /* height: 100%; */
   margin: 0 auto;
   position: relative;
-  /* white-space: nowrap; */
-  /* overflow-x: hidden; */
-  /* border: 1px solid blue; */
+  height: 100%;
 `;
 
+const ModalContainer = styled.div``;
 const DotContainer = styled.div`
   display: flex;
   flex-direction: column;

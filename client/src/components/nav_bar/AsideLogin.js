@@ -38,6 +38,8 @@ const AsideContainer = styled.div`
   color: #ffffff;
   background-color: #222222;
   transition: all 0.5s linear;
+  letter-spacing: 0.1rem;
+  font-size: 1rem;
   transform: ${(props) => (props.isOn ? "translateX(-100%)" : "")};
   > :nth-child(1) {
     font-size: 3rem;
@@ -45,7 +47,11 @@ const AsideContainer = styled.div`
     font-weight: bold;
   }
   > :nth-child(2) {
+    font-size: 1.2rem;
     margin-bottom: 2rem;
+  }
+  > :nth-child(3) {
+    font-size: 1.2rem;
   }
 `;
 export default AsideLogin;
