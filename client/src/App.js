@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route
+} from "react-router-dom";
 import styled from "styled-components";
 import { set } from "date-fns/esm";
 import axios from "axios";
@@ -16,6 +20,8 @@ import {
   ProjectInProgress,
   ProjectDone,
 } from "./pages/MyPage";
+import { FaWindowRestore } from "react-icons/fa";
+import disableScroll from "disable-scroll";
 
 export default function App() {
   const [userData, setUserData] = useState(InProgress);
@@ -33,11 +39,11 @@ export default function App() {
   const [isMypage, setIsMypage] = useState(false);
   const [switchBtn, setSwitchBtn] = useState(false);
   const [isOn, setIsOn] = useState(false);
-  const [yoffset, setYoffset] = useState(0)
 
   const handleNavbar = () => {
     setIsLogin(true);
     setIsModal(!isModal);
+    disableScroll.off();
   };
 
   const handleSignAndLogin = () => {
@@ -53,19 +59,23 @@ export default function App() {
   };
 
   const handleModal = (e) => {
-    setYoffset(window.pageYOffset);
-    console.log(window.pageYOffset);
-    if (e.target.innerHTML === "Login") {
+    if (
+      e.target.firstChild.innerText === "Login" ||
+      e.target.innerText === "Login"
+    ) {
       setSignAndLogin("login");
     } else {
       setSignAndLogin("signup");
     }
     setIsModal(!isModal);
+    if (isModal !== true) {
+      disableScroll.on();
+    } else {
+      disableScroll.off();
+    }
   };
 
   const handleMypage = () => {
-    //axios 요청으로 유저의 프로젝트 정보를 받아 와서 스테이트 관리해준다!
-    console.log(userData);
     setSwitchBtn(true);
     setIsMypage(!isMypage);
   };
@@ -75,19 +85,35 @@ export default function App() {
   };
 
   // 토큰이 유효하면 로그인 상태 유지 아니면 로그아웃
+
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}/users/users`, {
+      .get(`${process.env.REACT_APP_API_URL}/users`, {
         withCredentials: true,
       })
       .then((data) => {
-        console.log(data);
-        setUserInfo(data.data.data.user_info);
+        setUserInfo(data.data.data.userInfo);
         setIsLogin(true);
+        return data.data.data.userInfo.id;
       })
-      .catch(() => setIsLogin(false));
+      .then((data) => {
+        axios(`${process.env.REACT_APP_API_URL}/project/${data}}`)
+          .then((data) => {
+            console.log(data.data);
+            setUserData(data.data);
+          })
+          .catch((err) => console.log(err.response));
+      })
+      .catch((err) => {
+        console.log(`쿠키 ${err.response}`);
+        setIsLogin(false);
+      });
+    // await axios
+    //   .get(`${process.env.REACT_APP_API_URL}/project/${userInfo.id}`)
+    //   .then((data) => setUserData(data.data.data))
+    //   .catch((err) => console.log(err));
+    //axios 요청으로 유저의 프로젝트 정보를 받아 와서 스테이트 관리해준다!
   }, [isLogin]);
-
   return (
     <Router>
       <Container>
@@ -98,6 +124,10 @@ export default function App() {
             isLogin={isLogin}
             handleMypage={handleMypage}
             handleOffMypage={handleOffMypage}
+            isMypage={isMypage}
+            userInfo={userInfo}
+            userData={userData}
+            switchBtn={switchBtn}
           />
           <Routes>
             <Route
@@ -109,11 +139,7 @@ export default function App() {
                   handleSignAndLogin={handleSignAndLogin}
                   signAndLogin={signAndLogin}
                   handleNavbar={handleNavbar}
-                  switchBtn={switchBtn}
-                  isMypage={isMypage}
-                  userInfo={userInfo}
                   isOn={isOn}
-                  userData={userData}
                 />
               }
             />
@@ -136,9 +162,6 @@ export default function App() {
             >
               <Route path=":id" element={<GoalModal />} />
             </Route>
-            <Route path="complete" element={<Complete />}>
-              <Route path=":project_id" element={<ProjectStatics />} />
-            </Route>
           </Routes>
         </Frame>
       </Container>
@@ -149,10 +172,10 @@ export default function App() {
 const Container = styled.div`
   display: flex;
   justify-content: center;
-  width: 100vw;
+  /* width: 100vw; */
   /* min-height: 100vh; */
+  width: 100%;
   position: relative;
-  overflow: auto;
   background-color: #f6f2f1;
 `;
 

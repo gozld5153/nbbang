@@ -2,15 +2,19 @@ import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-const Project = ({ progress, members }) => {
+const Project = ({ progress, members, handleMypage }) => {
   const navigate = useNavigate();
+  const handleMoveMypage = () => {
+    navigate("/mypage/project-inprogress");
+    handleMypage();
+  };
   return (
     <>
       <div>진행중인 프로젝트</div>
       <div>
         <ul>
           {progress.map((project, idx) => (
-            <li key={idx} onClick={() => navigate("project-inprogress")}>
+            <li key={idx} onClick={handleMoveMypage}>
               <p>{project}</p>
               {members[idx].map((name, idx) => (
                 <span key={idx}>{name.username}</span>
@@ -26,11 +30,10 @@ const Project = ({ progress, members }) => {
 const MiniProject = ({ progress, members }) => {
   return (
     <Container>
-      {/* 테스트용 실제동작은 div와 Project 자리 체인지  */}
       {progress.length > 0 ? (
-        <div>진행 중인 프로젝트가 없습니다.</div>
-      ) : (
         <Project progress={progress} members={members} />
+      ) : (
+        <div>진행 중인 프로젝트가 없습니다.</div>
       )}
     </Container>
   );

@@ -11,7 +11,8 @@ module.exports = async (req, res) => {
   let response;
   try {
     response = await Project.create(req.body);
-  } catch {
+  } catch (err) {
+    console.log(err)
     return res.status(500).json({ data: null, message: "데이터베이스 오류" });
   }
   try {
@@ -19,7 +20,8 @@ module.exports = async (req, res) => {
       userId: req.body.captainId,
       projectId: response.dataValues.id,
     });
-  } catch {
+  } catch (err) {
+    console.log(err)
     return res.status(500).json({ data: null, message: "데이터베이스 오류" });
   }
   return res.status(201).json({ data: response, message: "ok" });

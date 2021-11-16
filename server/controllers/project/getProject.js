@@ -43,17 +43,11 @@ module.exports = async (req, res) => {
       include: [
         {
           model: UsersProjects,
-          where: {
-            projectId: req.params.projectId,
-          },
           include: {
             model: User,
             attributes: ["id", "username", "email", "profile", "mobile"],
             include: {
               model: Goal,
-              where: {
-                projectId: req.params.projectId,
-              },
             },
           },
         },
@@ -63,9 +57,11 @@ module.exports = async (req, res) => {
         },
       ],
     });
-    // project 데이터 가공 important 집계
+    console.log("projectInfo", projectInfo.dataValues);
+    // project 데이터 가공 important 집계 Goal 정보가 있다면
     let allImportant = 0;
     let completeImportant = 0;
+    // Goals 돌면서 important 계산
     for (let el of projectInfo.dataValues.Goals) {
       if (el.dataValues.state === "complete")
         completeImportant += el.dataValues.important;

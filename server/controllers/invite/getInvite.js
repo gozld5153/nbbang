@@ -12,10 +12,10 @@ module.exports = async (req, res) => {
       where: {
         userId: req.params.userId,
       },
-      attributes: ["id", "projectId"],
+      attributes: ["id", "projectId", "captainName", "color"],
       include: {
         model: Project,
-        attributes: ["projectName"],
+        attributes: ["id", "projectName"],
       },
     });
   } catch {
@@ -26,7 +26,10 @@ module.exports = async (req, res) => {
     let temp;
     temp = {
       inviteId: el.dataValues.id,
+      projectId: el.dataValues.projectId,
       projectName: el.dataValues.Project.dataValues.projectName,
+      captainName: el.dataValues.captainName,
+      color: el.dataValues.color,
     };
     data.push(temp);
   }

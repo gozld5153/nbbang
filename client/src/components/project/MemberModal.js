@@ -47,12 +47,14 @@ export default function MemberModal({
 
   const enterHandler = (e) => {
     if (e.key === "Enter" && searchEmail) {
-      axios.get(`http://server.nbbang.ml/users/search/${searchEmail}`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      }).then((res)=> setSearchMember(res.data.data));
+      axios
+        .get(`${process.env.REACT_APP_API_URL}/users/search/${searchEmail}`, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        })
+        .then((res) => setSearchMember(res.data.data));
 
     }
   };
@@ -66,22 +68,24 @@ export default function MemberModal({
     if (reduplication && selectMember.username) {
       return alert("이미 가입된 맴버입니다.");
     }
-    axios.put(
-      `http://server.nbbang.ml/project`,
-      {
-        id: projectInfo.id,
-        member: [...member, selectMember],
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
+    axios
+      .post(
+        `${process.env.REACT_APP_API_URL}/invite`,
+        {
+          projectId: projectInfo.id,
+          userId: selectMember.id,
+          color:selectMember.color,
         },
-        withCredentials: true,
-      }
-    ).then(() => {
-      setMember([...member, selectMember]);
-      memberModalOpener();
-    });
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      )
+      .then(() => {
+        memberModalOpener();
+      });
     
     
   };

@@ -47,7 +47,7 @@ export default function Project({ id }) {
 
   useEffect(() => {
     axios
-      .get(`http://server.nbbang.ml/project/${params.projectId}/${id}`, {
+      .get(`${process.env.REACT_APP_API_URL}/project/${params.projectId}/${id}`, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -83,6 +83,7 @@ export default function Project({ id }) {
   const memberModalOpener = () => {
     setIsMemberOpen(!isMemberOpen);
   };
+  console.log(`${process.env.REACT_APP_API_URL}`)
   return (
     <Container>
       <ProjectFrame>

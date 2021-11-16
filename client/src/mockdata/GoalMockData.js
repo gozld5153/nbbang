@@ -22,7 +22,7 @@ const getGoal = {
         description: "progress입니다",
         state: "progress",
         important: 2,
-        deadline: '2021.11.12~2021.11.13',
+        deadline: "2021.11.12~2021.11.13",
         agreement: 2,
         file: 1,
         comments: 2,
@@ -36,7 +36,7 @@ const getGoal = {
         description: "complete입니다",
         state: "complete",
         important: 3,
-        deadline: '2021.11.12~2021.11.13',
+        deadline: "2021.11.12~2021.11.13",
         agreement: 1,
         file: 1,
         comments: 1,
@@ -45,4 +45,4 @@ const getGoal = {
   },
 };
 
-export default getGoal
+export default getGoal;

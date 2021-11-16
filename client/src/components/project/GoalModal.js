@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import axios from 'axios'
+import AWS from "aws-sdk";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -20,7 +21,12 @@ export default function GoalModal() {
     ["중요", 3],
   ];
   const state = [["Todo", 'todo'], ['Progress', 'progress'], ['Complete', 'complete']];
-
+  AWS.config.update({
+    region: `${process.env.REACT_APP_AWS_REGION}`,
+    credentials: new AWS.CognitoIdentityCredentials({
+      IdentityPoolId: `${process.env.REACT_APP_AWS_IDENTITYPOOLID}`,
+    }),
+  });
   const [goal, setGoal] = useState(getGoalId);
   const [isEditing, setIsEditing] = useState(false);
   const [comment, setComment] = useState('')
@@ -34,15 +40,18 @@ export default function GoalModal() {
     newObject[key] = value;
     setGoal({ ...newObject });
   };
+
   const deleteGoal = () => {
-    axios.delete(`http://server.nbbang.ml/goal/${params.id}`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      withCredentials: true,
-    }).then(() => {
-      navigate(-1);
-    });
+    axios
+      .delete(`${process.env.REACT_APP_API_URL}/goal/${params.id}`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      })
+      .then(() => {
+        navigate(-1);
+      });
   }
 
   const onEdit = () => {
@@ -52,96 +61,123 @@ export default function GoalModal() {
       alert('권한이 없습니다.')
     }
     if (isEditing === true) {
-      axios.put(
-        `http://server.nbbang.ml/goal`,
-        {
-          id: params.id,
-          userId: location.state.myInfo.id,
-          projectId: params.projectId,
-          goalName: goal.goalName,
-          state:goal.state,
-          description:goal.description,
-          important:goal.important,
-          deadline: goal.deadline,
-          Files: goal.Files,
-          Comments:goal.Comments
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
+      axios
+        .put(
+          `${process.env.REACT_APP_API_URL}/goal`,
+          {
+            id: params.id,
+            userId: location.state.myInfo.id,
+            projectId: params.projectId,
+            goalName: goal.goalName,
+            state: goal.state,
+            description: goal.description,
+            important: goal.important,
+            deadline: goal.deadline,
+            Files: goal.Files,
+            Comments: goal.Comments,
           },
-          withCredentials: true,
-        }
-      ).then((res) => {
-        setGoal({ ...goal, id: res.data.data[0] });
-      });
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            withCredentials: true,
+          }
+        )
+        .then((res) => {
+          setGoal({ ...goal, id: res.data.data[0] });
+        });
+    }
+  }
+  const deleteComment = (data) => {
+    if (data.UserId === location.state.myInfo.id) {
+      axios.delete(`${process.env.REACT_APP_API_URL}/comment/${data.id}`);
     }
   }
 
   const commentHandler = (e) => {
     if (e.key === "Enter" && comment) {
-      axios.post(
-        `http://server.nbbang.ml/goal`,
-        {
-          userId: location.state.myInfo.id,
-          projectId: params.projectId,
-          goalId: params.id,
-          content: e.target.value,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        }
-      ).then((res) => {
-        DataHandler("comments", [
-          ...goal.Comments,
+      axios
+        .post(
+          `${process.env.REACT_APP_API_URL}/comment`,
           {
-            id:res.data.data.id,
-            projectId: params.projectId,
             userId: location.state.myInfo.id,
-            username: location.state.myInfo.username,
+            projectId: params.projectId,
+            goalId: params.id,
             content: e.target.value,
-            createdAt: new Date(),
           },
-        ]);
-        setComment("");
-      });
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            withCredentials: true,
+          }
+        )
+        .then(() => {
+          axios
+            .get(`${process.env.REACT_APP_API_URL}/goal?goalId=${params.id}`, {
+              headers: {
+                "Content-Type": "application/json",
+              },
+              withCredentials: true,
+            })
+            .then((res) => {
+              DataHandler("comments", res.data.data.Comments);
+              setComment("");
+            });
+        });
       
     }
   }
 
-  const fileHandler = (e) => {
-    axios.post(
-      `http://server.nbbang.ml/goal`,
-      {
-        userId: location.state.myInfo.id,
-        projectId: params.projectId,
-        goalId: params.id,
-        fileName:'',
-        description: e.target.value,
-      },
-      {
+  const handleFileInput = (e) => {
+  // input 태그를 통해 선택한 파일 객체
+    
+    
+
+    const file = e.target.files[0]
+    // const fileName = e.target.value.split("\\")[
+    //   e.target.value.split("\\").length - 1
+    // ];
+
+  // S3 SDK에 내장된 업로드 함수
+  const upload = new AWS.S3.ManagedUpload({
+    params: {
+      Bucket: `${process.env.REACT_APP_S3_FILE_BUCKET}`, // 업로드할 대상 버킷명
+      Key: file.name, // 업로드할 파일명 (* 확장자를 추가해야 합니다!)
+      Body: file, // 업로드할 파일 객체
+    },
+  });
+    console.log(upload);
+
+  const promise = upload.promise()
+
+  promise.then(
+    function (data) {
+      
+      console.log(data.Location)
+      console.log(data.key)
+      alert("이미지 업로드에 성공했습니다.")
+    },
+    function (err) {
+      return alert("오류가 발생했습니다: ", err.message);
+    }
+  )
+}
+  
+
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/goal?goalId=${params.id}`, {
         headers: {
           "Content-Type": "application/json",
         },
         withCredentials: true,
-      }
-    );
-  }
-
-  useEffect(() => {
-    axios.get(`http://server.nbbang.ml/goal?goalId=${params.id}`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      withCredentials: true,
-    }).then((res) => {
-      setGoal(res.data.data);
-    });
-    
+      })
+      .then((res) => {
+        setGoal(res.data.data);
+      });
   }, []);
+
   return (
     <Container>
       <ModalContainer>
@@ -253,9 +289,17 @@ export default function GoalModal() {
             onChange={(e) => DataHandler("description", e.target.value)}
           />
         </EditContainer>
-        <Title>File</Title>
+
+        <FileContainer>
+          <Title>File</Title>
+          <FileUploaderContainer
+            onChange={handleFileInput}
+          >
+            <img src={`${process.env.PUBLIC_URL}/images/save.png`} alt="save" />
+            <FileUploader type="file" />
+          </FileUploaderContainer>
+        </FileContainer>
         {goal.Files ? goal.Files.map((el) => el.fileName) : null}
-        <input type="file" />
         {
           // 파일 업로드 하는 방법 찾기
         }
@@ -263,15 +307,23 @@ export default function GoalModal() {
         {goal.Comments
           ? goal.Comments.map((el) => (
               <CommentContainer key={el.id}>
-                <div>{el.userId}</div>
+                <CommentTitle>
+                  <CommentsTitleFrame>
+                    <div>{el.userId}</div>
+                    <div>
+                      {`${el.createdAt
+                        .toLocaleString()
+                        .split(" ")
+                        .join("")
+                        .slice(0, 10)}`}
+                    </div>
+                  </CommentsTitleFrame>
+                  <CommentsClose
+                    onClick={() => deleteComment(el)}
+                    src={`${process.env.PUBLIC_URL}/images/commentDelete.png`}
+                  />
+                </CommentTitle>
                 <div>{el.content}</div>
-                <div>
-                  {`${el.createdAt
-                    .toLocaleString()
-                    .split(" ")
-                    .join("")
-                    .slice(0, 10)}`}
-                </div>
               </CommentContainer>
             ))
           : null}
@@ -281,9 +333,7 @@ export default function GoalModal() {
           onChange={(e) => setComment(e.target.value)}
           onKeyPress={commentHandler}
         />
-        <EditContainer isEditing={isEditing}>
-          <button>submit</button>
-        </EditContainer>
+        <EditContainer isEditing={isEditing}></EditContainer>
       </ModalContainer>
     </Container>
   );
@@ -381,3 +431,51 @@ const NoEditContainer = styled.div`
 const EditContainer = styled.div`
   display: ${(props) => (props.isEditing ? "default" : "none")};
 `;
+
+const CommentTitle = styled.div`
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-flex-end;
+  `;
+
+const CommentsTitleFrame = styled.div`
+  display: flex;
+  align-items: center;
+
+  div {
+    :first-child {
+      font-size: 1.2rem;
+    }
+
+    :nth-child(2) {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: gray;
+    }
+  }
+`;
+
+const CommentsClose = styled.img`
+  width: 1rem;
+  border-radius:50%;
+`;
+
+const FileContainer = styled.div`
+  display:flex;
+  align-items:center;
+`;
+  
+const FileUploaderContainer = styled.label`
+  cursor: pointer;
+
+  img {
+    position: relative;
+    top:0.2rem;
+    width: 1.5rem;
+    margin-left:0.5rem;
+  }
+`;
+
+const FileUploader = styled.input`
+  display:none;
+  `

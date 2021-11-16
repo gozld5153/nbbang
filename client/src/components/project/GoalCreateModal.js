@@ -66,42 +66,48 @@ export default function GoalCreateModal({
   }
 
   const todoAdder = () => {
-    axios.post(
-      `http://server.nbbang.ml/goal`,
-      {
-        userId: myInfo.id,
-        projectId: projectId,
-        goalName: goalData.goalName,
-        description: goalData.description,
-        state: "todo",
-        important: goalData.important,
-        deadline: goalData.deadline,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
+    axios
+      .post(
+        `${process.env.REACT_APP_API_URL}/goal`,
+        {
+          userId: myInfo.id,
+          projectId: projectId,
+          goalName: goalData.goalName,
+          description: goalData.description,
+          state: "todo",
+          important: goalData.important,
+          deadline: goalData.deadline,
         },
-        withCredentials: true,
-      }
-    ).then((res) => {
-      goalData.id = res.data.data.id;
-      setIsTodo([...isTodo, goalData]);
-      createModalOpener();
-      setGoalData({
-        id: null,
-        userId: myInfo.id,
-        goalName: "",
-        description: "",
-        state: "todo",
-        important: 1,
-        deadline: `${today.toLocaleString().split(" ").join("").slice(0, 10)} ~ 
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      )
+      .then((res) => {
+        goalData.id = res.data.data.id;
+        setIsTodo([...isTodo, goalData]);
+        createModalOpener();
+        setGoalData({
+          id: null,
+          userId: myInfo.id,
+          goalName: "",
+          description: "",
+          state: "todo",
+          important: 1,
+          deadline: `${today
+            .toLocaleString()
+            .split(" ")
+            .join("")
+            .slice(0, 10)} ~ 
               ${today.toLocaleString().split(" ").join("").slice(0, 10)}`,
-        agreement: 0,
-        file: [],
-        comments: [],
+          agreement: 0,
+          file: [],
+          comments: [],
+        });
+        setSelectDate({ startDate: new Date(), endDate: new Date() });
       });
-      setSelectDate({ startDate: new Date(), endDate: new Date() });
-    });
   };
 
 
