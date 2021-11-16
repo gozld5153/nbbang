@@ -536,15 +536,15 @@ export function MyPageNav() {
   );
 }
 
-export function Profile() {
+export function Profile({ userInfo }) {
   return (
     <ProfileWrapper>
-      <ProfileCard />
+      <ProfileCard userInfo={userInfo} />
     </ProfileWrapper>
   );
 }
 
-export function ProfileCard() {
+export function ProfileCard({ userInfo }) {
   const colorpick = {
     pink: {
       main: "#ffb1ee",
@@ -580,7 +580,9 @@ export function ProfileCard() {
   const [editMode, setEditMode] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
-  const [cardColor, setCardColor] = useState(colorpick.yellow);
+  const [cardColor, setCardColor] = useState(
+    colorpick[`${userInfo.profileColor}`]
+  );
   const [profileImg, setProfileImg] = useState(
     `${process.env.PUBLIC_URL}/images/profile-sample.jpg`
   );

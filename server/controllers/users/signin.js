@@ -29,9 +29,13 @@ module.exports = async (req, res) => {
   // 데이터에서 password 제거
   delete userInfo.dataValues.password;
   // accessToken 발급
-  const accessToken = jwt.sign(userInfo.dataValues, process.env.ACCESS_SECRET, {
-    expiresIn: "30d",
-  });
+  const accessToken = jwt.sign(
+    { email: userInfo.dataValues.email },
+    process.env.ACCESS_SECRET,
+    {
+      expiresIn: "30d",
+    }
+  );
 
   const { username } = userInfo.dataValues;
   return res
