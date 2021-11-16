@@ -5,8 +5,8 @@ import {
   Route
 } from "react-router-dom";
 import styled from "styled-components";
-import { set } from "date-fns/esm";
 import axios from "axios";
+import disableScroll from "disable-scroll";
 
 import Main from "./pages/Main";
 import Nav from "./components/nav_bar/Nav";
@@ -20,8 +20,6 @@ import {
   ProjectInProgress,
   ProjectDone,
 } from "./pages/MyPage";
-import { FaWindowRestore } from "react-icons/fa";
-import disableScroll from "disable-scroll";
 
 export default function App() {
   const [userData, setUserData] = useState(InProgress);
