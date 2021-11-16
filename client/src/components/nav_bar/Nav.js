@@ -3,7 +3,6 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 
 import { useNavigate } from "react-router-dom";
-import { set } from "date-fns/esm";
 import MiniMypage from "../miniMypage/MiniMypage";
 
 export default function Nav({
@@ -20,7 +19,6 @@ export default function Nav({
   handleInvitedList,
 }) {
   const navigate = useNavigate();
-
   const [cookies, setCookie, removeCookie] = useCookies([]);
   const signUp = true;
 

@@ -5,26 +5,27 @@ import {
   Route
 } from "react-router-dom";
 import styled from "styled-components";
-import { set } from "date-fns/esm";
 import axios from "axios";
+import disableScroll from "disable-scroll";
 
 import Main from "./pages/Main";
-import Nav from "./components/nav_bar/Nav";
-import { InProgress } from "./mockdata/MyPageProjectData";
-import Project from "./pages/Project";
-import GoalModal from "./components/project/GoalModal";
 import { Complete, ProjectStatics } from "./pages/Complete";
+import Project from "./pages/Project";
+
+import Nav from "./components/nav_bar/Nav";
+import GoalModal from "./components/project/GoalModal";
 import {
   MyPage,
   Profile,
   ProjectInProgress,
   ProjectDone,
 } from "./pages/MyPage";
-import { FaWindowRestore } from "react-icons/fa";
-import disableScroll from "disable-scroll";
 
 export default function App() {
-  const [userData, setUserData] = useState(InProgress);
+
+  const [userData, setUserData] = useState({
+    data: { completeCount: 0, progressCount: 0 },
+  });
   const [userInfo, setUserInfo] = useState({});
   const [isModal, setIsModal] = useState(false);
   const [signAndLogin, setSignAndLogin] = useState("");
@@ -148,29 +149,45 @@ export default function App() {
                 />
               }
             />
-            <Route path="mypage" element={<MyPage />}>
-              {userInfo.id && (
+
+            {userInfo.id && (
+              <Route path="mypage" element={<MyPage userInfo={userInfo} />}>
                 <Route
                   path="profile"
                   element={<Profile userInfo={userInfo} />}
                 />
-              )}
-              <Route
-                path="project-inprogress"
-                element={
-                  <ProjectInProgress
-                    userData={userData}
-                    setUserData={setUserData}
-                  />
-                }
-              />
-              <Route path="project-done" element={<ProjectDone />} />
-            </Route>
+                <Route
+                  path="project-inprogress"
+                  element={
+                    <ProjectInProgress
+                      userData={userData}
+                      setUserData={setUserData}
+                      userId={userInfo.id}
+                    />
+                  }
+                />
+                <Route
+                  path="project-done"
+                  element={
+                    <ProjectDone
+                      userData={userData}
+                      setUserData={setUserData}
+                      userId={userInfo.id}
+                    />
+                  }
+                />
+              </Route>
+            )}
+
             <Route
               path="project/:projectId"
               element={<Project id={userInfo.id} />}
             >
               <Route path=":id" element={<GoalModal />} />
+            </Route>
+
+            <Route path="complete" element={<Complete />}>
+              <Route path=":project_id" element={<ProjectStatics />} />
             </Route>
           </Routes>
         </Frame>
