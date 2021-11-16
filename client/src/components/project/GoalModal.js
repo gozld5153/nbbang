@@ -182,8 +182,6 @@ export default function GoalModal() {
       });
   }, []);
 
-  console.log(goal.Files)
-
   return (
     <Container>
       <ModalContainer>

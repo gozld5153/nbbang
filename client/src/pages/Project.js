@@ -37,6 +37,7 @@ export default function Project({ id }) {
       important: 0,
     },
   ]);
+  // const [update,setUpdate] = 
 
   const DataHandler = (key, value) => {
     let newObject = projectInfo;
@@ -72,7 +73,7 @@ export default function Project({ id }) {
         setMember([...res.data.data.projectInfo.members]);
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [id]);
 
   if (Object.keys(params).length === 2) {
     disableScroll.on();
@@ -87,6 +88,9 @@ export default function Project({ id }) {
   const memberModalOpener = () => {
     setIsMemberOpen(!isMemberOpen);
   };
+
+  console.log('projectInfo', projectInfo)
+  console.log('myInfo', myInfo)
   return (
     <Container>
       <ProjectFrame>
