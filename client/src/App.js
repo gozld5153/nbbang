@@ -15,6 +15,7 @@ import { InProgress } from "./mockdata/MyPageProjectData";
 import Project from "./pages/Project";
 import GoalModal from "./components/project/GoalModal";
 import { set } from "date-fns/esm";
+import Test from "./pages/Test";
 
 export default function App() {
   const [userData, setUserData] = useState(InProgress);
@@ -71,17 +72,23 @@ export default function App() {
   };
 
   // 토큰이 유효하면 로그인 상태 유지 아니면 로그아웃
+  const location = window.location;
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_API_URL}/users/users`, {
-        withCredentials: true,
-      })
-      .then((data) => {
-        console.log(data);
-        setUserInfo(data.data.data.user_info);
-        setIsLogin(true);
-      })
-      .catch(() => setIsLogin(false));
+    // axios
+    //   .post(`http://localhost:4000/oauth/kakao`, {
+    //     code: location.href.slice(23),
+    //   })
+    //   .then((res) => console.log(res.data));
+    // axios
+    //   .get(`${process.env.REACT_APP_API_URL}/users/users`, {
+    //     withCredentials: true,
+    //   })
+    //   .then((data) => {
+    //     console.log(data);
+    //     setUserInfo(data.data.data.user_info);
+    //     setIsLogin(true);
+    //   })
+    //   .catch(() => setIsLogin(false));
   }, [isLogin]);
 
   return (
@@ -96,6 +103,7 @@ export default function App() {
             handleOffMypage={handleOffMypage}
           />
           <Routes>
+            <Route path="test" element={<Test />} />
             <Route
               path="/"
               element={

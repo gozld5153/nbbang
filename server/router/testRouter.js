@@ -14,24 +14,19 @@ const test = async (req, res) => {
   // TODO test 용도
   let data;
   try {
-    data = await User.findOne({
-      where: { id: 1 },
-      include: {
-        model: UsersProjects,
-        include: {
-          model: Project,
-          include: {
-            model: Goal,
-            include: [File, Comment, Like],
-          },
-        },
-      },
-    });
+    data = new Date();
   } catch (err) {
     console.log(err);
   }
+  // console.log(data.toLocaleString().replaceAll("/", "-"));
+  var str =
+    data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + data.getDate();
 
-  return res.status(500).json({ data: data, message: "아직 구현 안함" });
+  //dororongju.tistory.com/116 [웹 개발 메모장]
+
+  출처: https: return res
+    .status(500)
+    .json({ data: str, message: "아직 구현 안함" });
 };
 
 router.get("/", test);
