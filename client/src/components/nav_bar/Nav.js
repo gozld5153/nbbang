@@ -15,6 +15,8 @@ export default function Nav({
   isMypage,
   userInfo,
   userData,
+  invited,
+  handleInvitedList,
 }) {
   const navigate = useNavigate();
   const [cookies, setCookie, removeCookie] = useCookies([]);
@@ -66,10 +68,12 @@ export default function Nav({
             <BtnMenu onClick={handleLogout}>Logout</BtnMenu>
             {switchBtn ? (
               <MiniMypage
+                invited={invited}
                 handleMypage={handleMypage}
                 isMypage={isMypage}
                 userInfo={userInfo}
                 userData={userData}
+                handleInvitedList={handleInvitedList}
               ></MiniMypage>
             ) : null}
           </>

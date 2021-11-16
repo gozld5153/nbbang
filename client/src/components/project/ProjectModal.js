@@ -47,7 +47,7 @@ export default function ProjectModal({
   const closeHandler = () => {
     axios
       .put(
-        `http://server.nbbang.ml/project`,
+        `${process.env.REACT_APP_API_URL}/project`,
         {
           id: projectInfo.id,
           projectName: projectInfo.projectName,
@@ -65,7 +65,7 @@ export default function ProjectModal({
         }
       )
       .then((res) => {
-        if (res.data.message === 'ok') {
+        if (res.data.message === "ok") {
           projectModalOpener();
         }
       });  
@@ -74,13 +74,13 @@ export default function ProjectModal({
   const projectComplete = () => {
     axios
       .put(
-        `http://server.nbbang.ml/project`,
+        `${process.env.REACT_APP_API_URL}/project`,
         {
           id: projectInfo.id,
           projectName: projectInfo.projectName,
           captainId: projectInfo.captainId,
           description: projectInfo.description,
-          state: 'complete',
+          state: "complete",
           deadline: projectInfo.deadline,
           member: member,
         },
@@ -93,7 +93,7 @@ export default function ProjectModal({
       )
       .then((res) => {
         if (res.data.message === "ok") {
-          navigate('/');
+          navigate("/");
         }
       }); 
   };

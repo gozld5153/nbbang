@@ -566,6 +566,7 @@ export function Profile({ userInfo }) {
 }
 
 export function ProfileCard({ userInfo }) {
+
   // -- AWS 연결 설정
   AWS.config.update({
     region: `${process.env.REACT_APP_AWS_REGION}`,
@@ -589,6 +590,7 @@ export function ProfileCard({ userInfo }) {
   const [profileChange, setProfileChange] = useState(false);
   const [previewProfile, setPreviewProfile] = useState(
     `${process.env.REACT_APP_S3_IMG}/${userInfo.profile}`
+
   );
   const [profileImg, setProfileImg] = useState(
     `${process.env.REACT_APP_S3_IMG}/${userInfo.profile}`

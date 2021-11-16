@@ -8,8 +8,8 @@ import { CookiesProvider } from "react-cookie";
 ReactDOM.render(
   <>
     <CookiesProvider>
-      <GlobalStyles />
-      <App />
+        <GlobalStyles />
+        <App />
     </CookiesProvider>
   </>,
   document.getElementById("root")

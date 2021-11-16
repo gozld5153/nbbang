@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route
+} from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
 import disableScroll from "disable-scroll";
@@ -18,6 +22,7 @@ import {
 } from "./pages/MyPage";
 
 export default function App() {
+
   const [userData, setUserData] = useState({
     data: { completeCount: 0, progressCount: 0 },
   });
@@ -28,7 +33,16 @@ export default function App() {
   const [isMypage, setIsMypage] = useState(false);
   const [switchBtn, setSwitchBtn] = useState(false);
   const [isOn, setIsOn] = useState(false);
+  const [invited, setInvited] = useState({});
 
+  const handleInvitedList = () => {
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/invite/${userInfo.id}`)
+      .then((data) => {
+        setInvited(data.data);
+      })
+      .catch((err) => console.log(err.response));
+  };
   const handleNavbar = () => {
     setIsLogin(true);
     setIsModal(!isModal);
@@ -91,13 +105,19 @@ export default function App() {
             setUserData(data.data);
           })
           .catch((err) => console.log(err.response));
+
+        axios
+          .get(`${process.env.REACT_APP_API_URL}/invite/${data}`)
+          .then((data) => {
+            setInvited(data.data);
+          })
+          .catch((err) => console.log(err.response));
       })
       .catch((err) => {
         console.log(`쿠키 ${err.response}`);
         setIsLogin(false);
       });
   }, [isLogin]);
-
   return (
     <Router>
       <Container>
@@ -112,6 +132,8 @@ export default function App() {
             userInfo={userInfo}
             userData={userData}
             switchBtn={switchBtn}
+            invited={invited}
+            handleInvitedList={handleInvitedList}
           />
           <Routes>
             <Route
@@ -127,6 +149,7 @@ export default function App() {
                 />
               }
             />
+
             {userInfo.id && (
               <Route path="mypage" element={<MyPage userInfo={userInfo} />}>
                 <Route
@@ -155,6 +178,7 @@ export default function App() {
                 />
               </Route>
             )}
+
             <Route
               path="project/:projectId"
               element={<Project id={userInfo.id} />}

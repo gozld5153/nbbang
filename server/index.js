@@ -43,6 +43,6 @@ app.get("/", (req, res) => {
 });
 const HTTP_PORT = process.env.HTTP_PORT || 80;
 
-const server = app.listen(HTTP_PORT);
+const server = app.listen(HTTP_PORT, () => console.log(HTTP_PORT));
 
 module.exports = server;
