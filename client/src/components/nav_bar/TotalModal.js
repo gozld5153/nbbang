@@ -4,7 +4,6 @@ import Login from "./Login";
 import Signup from "./Signup";
 import AsideLogin from "./AsideLogin";
 import AsideSignup from "./AsideSignup";
-import image1 from "../mainComponents/img/image1.png";
 
 const TotalModal = ({
   handleModal,

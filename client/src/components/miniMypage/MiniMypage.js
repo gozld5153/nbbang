@@ -4,44 +4,52 @@ import MiniProject from "./MiniProject";
 import ResultProject from "./ResultProject";
 import styled, { keyframes } from "styled-components";
 
-const MiniMypage = ({ userInfo, isMypage, userData }) => {
+const MiniMypage = ({ userInfo, isMypage, userData, handleMypage }) => {
   const [progress, setProgress] = useState([]);
   const [complete, setComplete] = useState([]);
   const [progressMembers, setProgressMember] = useState([]);
   const [completeMembers, setCompleteMember] = useState([]);
   useEffect(() => {
+    // console.log(userData);
+    let userDataClone = { ...userData };
     let newProgress = [];
     let newComplete = [];
     let newProgressMembers = [];
     let newCompleteMembers = [];
 
     if (
-      userData.data.progress.length === 0 &&
-      userData.data.complete.length === 0
+      userDataClone.data.progress.length === 0 &&
+      userDataClone.data.complete.length === 0
     ) {
       return;
     } else if (
-      userData.data.progress.length === 0 &&
-      userData.data.complete.length !== 0
+      userDataClone.data.progress.length === 0 &&
+      userDataClone.data.complete.length !== 0
     ) {
       for (let i = 0; i < 3; i++) {
-        newComplete.push(userData.data.complete[i].projectName);
-        newCompleteMembers.push(userData.data.complete[i].members);
+        if (userDataClone.data.complete.length <= i) continue;
+        newComplete.push(userDataClone.data.complete[i].projectName);
+        newCompleteMembers.push(userDataClone.data.complete[i].members);
       }
     } else if (
-      userData.data.progress.length !== 0 &&
-      userData.data.complete.length === 0
+      userDataClone.data.progress.length !== 0 &&
+      userDataClone.data.complete.length === 0
     ) {
       for (let i = 0; i < 3; i++) {
-        newProgress.push(userData.data.progress[i].projectName);
-        newProgressMembers.push(userData.data.progres[i].members);
+        if (userDataClone.data.progress.length <= i) continue;
+        newProgress.push(userDataClone.data.progress[i].projectName);
+        newProgressMembers.push(userDataClone.data.progress[i].members);
       }
     } else {
       for (let i = 0; i < 3; i++) {
-        newProgress.push(userData.data.progress[i].projectName);
-        newComplete.push(userData.data.complete[i].projectName);
-        newProgressMembers.push(userData.data.progres[i].members);
-        newCompleteMembers.push(userData.data.complete[i].members);
+        if (userDataClone.data.complete.length > i) {
+          newComplete.push(userDataClone.data.complete[i].projectName);
+          newCompleteMembers.push(userDataClone.data.complete[i].members);
+        }
+        if (userDataClone.data.progress.length > i) {
+          newProgress.push(userDataClone.data.progress[i].projectName);
+          newProgressMembers.push(userDataClone.data.progress[i].members);
+        }
       }
     }
 
@@ -53,9 +61,17 @@ const MiniMypage = ({ userInfo, isMypage, userData }) => {
   return (
     <Container className={isMypage ? "add" : "hide"} isMypage={isMypage}>
       <MiniContainer>
-        <UserInfo userInfo={userInfo} />
-        <MiniProject progress={progress} members={progressMembers} />
-        <ResultProject complete={complete} members={completeMembers} />
+        <UserInfo userInfo={userInfo} handleMypage={handleMypage} />
+        <MiniProject
+          progress={progress}
+          members={progressMembers}
+          handleMypage={handleMypage}
+        />
+        <ResultProject
+          complete={complete}
+          members={completeMembers}
+          handleMypage={handleMypage}
+        />
       </MiniContainer>
     </Container>
   );

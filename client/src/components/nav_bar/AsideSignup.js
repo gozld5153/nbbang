@@ -38,6 +38,9 @@ const AsideContainer = styled.div`
   z-index: 10;
   color: #ffffff;
   background-color: #222222;
+
+  letter-spacing: 0.1rem;
+  font-size: 1rem;
   transition: all 0.5s linear;
   left: ${(props) => (props.isOn ? "50%" : "0")};
   > :nth-child(1) {
@@ -46,7 +49,11 @@ const AsideContainer = styled.div`
     font-weight: bold;
   }
   > :nth-child(2) {
+    font-size: 1.2rem;
     margin-bottom: 2rem;
+  }
+  > :nth-child(3) {
+    font-size: 1.2rem;
   }
 `;
 export default AsideSignup;

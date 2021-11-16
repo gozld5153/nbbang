@@ -16,6 +16,8 @@ import {
   ProjectInProgress,
   ProjectDone,
 } from "./pages/MyPage";
+import { FaWindowRestore } from "react-icons/fa";
+import disableScroll from "disable-scroll";
 
 export default function App() {
   const [userData, setUserData] = useState(InProgress);
@@ -37,6 +39,7 @@ export default function App() {
   const handleNavbar = () => {
     setIsLogin(true);
     setIsModal(!isModal);
+    disableScroll.off();
   };
 
   const handleSignAndLogin = () => {
@@ -61,6 +64,11 @@ export default function App() {
       setSignAndLogin("signup");
     }
     setIsModal(!isModal);
+    if (isModal !== true) {
+      disableScroll.on();
+    } else {
+      disableScroll.off();
+    }
   };
 
   const handleMypage = () => {
@@ -74,8 +82,8 @@ export default function App() {
 
   // 토큰이 유효하면 로그인 상태 유지 아니면 로그아웃
 
-  useEffect(async () => {
-    await axios
+  useEffect(() => {
+    axios
       .get(`${process.env.REACT_APP_API_URL}/users`, {
         withCredentials: true,
       })
@@ -86,15 +94,16 @@ export default function App() {
       })
       .then((data) => {
         axios(`${process.env.REACT_APP_API_URL}/project/${data}}`)
-          .then((data) => setUserData(data.data))
+          .then((data) => {
+            console.log(data.data);
+            setUserData(data.data);
+          })
           .catch((err) => console.log(err.response));
-        console.log(userData);
       })
       .catch((err) => {
         console.log(`쿠키 ${err.response}`);
         setIsLogin(false);
       });
-
     // await axios
     //   .get(`${process.env.REACT_APP_API_URL}/project/${userInfo.id}`)
     //   .then((data) => setUserData(data.data.data))
@@ -160,8 +169,9 @@ export default function App() {
 const Container = styled.div`
   display: flex;
   justify-content: center;
-  width: 100vw;
+  /* width: 100vw; */
   /* min-height: 100vh; */
+  width: 100%;
   position: relative;
   background-color: #f6f2f1;
 `;
