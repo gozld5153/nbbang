@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
+import disableScroll from "disable-scroll";
 import axios from 'axios'
 
 import ProjectInfo from "../components/project/ProjectInfo"
@@ -46,7 +47,7 @@ export default function Project({ id }) {
 
   useEffect(() => {
     axios
-      .get(`http://server.nbbang.ml/project/${params.projectId}/${id}`, {
+      .get(`${process.env.REACT_APP_API_URL}/project/${params.projectId}/${id}`, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -69,6 +70,12 @@ export default function Project({ id }) {
       .catch((err) => console.log(err));
   }, []);
 
+  if (Object.keys(params).length === 2) {
+    disableScroll.on();
+  } else {
+    disableScroll.off();
+  }
+
   const projectModalOpener = () => {
     if(projectInfo.captainId === myInfo.id)
     setIsProjectOpen(!isProjectOpen);
@@ -76,6 +83,7 @@ export default function Project({ id }) {
   const memberModalOpener = () => {
     setIsMemberOpen(!isMemberOpen);
   };
+  console.log(`${process.env.REACT_APP_API_URL}`)
   return (
     <Container>
       <ProjectFrame>

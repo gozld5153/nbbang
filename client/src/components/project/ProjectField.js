@@ -6,10 +6,7 @@ import axios from 'axios'
 import Goal from './Goal'
 import GoalCreateModal from "./GoalCreateModal";
 
-import GoalMockData from '../../mockdata/GoalMockData'
-
 export default function ProjectField({ myInfo, projectId, params, member, myLike }) {
-  const { todo, progress, complete } = GoalMockData.data;
   const [isTodo, setIsTodo] = useState([]);
   const [isProgress, setIsProgress] = useState([]);
   const [isComplete, setIsComplete] = useState([]);
@@ -25,23 +22,24 @@ export default function ProjectField({ myInfo, projectId, params, member, myLike
   };
 
   useEffect(() => {
-    // setIsTodo([...todo]);
-    // setIsProgress([...progress]);
-    // setIsComplete([...complete]);
     axios
-      .get(`http://server.nbbang.ml/goal?projectId=${params.projectId}`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      })
+      .get(
+        `${process.env.REACT_APP_API_URL}/goal?projectId=${params.projectId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      )
       .then((res) => {
-        // console.log("axios 요청 결과: ", res.data.data);
         setIsTodo([...res.data.data.todo]);
         setIsProgress([...res.data.data.progress]);
         setIsComplete([...res.data.data.complete]);
       });
   }, []);
+
+  console.log(isProgress);
   return (
     <Container>
       <Frame>

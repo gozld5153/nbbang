@@ -7,10 +7,10 @@ export default function Goal({ goalInfo, member, myLike }) {
     goalName,
     important,
     deadline,
-    agreement,
+    Likes,
     state,
-    file,
-    comments,
+    Files,
+    Comments,
     id,
     userId,
   } = goalInfo;
@@ -34,22 +34,22 @@ export default function Goal({ goalInfo, member, myLike }) {
               <IconContainer>
                 <Icon
                   src={
-                    agreement >= member.length / 2
+                    Likes >= member.length / 2
                       ? `${process.env.PUBLIC_URL}/images/agreeclear.png`
                       : myLike.includes(id)
                       ? `${process.env.PUBLIC_URL}/images/agreeActive.png`
                       : `${process.env.PUBLIC_URL}/images/agreeDisable.png`
                   }
                 />
-                {agreement}
+                {Likes}
               </IconContainer>
               <IconContainer>
                 <Icon src={`${process.env.PUBLIC_URL}/images/comments.png`} />
-                {comments}
+                {Comments}
               </IconContainer>
               <IconContainer>
                 <Icon src={`${process.env.PUBLIC_URL}/images/clip.png`} />
-                {file}
+                {Files}
               </IconContainer>
             </>
           ) : null}
