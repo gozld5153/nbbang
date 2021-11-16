@@ -44,15 +44,19 @@ export default function Project({ id }) {
     console.log(newObject.description)
     setProjectInfo({ ...newObject });
   };
+  
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}/project/${params.projectId}/${id}`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      })
+      .get(
+        `${process.env.REACT_APP_API_URL}/project/${params.projectId}/${id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      )
       .then((res) => {
         setMyInfo(res.data.data.userInfo);
         setProjectInfo({
@@ -83,7 +87,6 @@ export default function Project({ id }) {
   const memberModalOpener = () => {
     setIsMemberOpen(!isMemberOpen);
   };
-  console.log(`${process.env.REACT_APP_API_URL}`)
   return (
     <Container>
       <ProjectFrame>

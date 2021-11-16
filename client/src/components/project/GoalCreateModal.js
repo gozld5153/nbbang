@@ -33,7 +33,7 @@ export default function GoalCreateModal({
     startDate: new Date(),
     endDate: new Date(),
   });
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
 
   const important = [
     ["사소", 1],
@@ -63,7 +63,7 @@ export default function GoalCreateModal({
       comments: [],
     });
     setSelectDate({ startDate: new Date(), endDate: new Date() });
-  }
+  };
 
   const todoAdder = () => {
     axios
@@ -109,7 +109,6 @@ export default function GoalCreateModal({
         setSelectDate({ startDate: new Date(), endDate: new Date() });
       });
   };
-
 
   return (
     <Container isCreateOpen={isCreateOpen}>
