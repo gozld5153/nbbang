@@ -180,6 +180,7 @@ const BigWrapper = styled.div`
   overflow: hidden;
   cursor: pointer;
 `;
+
 const Wrapper = styled.div`
   width: 20rem;
   height: inherit;
