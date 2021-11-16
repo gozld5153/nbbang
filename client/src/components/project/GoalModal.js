@@ -147,20 +147,16 @@ export default function GoalModal() {
       Body: file, // 업로드할 파일 객체
     },
   });
+    console.log(upload);
 
   const promise = upload.promise()
 
   promise.then(
     function (data) {
-      axios.post(`${process.env.REACT_APP_API_URL}/file`, {
-        userId:location.state.myInfo.id,
-        goalId:params.id,
-        fileName:data.key,
-        description:data.Location
-      }).then((res) => {
-        console.log(res.data)
-        alert("이미지 업로드에 성공했습니다.");
-      });
+      
+      console.log(data.Location)
+      console.log(data.key)
+      alert("이미지 업로드에 성공했습니다.")
     },
     function (err) {
       return alert("오류가 발생했습니다: ", err.message);
@@ -181,8 +177,6 @@ export default function GoalModal() {
         setGoal(res.data.data);
       });
   }, []);
-
-  console.log(goal.Files)
 
   return (
     <Container>
@@ -298,14 +292,14 @@ export default function GoalModal() {
 
         <FileContainer>
           <Title>File</Title>
-          <FileUploaderContainer onChange={handleFileInput}>
+          <FileUploaderContainer
+            onChange={handleFileInput}
+          >
             <img src={`${process.env.PUBLIC_URL}/images/save.png`} alt="save" />
             <FileUploader type="file" />
           </FileUploaderContainer>
         </FileContainer>
-        {goal.Files
-          ? goal.Files.map((el) => <FileList href={el.description}>{el.fileName}</FileList>)
-          : null}
+        {goal.Files ? goal.Files.map((el) => el.fileName) : null}
         {
           // 파일 업로드 하는 방법 찾기
         }
@@ -485,5 +479,3 @@ const FileUploaderContainer = styled.label`
 const FileUploader = styled.input`
   display:none;
   `
-const FileList = styled.a`
-`
