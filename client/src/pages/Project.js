@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
+import disableScroll from "disable-scroll";
 import axios from 'axios'
 
 import ProjectInfo from "../components/project/ProjectInfo"
@@ -68,6 +69,12 @@ export default function Project({ id }) {
       })
       .catch((err) => console.log(err));
   }, []);
+
+  if (Object.keys(params).length === 2) {
+    disableScroll.on();
+  } else {
+    disableScroll.off();
+  }
 
   const projectModalOpener = () => {
     if(projectInfo.captainId === myInfo.id)

@@ -54,7 +54,7 @@ export default function GoalCreateModal({
       userId: myInfo.id,
       goalName: "",
       description: "",
-      state: "Todo",
+      state: "todo",
       important: 1,
       deadline: `${today.toLocaleString().split(" ").join("").slice(0, 10)} ~ 
               ${today.toLocaleString().split(" ").join("").slice(0, 10)}`,
@@ -63,7 +63,6 @@ export default function GoalCreateModal({
       comments: [],
     });
     setSelectDate({ startDate: new Date(), endDate: new Date() });
-
   }
 
   const todoAdder = () => {
@@ -93,7 +92,7 @@ export default function GoalCreateModal({
         userId: myInfo.id,
         goalName: "",
         description: "",
-        state: "Todo",
+        state: "todo",
         important: 1,
         deadline: `${today.toLocaleString().split(" ").join("").slice(0, 10)} ~ 
               ${today.toLocaleString().split(" ").join("").slice(0, 10)}`,
@@ -104,6 +103,8 @@ export default function GoalCreateModal({
       setSelectDate({ startDate: new Date(), endDate: new Date() });
     });
   };
+
+
   return (
     <Container isCreateOpen={isCreateOpen}>
       <ModalContainer>
@@ -112,13 +113,13 @@ export default function GoalCreateModal({
           alt="close"
           onClick={modalCloser}
         />
-        Mission Name
+        <Title>Mission Name</Title>
         <input
           onChange={(e) => goalDataHandler("goalName", e.target.value)}
           value={goalData.goalName}
           type="text"
         />
-        Deadline
+        <Title>Deadline</Title>
         <Daypicker>
           <StyleDatePicker
             selected={selectDate.startDate}
@@ -140,6 +141,7 @@ export default function GoalCreateModal({
               );
             }}
           />
+          ~
           <StyleDatePicker
             selected={selectDate.endDate}
             dateFormat="yyyy-MM-dd"
@@ -160,25 +162,30 @@ export default function GoalCreateModal({
             }}
           />
         </Daypicker>
-        Important
+        <Title>Important</Title>
         <ul>
-          <li onClick={()=>setIsOpen(!isOpen)}>
+          <li onClick={() => setIsOpen(!isOpen)}>
             {important.filter((el) => el[1] === goalData.important)[0][0]}
           </li>
-          {isOpen ? important.map((el) => (
-            <li onClick={() => {
-              goalDataHandler("important", el[1])
-              setIsOpen(!isOpen);
-            }} key={el[1]}>
-              {el[0]}
-            </li>
-          )) : null}
+          {isOpen
+            ? important.map((el) => (
+                <li
+                  onClick={() => {
+                    goalDataHandler("important", el[1]);
+                    setIsOpen(!isOpen);
+                  }}
+                  key={el[1]}
+                >
+                  {el[0]}
+                </li>
+              ))
+            : null}
         </ul>
-        Description
+        <Title>Description</Title>
         <textarea
           onChange={(e) => goalDataHandler("description", e.target.value)}
           value={goalData.description}
-        ></textarea>
+        />
         <button onClick={todoAdder}>Create</button>
       </ModalContainer>
     </Container>
@@ -211,10 +218,43 @@ const ModalContainer = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  width: 50vw;
-  height: 50vh;
+  align-items: flex-start;
+  width: 20rem;
   border: 0.4rem solid black;
+  padding: 1rem;
   background-color: white;
+
+  input {
+    width: 8rem;
+    border-bottom: 0.2rem solid black;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+  ul {
+    display:flex;
+    align-items:flex-end;
+  }
+
+  li:first-child {
+    font-size: 1.4rem;
+    border-bottom: 0.2rem solid black;
+    margin: 0.1rem;
+  }
+
+  li {
+    font-size: 1rem;
+    margin-right: 0.2rem;
+  }
+
+  textarea {
+    width:17rem;
+    resize:none;
+    margin-bottom:1.3rem;
+  }
+`;
+
+const Title = styled.div`
+  margin: 1rem 0 0.5rem 0;
 `;
 
 const Daypicker = styled.div`
@@ -223,5 +263,7 @@ const Daypicker = styled.div`
 `;
 
 const StyleDatePicker = styled(DatePicker)`
-width:5rem;
-border:1px solid black`;
+  width: 8rem;
+  font-size: 1.4rem;
+  border-bottom: 0.2rem solid black;
+`;

@@ -91,8 +91,6 @@ export default function MemberModal({
     setSearchEmail('');
     memberModalOpener();
   };
-
-  console.log(selectMember)
   return (
     <ModalContainer isMemberOpen={isMemberOpen}>
       Search email

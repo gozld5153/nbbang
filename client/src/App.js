@@ -33,6 +33,7 @@ export default function App() {
   const [isMypage, setIsMypage] = useState(false);
   const [switchBtn, setSwitchBtn] = useState(false);
   const [isOn, setIsOn] = useState(false);
+  const [yoffset, setYoffset] = useState(0)
 
   const handleNavbar = () => {
     setIsLogin(true);
@@ -52,6 +53,8 @@ export default function App() {
   };
 
   const handleModal = (e) => {
+    setYoffset(window.pageYOffset);
+    console.log(window.pageYOffset);
     if (e.target.innerHTML === "Login") {
       setSignAndLogin("login");
     } else {
