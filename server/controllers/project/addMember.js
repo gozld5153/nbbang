@@ -14,6 +14,7 @@ module.exports = async (req, res) => {
       where: {
         userId: req.params.userId,
         projectId: req.params.projectId,
+        color: req.body.color,
       },
     });
     await Invite.destroy({
@@ -24,7 +25,6 @@ module.exports = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
-    return res.status(500).json({ data: null, message: "데이터베이스 에러" });
   }
   return res.status(201).json({ data: null, message: "ok" });
 };
