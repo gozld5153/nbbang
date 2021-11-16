@@ -10,7 +10,13 @@ module.exports = async (req, res) => {
   }
   let response;
   try {
-    response = await Goal.create(req.body);
+    let date = new Date();
+    date =
+      date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+    response = await Goal.create({
+      deadline: date + "~" + date,
+      ...req.body,
+    });
   } catch {
     return res.status(500).json({ data: null, message: "데이터베이스 오류" });
   }
