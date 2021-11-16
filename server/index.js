@@ -14,7 +14,6 @@ const commentRouter = require("./router/commentRouter");
 const fileRouter = require("./router/fileRouter");
 const testRouter = require("./router/testRouter");
 const inviteRouter = require("./router/inviteRouter");
-const oauthRouter = require("./router/oauthRouter");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -38,7 +37,6 @@ app.use("/comment", commentRouter);
 app.use("/file", fileRouter);
 app.use("/test", testRouter);
 app.use("/invite", inviteRouter);
-app.use("/oauth", oauthRouter);
 
 app.get("/", (req, res) => {
   res.status(201).send("Hello World");

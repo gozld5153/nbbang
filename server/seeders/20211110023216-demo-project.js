@@ -9,7 +9,7 @@ module.exports = {
         description: null,
         presentation: null,
         state: "progress",
-        deadline: "2021-11-11~2021-11-20",
+        deadline: "2021.11.20~2022.01.05",
         createdAt: new Date(),
         updatedAt: new Date(),
       },
