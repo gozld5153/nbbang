@@ -113,7 +113,7 @@ export default function App() {
         console.log(`쿠키 ${err.response}`);
         setIsLogin(false);
       });
-  }, [isLogin,isMypage]);
+  }, [isLogin,isMypage,update]);
   return (
     <Router>
       <Container>

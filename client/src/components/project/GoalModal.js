@@ -8,9 +8,6 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/esm/locale";
 
-
-import getGoalId from '../../mockdata/GoalOneMockData'
-
 export default function GoalModal({ id, update, setUpdate }) {
   const params = useParams();
   const navigate = useNavigate();
@@ -30,13 +27,14 @@ export default function GoalModal({ id, update, setUpdate }) {
       IdentityPoolId: `${process.env.REACT_APP_AWS_IDENTITYPOOLID}`,
     }),
   });
-  const [goal, setGoal] = useState(getGoalId);
+  const [goal, setGoal] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [comment, setComment] = useState("");
   const [selectDate, setSelectDate] = useState({
     startDate: new Date(),
     endDate: new Date(),
   });
+  console.log('goal :',goal)
 
   const DataHandler = (key, value) => {
     let newObject = goal;
@@ -58,6 +56,7 @@ export default function GoalModal({ id, update, setUpdate }) {
   };
 
   const onEdit = () => {
+    console.log(goal,id);
     if (goal.userId === id) {
       setIsEditing(!isEditing);
     } else {
@@ -247,9 +246,8 @@ export default function GoalModal({ id, update, setUpdate }) {
           setGoal(res.data.data);
         });
     }
-  }, [update]);
+  }, [update,id]);
 
-  console.log("params", params);
 
   return (
     <Container>

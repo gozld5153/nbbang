@@ -13,6 +13,8 @@ export default function ProjectInfo({
   DataHandler,
   isMemberOpen,
   setMember,
+  setUpdate
+  ,update
 }) {
   return (
     <Container>
@@ -28,6 +30,8 @@ export default function ProjectInfo({
               member={member}
               projectInfo={projectInfo}
               DataHandler={DataHandler}
+              setUpdate={setUpdate}
+              update={update}
             />
           </ProjectNameContainer>
           <ProjectDueContainer>
@@ -39,11 +43,7 @@ export default function ProjectInfo({
           <ProjectMember>
             {member.map((el) => (
               <ProfileContainer len={5} color={el.color} key={el.id}>
-                <Profile
-                  len={5}
-                  src={el.profile}
-                  alt={el.username}
-                />
+                <Profile len={5} src={el.profile} alt={el.username} />
               </ProfileContainer>
             ))}
             <MemberModal
@@ -59,9 +59,7 @@ export default function ProjectInfo({
       <ProjectProgress>
         <RateContainer>
           <RateFrame>
-            <RateName>
-              프로젝트 진행률
-            </RateName>
+            <RateName>프로젝트 진행률</RateName>
             <RateBar
               important={projectInfo.completeImportant}
               color="#AFAFAF"

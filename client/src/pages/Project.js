@@ -90,7 +90,7 @@ export default function Project({ id, update, setUpdate }) {
   const memberModalOpener = () => {
     setIsMemberOpen(!isMemberOpen);
   };
-
+console.log('project :',projectInfo)
   return (
     <Container>
       <ProjectFrame>
@@ -104,6 +104,8 @@ export default function Project({ id, update, setUpdate }) {
           DataHandler={DataHandler}
           isMemberOpen={isMemberOpen}
           setMember={setMember}
+          setUpdate={setUpdate}
+          update={update}
         />
         <ProjectField
           myInfo={myInfo}
