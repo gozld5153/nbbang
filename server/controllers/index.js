@@ -40,4 +40,5 @@ module.exports = {
   deleteInvite: require("./invite/deleteInvite"),
   // oauth
   kakao: require("./oauth/kakao"),
+  naver: require("./oauth/naver"),
 };

@@ -115,7 +115,7 @@ module.exports = async (req, res) => {
             id: projectInfo.dataValues.captainId,
           },
         });
-        projectInfo.dataValues.captain_name = captainInfo.dataValues.username;
+        projectInfo.dataValues.captainName = captainInfo.dataValues.username;
         // 프로젝트 진행도 allImportant completeImportant 추가
         // 프로젝트 아이디 info.dataValues.projectId
         // 프로젝트 아이디로 goal 테이블 검색해서 important 총합 구함

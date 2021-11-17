@@ -74,6 +74,12 @@ module.exports = async (req, res) => {
     // color 추가 important 추가
     projectInfo.dataValues.members = [];
     for (let el of projectInfo.dataValues.UsersProjects) {
+      if (
+        el.dataValues.User.dataValues.id === projectInfo.dataValues.captainId
+      ) {
+        projectInfo.dataValues.captainName =
+          el.dataValues.User.dataValues.username;
+      }
       el.dataValues.User.dataValues.color = el.dataValues.color;
       let myAllImportant = 0;
       let myCompleteImportant = 0;

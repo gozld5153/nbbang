@@ -46,11 +46,6 @@ const Login = ({ handleNavbar, isOn }) => {
         <LoginBtn onClick={handleLogin}>Login</LoginBtn>
         <ErrMsg errMsg={errMsg}>{errMsg}</ErrMsg>
       </ErrBox>
-      <div>
-        <a href="https://kauth.kakao.com/oauth/authorize?client_id=3bcb5ae48e31dacbf58eb8cbcc65a29e&redirect_uri=http://localhost:3000&response_type=code">
-          kakao
-        </a>
-      </div>
     </Container>
   );
 };

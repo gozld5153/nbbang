@@ -49,7 +49,7 @@ module.exports = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
-    return res.status(500).json({ data: null, message: "잘못된 요청입니다." });
+    return res.status(500).json({ data: null, message: "데이터베이스 에러" });
   }
 
   return res
@@ -62,7 +62,7 @@ module.exports = async (req, res) => {
       }
     )
     .json({
-      data: null,
+      data: data,
       message: "ok",
     });
 };
