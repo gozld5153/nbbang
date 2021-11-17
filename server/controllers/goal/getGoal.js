@@ -28,27 +28,24 @@ module.exports = async (req, res) => {
           },
           {
             model: Like,
-            attributes: ["id"],
-            where: {
-              userId: req.query.userId,
-            },
+            attributes: ["id", "userId"],
           },
         ],
       });
+      goalInfo.dataValues.likeCount = goalInfo.dataValues.Likes.length;
+      for (let el of goalInfo.dataValues.Comments) {
+        el.dataValues.username = el.dataValues.User.dataValues.username;
+        delete el.dataValues.User;
+      }
+      for (let el of goalInfo.dataValues.Likes) {
+        if (el.dataValues.userId === req.query.userId) {
+          goalInfo.dataValues.LikeId = el.dataValues.id;
+        }
+      }
     } catch (err) {
       console.log(err);
       return res.status(500).json({ data: null, message: "데이터베이스 오류" });
     }
-    goalInfo.dataValues.likeCount = goalInfo.dataValues.Likes.length;
-    for (let el of goalInfo.dataValues.Comments) {
-      el.dataValues.username = el.dataValues.User.dataValues.username;
-      delete el.dataValues.User;
-    }
-    for (let el of goalInfo.dataValues.Likes) {
-      el.dataValues = el.dataValues.id;
-    }
-    goalInfo.dataValues.LikeId = goalInfo.dataValues.Likes;
-    delete goalInfo.dataValues.Likes;
 
     const data = goalInfo;
 
