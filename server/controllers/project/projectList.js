@@ -2,11 +2,6 @@ const { User, Project, UsersProjects, Goal } = require("../../models");
 
 module.exports = async (req, res) => {
   // TODO 프로젝트 목록 api 구현
-  // projectListByProgress
-  // req.query.state
-  // req.params.userId
-  // req.query.progresspage
-  // req.query.completePage
 
   if (!req.params.userId) {
     return res.status(400).json({ data: null, message: "잘못된 요청입니다." });
@@ -54,7 +49,7 @@ module.exports = async (req, res) => {
         profile: el.dataValues.User.dataValues.profile,
         goal: el.dataValues.User.dataValues.Goals,
       };
-      if (el.id === projectInfo.dataValues.captainId) {
+      if (el.dataValues.userId === projectInfo.dataValues.captainId) {
         captain = tempObj;
       } else {
         crew.push(tempObj);
