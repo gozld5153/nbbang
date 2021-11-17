@@ -27,17 +27,8 @@ export default function Project({ id, update, setUpdate }) {
     description: "",
     deadline: 0,
   });
-  const [member, setMember] = useState([
-    {
-      id: 0,
-      username: "",
-      email: "",
-      profile: "",
-      color: "",
-      important: 0,
-    },
-  ]);
-
+  const [member, setMember] = useState([]);
+  console.log("member", member);
   const DataHandler = (key, value) => {
     let newObject = projectInfo;
     newObject[key] = value;
@@ -48,7 +39,7 @@ export default function Project({ id, update, setUpdate }) {
   useEffect(() => {
 
     if (update) {
-      setUpdate(false)
+      setUpdate(false);
     } else {
       axios
         .get(
@@ -76,7 +67,7 @@ export default function Project({ id, update, setUpdate }) {
         })
         .catch((err) => console.log(err));
     }
-  }, [update,id]);
+  }, [update, id]);
 
 
   if (Object.keys(params).length === 2) {
@@ -92,6 +83,7 @@ export default function Project({ id, update, setUpdate }) {
   const memberModalOpener = () => {
     if (projectInfo.captainId === myInfo.id) setIsMemberOpen(!isMemberOpen);
   };
+
 
   return (
     <Container>

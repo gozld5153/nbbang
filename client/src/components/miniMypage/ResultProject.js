@@ -8,16 +8,22 @@ const ResultProject = ({ complete, members, handleMypage }) => {
     navigate("/mypage/project-done");
     handleMypage();
   };
+  const handleMoveProject = (id) => {
+    navigate(`/complete/${id}`);
+    handleMypage();
+  };
   return (
     <Container>
       {complete.length > 0 ? (
         <>
-          <div>완료한 프로젝트</div>
+          <div onClick={handleMoveMypage} style={{ cursor: "pointer" }}>
+            완료한 프로젝트
+          </div>
           <div>
             <ul>
               {complete.map((project, idx) => (
-                <li key={idx} onClick={handleMoveMypage}>
-                  <p>{project}</p>
+                <li key={idx} onClick={() => handleMoveProject(project.id)}>
+                  <p>{project.projectName}</p>
                   {members[idx].map((name, idx) => (
                     <span key={idx}>{name.username} &nbsp;</span>
                   ))}
@@ -27,7 +33,9 @@ const ResultProject = ({ complete, members, handleMypage }) => {
           </div>
         </>
       ) : (
-        <div>완료한 프로젝트가 없습니다.</div>
+        <div onClick={handleMoveMypage} style={{ cursor: "pointer" }}>
+          완료한 프로젝트가 없습니다.
+        </div>
       )}
     </Container>
   );
