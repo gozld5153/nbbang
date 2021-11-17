@@ -13,6 +13,8 @@ export default function ProjectModal({
   member,
   projectInfo,
   DataHandler,
+  setUpdate,
+  update
 }) {
   // 기능 clear
   const navigate = useNavigate();
@@ -65,6 +67,7 @@ export default function ProjectModal({
         }
       )
       .then((res) => {
+        setUpdate(true);
         if (res.data.message === "ok") {
           projectModalOpener();
         }
@@ -92,6 +95,7 @@ export default function ProjectModal({
         }
       )
       .then((res) => {
+        setUpdate(true)
         if (res.data.message === "ok") {
           navigate("/");
         }
