@@ -29,7 +29,14 @@ export default function App() {
   const [switchBtn, setSwitchBtn] = useState(false);
   const [isOn, setIsOn] = useState(false);
   const [invited, setInvited] = useState({});
+  const [preview, setPreview] = useState();
   const [update, setUpdate] = useState(true);
+  //miniMypage에 쓰이는 state
+  const [progress, setProgress] = useState([]);
+  const [complete, setComplete] = useState([]);
+  const [progressMembers, setProgressMember] = useState([]);
+  const [completeMembers, setCompleteMember] = useState([]);
+
 
   const handleInvitedList = () => {
     axios
@@ -39,6 +46,7 @@ export default function App() {
       })
       .catch((err) => console.log(err.response));
   };
+
   const handleNavbar = () => {
     setIsLogin(true);
     setIsModal(!isModal);
@@ -85,6 +93,12 @@ export default function App() {
 
   // 토큰이 유효하면 로그인 상태 유지 아니면 로그아웃
 
+
+  useEffect(() => {
+    setPreview(`${process.env.REACT_APP_S3_IMG}/${userInfo.profile}`);
+  }, [userInfo.profile]);
+
+
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_API_URL}/users`, {
@@ -98,6 +112,7 @@ export default function App() {
       .then((data) => {
         axios(`${process.env.REACT_APP_API_URL}/project/${data}}`)
           .then((data) => {
+            console.log(data.data);
             setUserData(data.data);
           })
           .catch((err) => console.log(err.response));
@@ -113,7 +128,58 @@ export default function App() {
         console.log(`쿠키 ${err.response}`);
         setIsLogin(false);
       });
-  }, [isLogin,isMypage,update]);
+
+  }, [isLogin, update]);
+
+  useEffect(() => {
+    // console.log(userData);
+    let userDataClone = { ...userData };
+    let newProgress = [];
+    let newComplete = [];
+    let newProgressMembers = [];
+    let newCompleteMembers = [];
+    if (isMypage) {
+      if (!userDataClone.data.progress && !userDataClone.data.complete) {
+        return;
+      } else if (
+        !userDataClone.data.progress.length &&
+        userDataClone.data.complete !== 0
+      ) {
+        for (let i = 0; i < 3; i++) {
+          if (userDataClone.data.complete.length <= i) continue;
+          newComplete.push(userDataClone.data.complete[i]);
+          newCompleteMembers.push(userDataClone.data.complete[i].members);
+        }
+      } else if (
+        userDataClone.data.progress.length !== 0 &&
+        !userDataClone.data.complete
+      ) {
+        for (let i = 0; i < 3; i++) {
+          if (userDataClone.data.progress.length <= i) continue;
+          newProgress.push(userDataClone.data.progress[i]);
+          newProgressMembers.push(userDataClone.data.progress[i].members);
+        }
+      } else {
+        for (let i = 0; i < 3; i++) {
+          if (userDataClone.data.complete.length > i) {
+            newComplete.push(userDataClone.data.complete[i]);
+            newCompleteMembers.push(userDataClone.data.complete[i].members);
+          }
+          if (userDataClone.data.progress.length > i) {
+            newProgress.push(userDataClone.data.progress[i]);
+            newProgressMembers.push(userDataClone.data.progress[i].members);
+          }
+        }
+      }
+
+      setProgress(newProgress);
+      setComplete(newComplete);
+      setProgressMember(newProgressMembers);
+      setCompleteMember(newCompleteMembers);
+    }
+  }, [isMypage]);
+
+
   return (
     <Router>
       <Container>
@@ -130,6 +196,16 @@ export default function App() {
             switchBtn={switchBtn}
             invited={invited}
             handleInvitedList={handleInvitedList}
+
+            setUpdate={setUpdate}
+            update={update}
+            progress={progress}
+            complete={complete}
+            progressMembers={progressMembers}
+            completeMembers={completeMembers}
+
+            preview={preview}
+
           />
           <Routes>
             <Route
@@ -147,10 +223,16 @@ export default function App() {
             />
 
             {userInfo.id && (
-              <Route path="mypage" element={<MyPage userInfo={userInfo} />}>
+              <Route path="mypage" element={<MyPage preview={preview} />}>
                 <Route
                   path="profile"
-                  element={<Profile userInfo={userInfo} />}
+                  element={
+                    <Profile
+                      userInfo={userInfo}
+                      setUserInfo={setUserInfo}
+                      setPreview={setPreview}
+                    />
+                  }
                 />
                 <Route
                   path="project-inprogress"

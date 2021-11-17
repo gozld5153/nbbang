@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import disableScroll from "disable-scroll";
-import axios from 'axios'
+import axios from "axios";
 
-import ProjectInfo from "../components/project/ProjectInfo"
-import ProjectField from "../components/project/ProjectField"
+import ProjectInfo from "../components/project/ProjectInfo";
+import ProjectField from "../components/project/ProjectField";
 
 export default function Project({ id, update, setUpdate }) {
   const params = useParams();
@@ -23,31 +23,23 @@ export default function Project({ id, update, setUpdate }) {
     captainId: 0,
     state: "progress",
     allImportant: 0,
-    completeImportant:0,
+    completeImportant: 0,
     description: "",
     deadline: 0,
   });
-  const [member, setMember] = useState([
-    {
-      id: 0,
-      username: "",
-      email: "",
-      profile: "",
-      color: "",
-      important: 0,
-    },
-  ]);
-
+  const [member, setMember] = useState([]);
+  console.log("member", member);
   const DataHandler = (key, value) => {
     let newObject = projectInfo;
     newObject[key] = value;
-    console.log(newObject.description)
+    console.log(newObject.description);
     setProjectInfo({ ...newObject });
   };
-
+  console.log(params.projectId, id);
   useEffect(() => {
+
     if (update) {
-      setUpdate(false)
+      setUpdate(false);
     } else {
       axios
         .get(
@@ -75,7 +67,8 @@ export default function Project({ id, update, setUpdate }) {
         })
         .catch((err) => console.log(err));
     }
-  }, [update,id]);
+  }, [update, id]);
+
 
   if (Object.keys(params).length === 2) {
     disableScroll.on();
@@ -84,12 +77,14 @@ export default function Project({ id, update, setUpdate }) {
   }
 
   const projectModalOpener = () => {
-    if(projectInfo.captainId === myInfo.id) setIsProjectOpen(!isProjectOpen);
+    if (projectInfo.captainId === myInfo.id) setIsProjectOpen(!isProjectOpen);
   };
+
   const memberModalOpener = () => {
     if (projectInfo.captainId === myInfo.id) setIsMemberOpen(!isMemberOpen);
   };
-console.log('project :',projectInfo)
+
+
   return (
     <Container>
       <ProjectFrame>
@@ -121,10 +116,9 @@ console.log('project :',projectInfo)
 }
 
 const Container = styled.div`
-  display:flex;
-  flex-direction:column;
+  display: flex;
+  flex-direction: column;
   min-height: 93vh;
 `;
 
-const ProjectFrame = styled.div`
-`;
+const ProjectFrame = styled.div``;

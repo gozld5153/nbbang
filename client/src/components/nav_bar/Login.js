@@ -18,7 +18,6 @@ const Login = ({ handleNavbar, isOn }) => {
       setErrMsg("Please enter information");
     } else {
       //todo axios 통신요청
-      console.log(`${process.env.REACT_APP_API_URL}`);
       axios //
         .post(`${process.env.REACT_APP_API_URL}/users/signin`, loginInfo, {
           withCredentials: true,
@@ -47,14 +46,6 @@ const Login = ({ handleNavbar, isOn }) => {
         <LoginBtn onClick={handleLogin}>Login</LoginBtn>
         <ErrMsg errMsg={errMsg}>{errMsg}</ErrMsg>
       </ErrBox>
-      <div>
-        <a href="https://kauth.kakao.com/oauth/authorize?client_id=3bcb5ae48e31dacbf58eb8cbcc65a29e&redirect_uri=http://localhost:3000&response_type=code">
-          kakao
-        </a>
-        <a href="https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=1U23Ur_IcT0URfeFcBRE&redirect_uri=http://localhost:3000&state=nbbang">
-          naver
-        </a>
-      </div>
     </Container>
   );
 };
