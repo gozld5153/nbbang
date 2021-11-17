@@ -78,8 +78,6 @@ module.exports = async (req, res) => {
       if (
         el.dataValues.User.dataValues.id === projectInfo.dataValues.captainId
       ) {
-        console.log("asdfaf", el.dataValues.User.dataValues.username);
-
         projectInfo.dataValues.captainName =
           el.dataValues.User.dataValues.username;
       }

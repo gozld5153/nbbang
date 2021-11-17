@@ -17,6 +17,15 @@ export default function Nav({
   userData,
   invited,
   handleInvitedList,
+
+  setUpdate,
+  update,
+  progress,
+  complete,
+  progressMembers,
+  completeMembers,
+  preview,
+
 }) {
   const navigate = useNavigate();
   const [cookies, setCookie, removeCookie] = useCookies([]);
@@ -34,6 +43,9 @@ export default function Nav({
   };
 
   const handleProject = () => {
+    if (isMypage) {
+      handleMypage();
+    }
     axios
       .post(`${process.env.REACT_APP_API_URL}/project`, {
         projectName: "새로운 프로젝트",
@@ -74,6 +86,13 @@ export default function Nav({
                 userInfo={userInfo}
                 userData={userData}
                 handleInvitedList={handleInvitedList}
+                setUpdate={setUpdate}
+                update={update}
+                progress={progress}
+                complete={complete}
+                progressMembers={progressMembers}
+                completeMembers={completeMembers}
+                preview={preview}
               ></MiniMypage>
             ) : null}
           </>
@@ -180,6 +199,7 @@ const BigWrapper = styled.div`
   overflow: hidden;
   cursor: pointer;
 `;
+
 const Wrapper = styled.div`
   width: 20rem;
   height: inherit;

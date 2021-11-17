@@ -182,6 +182,8 @@ module.exports = async (req, res) => {
       data.push(projectInfo);
       // TODO for문 탈출
     }
+    // 여기서 프로젝트 id 기준으로 최신순
+    data.sort((a, b) => b.dataValues.id - a.dataValues.id);
     if (!req.query.state) {
       let complete = [];
       let progress = [];
@@ -211,8 +213,9 @@ module.exports = async (req, res) => {
         data = data.slice(page - 5, page);
       }
     }
-  } catch {
-    data = null;
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ data: null, message: "데이터베이스 에러" });
   }
 
   return res.status(200).json({ totalCount, data, message: "ok" });

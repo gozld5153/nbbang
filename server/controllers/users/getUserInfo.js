@@ -5,7 +5,38 @@ const axios = require("axios");
 module.exports = async (req, res) => {
   // TODO 마이페이지 내정보
   // 토큰으로만 정보 들어옴
-  // ! KAKAO Oauth
+  console.log(req.cookies);
+  if (!req.cookies.accessToken) {
+    return res
+      .status(400)
+      .json({ data: null, message: "토큰이 존재하지 않습니다." });
+  }
+  // ! NAVER Oauth 시작
+  if (req.cookies.accessToken.naverAccessToken) {
+    const accessToken = req.cookies.accessToken.naverAccessToken;
+    // 토큰으로 정보 받아옴
+    let userInfo;
+    try {
+      userInfo = await axios.get("https://openapi.naver.com/v1/nid/me", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      // userInfo에 정보 들어옴
+      userInfo = await User.findOne({
+        where: {
+          email: userInfo.data.response.email,
+        },
+      });
+      delete userInfo.dataValues.password;
+    } catch (err) {
+      console.log(err);
+    }
+
+    return res.status(400).json({ data: userInfo, message: "ok" });
+  }
+  // ! NAVER Oauth 끝
+  // ! KAKAO Oauth 시작
   if (req.cookies.accessToken.kakaoAccessToken) {
     // 토큰 받아옴
     const accessToken = req.cookies.accessToken.kakaoAccessToken;
@@ -43,7 +74,7 @@ module.exports = async (req, res) => {
       .status(400)
       .json({ data: null, message: "토큰이 존재하지 않습니다." });
   }
-  const token = req.cookies.accessToken;
+  const token = req.cookies.accessToken.nbbangAccessToken;
   let decoded;
   try {
     decoded = jwt.verify(token, process.env.ACCESS_SECRET);

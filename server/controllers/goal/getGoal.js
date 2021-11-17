@@ -9,7 +9,7 @@ module.exports = async (req, res) => {
   // goalId 가 존재하면 단독 검색
   // req.query.details === true
 
-  if (req.query.goalId) {
+  if (req.query.goalId && req.query.userId) {
     let goalInfo;
 
     try {
@@ -26,17 +26,25 @@ module.exports = async (req, res) => {
               attributes: ["username"],
             },
           },
-          Like,
+          {
+            model: Like,
+            attributes: ["id", "userId"],
+          },
         ],
       });
+      goalInfo.dataValues.likeCount = goalInfo.dataValues.Likes.length;
+      for (let el of goalInfo.dataValues.Comments) {
+        el.dataValues.username = el.dataValues.User.dataValues.username;
+        delete el.dataValues.User;
+      }
+      for (let el of goalInfo.dataValues.Likes) {
+        if (el.dataValues.userId == req.query.userId) {
+          goalInfo.dataValues.LikeId = el.dataValues.id;
+        }
+      }
     } catch (err) {
       console.log(err);
       return res.status(500).json({ data: null, message: "데이터베이스 오류" });
-    }
-    goalInfo.dataValues.likeCount = goalInfo.dataValues.Likes.length;
-    for (let el of goalInfo.dataValues.Comments) {
-      el.dataValues.username = el.dataValues.User.dataValues.username;
-      delete el.dataValues.User;
     }
 
     const data = goalInfo;

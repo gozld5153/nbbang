@@ -7,7 +7,8 @@ import Goal from "./Goal";
 import GoalCreateModal from "./GoalCreateModal";
 
 
-export default function ProjectField({ myInfo, projectId, params, member, myLike }) {
+export default function ProjectField({ myInfo, projectId, params, member, myLike,update,setUpdate }) {
+
   const [isTodo, setIsTodo] = useState([]);
   const [isProgress, setIsProgress] = useState([]);
   const [isComplete, setIsComplete] = useState([]);
@@ -23,24 +24,28 @@ export default function ProjectField({ myInfo, projectId, params, member, myLike
   };
 
   useEffect(() => {
-    axios
-      .get(
-        `${process.env.REACT_APP_API_URL}/goal?projectId=${params.projectId}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        }
-      )
-      .then((res) => {
-        setIsTodo([...res.data.data.todo]);
-        setIsProgress([...res.data.data.progress]);
-        setIsComplete([...res.data.data.complete]);
-      });
-  }, []);
+    if (update) {
+      setUpdate(false);
+    } else {
+      axios
+        .get(
+          `${process.env.REACT_APP_API_URL}/goal?projectId=${params.projectId}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            withCredentials: true,
+          }
+        )
+        .then((res) => {
+          setIsTodo([...res.data.data.todo]);
+          setIsProgress([...res.data.data.progress]);
+          setIsComplete([...res.data.data.complete]);
+        });
+    }
+  }, [update]);
 
-  console.log(isProgress);
+  console.log("fieldGoal :", goalList);
   return (
     <Container>
       <Frame>
@@ -58,16 +63,11 @@ export default function ProjectField({ myInfo, projectId, params, member, myLike
                   {el.map((goal) => (
                     <div
                       onClick={() =>
+                      {
                         navigate(`./${goal.id}`, {
-                          state: {
-                            myInfo: {
-                              id: myInfo.id,
-                              username: myInfo.username,
-                              likeId: myInfo.likeId,
-                            },
-                          },
                           replace: false,
                         })
+                      }
                       }
                       key={goal.id}
                     >
@@ -92,6 +92,9 @@ export default function ProjectField({ myInfo, projectId, params, member, myLike
           myInfo={myInfo}
           setIsTodo={setIsTodo}
           projectId={projectId}
+          update={update}
+          setUpdate={setUpdate}
+
         />
         <Outlet />
       </Frame>
