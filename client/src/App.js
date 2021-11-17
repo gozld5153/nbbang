@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
 import disableScroll from "disable-scroll";
@@ -22,7 +18,6 @@ import {
 } from "./pages/MyPage";
 
 export default function App() {
-
   const [userData, setUserData] = useState({
     data: { completeCount: 0, progressCount: 0 },
   });
@@ -34,6 +29,7 @@ export default function App() {
   const [switchBtn, setSwitchBtn] = useState(false);
   const [isOn, setIsOn] = useState(false);
   const [invited, setInvited] = useState({});
+  const [preview, setPreview] = useState();
 
   const handleInvitedList = () => {
     axios
@@ -88,6 +84,9 @@ export default function App() {
   };
 
   // 토큰이 유효하면 로그인 상태 유지 아니면 로그아웃
+  useEffect(() => {
+    setPreview(`${process.env.REACT_APP_S3_IMG}/${userInfo.profile}`);
+  }, [userInfo.profile]);
 
   useEffect(() => {
     axios
@@ -118,6 +117,7 @@ export default function App() {
         setIsLogin(false);
       });
   }, [isLogin]);
+
   return (
     <Router>
       <Container>
@@ -134,6 +134,7 @@ export default function App() {
             switchBtn={switchBtn}
             invited={invited}
             handleInvitedList={handleInvitedList}
+            preview={preview}
           />
           <Routes>
             <Route
@@ -151,10 +152,16 @@ export default function App() {
             />
 
             {userInfo.id && (
-              <Route path="mypage" element={<MyPage userInfo={userInfo} />}>
+              <Route path="mypage" element={<MyPage preview={preview} />}>
                 <Route
                   path="profile"
-                  element={<Profile userInfo={userInfo} />}
+                  element={
+                    <Profile
+                      userInfo={userInfo}
+                      setUserInfo={setUserInfo}
+                      setPreview={setPreview}
+                    />
+                  }
                 />
                 <Route
                   path="project-inprogress"

@@ -505,21 +505,21 @@ function SvgStrokeComponent({ color, here, now }) {
     </StrokeContainer>
   );
 }
-export function MyPage({ userInfo }) {
+export function MyPage({ preview }) {
   return (
     <MyPageWrapper>
-      <MyPageNav userInfo={userInfo} />
+      <MyPageNav preview={preview} />
       <Outlet />
     </MyPageWrapper>
   );
 }
 
-export function MyPageNav({ userInfo }) {
+export function MyPageNav({ preview }) {
   const { pathname } = useLocation();
 
   return (
     <NavContainer>
-      <img src={`${process.env.REACT_APP_S3_IMG}/${userInfo.profile}`} alt="" />
+      <img src={preview} alt="" />
       <NavItems to="profile">
         <SvgStrokeComponent
           color={"#ffdd22"}
@@ -557,16 +557,19 @@ export function MyPageNav({ userInfo }) {
   );
 }
 
-export function Profile({ userInfo }) {
+export function Profile({ userInfo, setUserInfo, setPreview }) {
   return (
     <ProfileWrapper>
-      <ProfileCard userInfo={userInfo} />
+      <ProfileCard
+        userInfo={userInfo}
+        setUserInfo={setUserInfo}
+        setPreview={setPreview}
+      />
     </ProfileWrapper>
   );
 }
 
-export function ProfileCard({ userInfo }) {
-
+export function ProfileCard({ userInfo, setUserInfo, setPreview }) {
   // -- AWS 연결 설정
   AWS.config.update({
     region: `${process.env.REACT_APP_AWS_REGION}`,
@@ -586,11 +589,11 @@ export function ProfileCard({ userInfo }) {
       ? "전화번호를 적어주세요"
       : `${userInfo.mobile}`
   );
+
   const [username, setUsername] = useState(`${userInfo.username}`);
   const [profileChange, setProfileChange] = useState(false);
   const [previewProfile, setPreviewProfile] = useState(
     `${process.env.REACT_APP_S3_IMG}/${userInfo.profile}`
-
   );
   const [profileImg, setProfileImg] = useState(
     `${process.env.REACT_APP_S3_IMG}/${userInfo.profile}`
@@ -619,7 +622,11 @@ export function ProfileCard({ userInfo }) {
       withCredentials: true,
     });
 
-    setMobile(`${response.data.data.userInfo.mobile}`);
+    setMobile(
+      `${response.data.data.userInfo.mobile}` === "null"
+        ? "전화번호를 입력해주세요"
+        : `${response.data.data.userInfo.mobile}`
+    );
     setUsername(`${response.data.data.userInfo.username}`);
     setCardColor(`${response.data.data.userInfo.profileColor}`);
     setPreviewProfile(
@@ -629,56 +636,63 @@ export function ProfileCard({ userInfo }) {
   };
 
   const handleEditComplete = async () => {
-    setIsLoading(true);
-    if (profileChange) {
-      const fileExtensionArr = profileImg.name.split(".");
-      const fileExtension = fileExtensionArr[fileExtensionArr.length - 1];
+    if (!isComplete) {
+      setIsLoading(true);
 
-      // - AWS UPLOAD 방법
-      const upload = new AWS.S3.ManagedUpload({
-        params: {
-          Bucket: `${process.env.REACT_APP_S3_IMG_BUCKET}`,
-          Key: `${userInfo.id}.${fileExtension}`,
-          Body: profileImg,
-        },
-      });
+      if (profileChange) {
+        const fileExtensionArr = profileImg.name.split(".");
+        const fileExtension = fileExtensionArr[fileExtensionArr.length - 1];
 
-      const promise = upload.promise();
-      promise.then(
-        function (data) {
-          return;
-        },
-        function (err) {
-          return alert("오류가 발생했습니다: ", err.message);
-        }
-      );
-      // -------
+        // - AWS UPLOAD 방법
+        const upload = new AWS.S3.ManagedUpload({
+          params: {
+            Bucket: `${process.env.REACT_APP_S3_IMG_BUCKET}`,
+            Key: `${userInfo.id}.${fileExtension}`,
+            Body: profileImg,
+          },
+        });
+
+        const promise = upload.promise();
+        promise.then(
+          function (data) {
+            return;
+          },
+          function (err) {
+            return alert("오류가 발생했습니다: ", err.message);
+          }
+        );
+        // -------
+
+        await axios({
+          method: "PUT",
+          url: `${process.env.REACT_APP_API_URL}/users`,
+          data: {
+            id: userInfo.id,
+            profile: `${userInfo.id}.${fileExtension}`,
+          },
+        });
+
+        setPreview(previewProfile);
+      }
 
       await axios({
         method: "PUT",
         url: `${process.env.REACT_APP_API_URL}/users`,
         data: {
           id: userInfo.id,
-          profile: `${userInfo.id}.${fileExtension}`,
+          profileColor: cardColor,
+          username,
+          mobile,
         },
       });
+
+      setUserInfo({ ...userInfo, username });
+
+      setTimeout(() => {
+        setIsLoading(false);
+        setIsComplete(true);
+      }, 2000);
     }
-
-    await axios({
-      method: "PUT",
-      url: `${process.env.REACT_APP_API_URL}/users`,
-      data: {
-        id: userInfo.id,
-        profileColor: `${cardColor}`,
-        username,
-        mobile,
-      },
-    });
-
-    setTimeout(() => {
-      setIsLoading(false);
-      setIsComplete(true);
-    }, 2000);
   };
 
   const handleInputChange = (event) => {
@@ -691,7 +705,9 @@ export function ProfileCard({ userInfo }) {
   };
 
   const onImageFileChange = (event) => {
-    console.log(event);
+    setIsLoading(false);
+    setIsComplete(false);
+
     const {
       target: { files },
     } = event;
@@ -828,6 +844,7 @@ export function ProfileCard({ userInfo }) {
   );
 }
 export function ProjectInProgress({ userData, userId }) {
+  console.log(userData);
   const [InProgressProjects, setInProgressProjects] = useState(
     userData.data.progress
   );

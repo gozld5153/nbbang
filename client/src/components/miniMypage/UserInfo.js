@@ -6,7 +6,13 @@ import { BsMailbox2 } from "react-icons/bs";
 import { GiExitDoor } from "react-icons/gi";
 import { AiFillCheckCircle, AiFillCloseCircle } from "react-icons/ai";
 
-const UserInfo = ({ userInfo, handleMypage, invited, handleInvitedList }) => {
+const UserInfo = ({
+  userInfo,
+  handleMypage,
+  invited,
+  handleInvitedList,
+  preview,
+}) => {
   const navigate = useNavigate();
   const [changeForm, setChangeForm] = useState(false);
   const handleMoveMypage = () => {
@@ -35,6 +41,7 @@ const UserInfo = ({ userInfo, handleMypage, invited, handleInvitedList }) => {
       .then(() => handleInvitedList())
       .catch((err) => console.log(err.response));
   };
+
   return (
     <Container>
       {changeForm ? (
@@ -73,10 +80,7 @@ const UserInfo = ({ userInfo, handleMypage, invited, handleInvitedList }) => {
             <NumberOfInvite>{invited.data.length}</NumberOfInvite>
           )}
           <ImgContainer onClick={handleMoveMypage}>
-            <img
-              src={`${process.env.REACT_APP_S3_IMG}/${userInfo.profile}`}
-              alt=""
-            />
+            <img src={preview} alt="" />
           </ImgContainer>
           <UserInfoContainer>
             <div>

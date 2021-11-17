@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import disableScroll from "disable-scroll";
-import axios from 'axios'
+import axios from "axios";
 
-import ProjectInfo from "../components/project/ProjectInfo"
-import ProjectField from "../components/project/ProjectField"
+import ProjectInfo from "../components/project/ProjectInfo";
+import ProjectField from "../components/project/ProjectField";
 
 export default function Project({ id }) {
   const params = useParams();
@@ -23,7 +23,7 @@ export default function Project({ id }) {
     captainId: 0,
     state: "progress",
     allImportant: 0,
-    completeImportant:0,
+    completeImportant: 0,
     description: "",
     deadline: 0,
   });
@@ -41,18 +41,21 @@ export default function Project({ id }) {
   const DataHandler = (key, value) => {
     let newObject = projectInfo;
     newObject[key] = value;
-    console.log(newObject.description)
+    console.log(newObject.description);
     setProjectInfo({ ...newObject });
   };
-
+  console.log(params.projectId, id);
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}/project/${params.projectId}/${id}`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      })
+      .get(
+        `${process.env.REACT_APP_API_URL}/project/${params.projectId}/${id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      )
       .then((res) => {
         setMyInfo(res.data.data.userInfo);
         setProjectInfo({
@@ -77,13 +80,12 @@ export default function Project({ id }) {
   }
 
   const projectModalOpener = () => {
-    if(projectInfo.captainId === myInfo.id)
-    setIsProjectOpen(!isProjectOpen);
+    if (projectInfo.captainId === myInfo.id) setIsProjectOpen(!isProjectOpen);
   };
   const memberModalOpener = () => {
     setIsMemberOpen(!isMemberOpen);
   };
-  console.log(`${process.env.REACT_APP_API_URL}`)
+
   return (
     <Container>
       <ProjectFrame>
@@ -111,10 +113,9 @@ export default function Project({ id }) {
 }
 
 const Container = styled.div`
-  display:flex;
-  flex-direction:column;
+  display: flex;
+  flex-direction: column;
   min-height: 93vh;
 `;
 
-const ProjectFrame = styled.div`
-`;
+const ProjectFrame = styled.div``;

@@ -6,8 +6,13 @@ import axios from "axios";
 import Goal from "./Goal";
 import GoalCreateModal from "./GoalCreateModal";
 
-
-export default function ProjectField({ myInfo, projectId, params, member, myLike }) {
+export default function ProjectField({
+  myInfo,
+  projectId,
+  params,
+  member,
+  myLike,
+}) {
   const [isTodo, setIsTodo] = useState([]);
   const [isProgress, setIsProgress] = useState([]);
   const [isComplete, setIsComplete] = useState([]);
