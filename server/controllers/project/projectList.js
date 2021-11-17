@@ -35,6 +35,8 @@ module.exports = async (req, res) => {
             attributes: ["username", "profile"],
             include: {
               model: Goal,
+              required: false,
+              where: { projectId: req.params.userId },
               attributes: ["goalName", "important", "description", "deadline"],
             },
           },
@@ -55,7 +57,7 @@ module.exports = async (req, res) => {
         profile: el.dataValues.User.dataValues.profile,
         goal: el.dataValues.User.dataValues.Goals,
       };
-      if (el.id === projectInfo.dataValues.captainId) {
+      if (el.dataValues.userId === projectInfo.dataValues.captainId) {
         captain = tempObj;
       } else {
         crew.push(tempObj);

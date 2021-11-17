@@ -341,7 +341,7 @@ const ProfileItems = styled.div`
             color: black;
           `
         : css`
-            text-shadow: -1px -1px #ddd, 1px 1px #aaa;
+            text-shadow: 1px 1px #ddd, -1px -1px #aaa;
           `};
   }
 
@@ -845,7 +845,6 @@ export function ProfileCard({ userInfo, setUserInfo, setPreview }) {
   );
 }
 export function ProjectInProgress({ userData, userId }) {
-  console.log(userData);
   const [InProgressProjects, setInProgressProjects] = useState(
     userData.data.progress
   );
@@ -884,9 +883,10 @@ export function ProjectInProgressItems({ project, userId }) {
   let mycompleteimportant;
   project.members.forEach((member) => {
     if (member.id === userId) {
-      mycompleteimportant = member.myCompleteimportant;
+      mycompleteimportant = member.myCompleteImportant;
     }
   });
+
   return (
     <ProjectItems
       onClick={() => {
@@ -936,7 +936,7 @@ export function ProjectDone({ userData, userId }) {
   const [CompleteProjects, setCompleteProjects] = useState(
     userData.data.complete
   );
-  if (userData.data.progressCount === 0) {
+  if (userData.data.completeCount === 0) {
     return <ErrorNotice page={"done"} />;
   }
   return (
@@ -971,7 +971,7 @@ export function ProjectDoneItems({ project, userId }) {
   let completeImportant = project.completeImportant;
   project.members.forEach((member) => {
     if (member.id === userId) {
-      mycompleteimportant = member.myCompleteimportant;
+      mycompleteimportant = member.myCompleteImportant;
     }
   });
   return (

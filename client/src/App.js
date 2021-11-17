@@ -109,7 +109,6 @@ export default function App() {
       .then((data) => {
         axios(`${process.env.REACT_APP_API_URL}/project/${data}}`)
           .then((data) => {
-            console.log(data.data);
             setUserData(data.data);
           })
           .catch((err) => console.log(err.response));
@@ -270,9 +269,9 @@ export default function App() {
                 }
               />
             </Route>
-            {/* <Route path="complete" element={<Complete />}>
+            <Route path="complete" element={<Complete />}>
               <Route path=":project_id" element={<ProjectStatics />} />
-            </Route> */}
+            </Route>
           </Routes>
         </Frame>
       </Container>
