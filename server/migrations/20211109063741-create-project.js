@@ -22,6 +22,7 @@ module.exports = {
       },
       state: {
         type: Sequelize.STRING,
+        defaultValue: "progress",
       },
       deadline: {
         type: Sequelize.STRING,

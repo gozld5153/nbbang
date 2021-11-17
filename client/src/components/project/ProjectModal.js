@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import axios from 'axios';
+import axios from "axios";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { ko } from 'date-fns/esm/locale'
+import { ko } from "date-fns/esm/locale";
 
 export default function ProjectModal({
   isProjectOpen,
@@ -13,32 +13,33 @@ export default function ProjectModal({
   member,
   projectInfo,
   DataHandler,
+  setUpdate,
+  update,
 }) {
   // 기능 clear
   const navigate = useNavigate();
 
-
   const defaultStartDate = () => {
     if (projectInfo.deadline) {
-      return new Date(projectInfo.deadline.split("~")[0].replaceAll('.','-'))
+      return new Date(projectInfo.deadline.split("~")[0].replaceAll(".", "-"));
     }
-    return null
-  }
+    return null;
+  };
   const defaultendDate = () => {
     if (projectInfo.deadline) {
       return new Date(projectInfo.deadline.split("~")[1].replaceAll(".", "-"));
     }
-    return null
+    return null;
   };
-  const selectcap = () => {
-    if (member[0].id) {
-      console.log(projectInfo);
-      return member.filter((el) => el.id === projectInfo.captainId)[0].username;
-    }
-    return null
-  }
-  const captain = selectcap();
-  const [isOpen, setIsOpen] = useState(false)
+  // const selectcap = () => {
+  //   if (member.length) {
+  //     console.log("member", member);
+  //     return member.filter((el) => el.id === projectInfo.captainId)[0].username;
+  //   }
+  //   return null;
+  // };
+  const captain = "heheh";
+  const [isOpen, setIsOpen] = useState(false);
   const [selectDate, setSelectDate] = useState({
     startDate: defaultStartDate(),
     endDate: defaultendDate(),
@@ -65,11 +66,12 @@ export default function ProjectModal({
         }
       )
       .then((res) => {
+        setUpdate(true);
         if (res.data.message === "ok") {
           projectModalOpener();
         }
-      });  
-  }
+      });
+  };
 
   const projectComplete = () => {
     axios
@@ -92,10 +94,11 @@ export default function ProjectModal({
         }
       )
       .then((res) => {
+        setUpdate(true);
         if (res.data.message === "ok") {
           navigate("/");
         }
-      }); 
+      });
   };
 
   return (
@@ -179,7 +182,6 @@ export default function ProjectModal({
   );
 }
 
-
 const ModalContainer = styled.div`
   position: absolute;
   top: 4.5rem;
@@ -210,21 +212,18 @@ const Cap = styled.li`
   border-bottom: 1px solid black;
 `;
 
-const Daypicker = styled.div`
-`;
+const Daypicker = styled.div``;
 
-const StyleDatePicker = styled(DatePicker)`
-`;
+const StyleDatePicker = styled(DatePicker)``;
 
 const SubmitContainer = styled.div`
   display: flex;
   justify-content: space-between;
   margin-top: 0.2rem;
-  
-  button { 
+
+  button {
     font-size: 1.2rem;
   }
 `;
 
-const ProjectFinisher = styled.button`
-`;
+const ProjectFinisher = styled.button``;

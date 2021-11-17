@@ -29,6 +29,12 @@ export default function App() {
   const [switchBtn, setSwitchBtn] = useState(false);
   const [isOn, setIsOn] = useState(false);
   const [invited, setInvited] = useState({});
+  const [update, setUpdate] = useState(true);
+  //miniMypage에 쓰이는 state
+  const [progress, setProgress] = useState([]);
+  const [complete, setComplete] = useState([]);
+  const [progressMembers, setProgressMember] = useState([]);
+  const [completeMembers, setCompleteMember] = useState([]);
 
   const handleInvitedList = () => {
     axios
@@ -84,7 +90,6 @@ export default function App() {
   };
 
   // 토큰이 유효하면 로그인 상태 유지 아니면 로그아웃
-
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_API_URL}/users`, {
@@ -93,31 +98,76 @@ export default function App() {
       .then((data) => {
         setUserInfo(data.data.data.userInfo);
         setIsLogin(true);
+        return data.data.data.userInfo.id;
+      })
+      .then((data) => {
+        axios(`${process.env.REACT_APP_API_URL}/project/${data}}`)
+          .then((data) => {
+            console.log(data.data);
+            setUserData(data.data);
+          })
+          .catch((err) => console.log(err.response));
+
+        axios
+          .get(`${process.env.REACT_APP_API_URL}/invite/${data}`)
+          .then((data) => {
+            setInvited(data.data);
+          })
+          .catch((err) => console.log(err.response));
       })
       .catch((err) => {
         console.log(`쿠키 ${err.response}`);
         setIsLogin(false);
       });
-  }, [isLogin]);
+  }, [isLogin, isMypage, update]);
 
   useEffect(() => {
-    if (isMypage) {
-      axios
-        .get(`${process.env.REACT_APP_API_URL}/project/${userInfo.id}}`)
-        .then((data) => {
-          console.log(data.data);
-          setUserData(data.data);
-        })
-        .catch((err) => console.log(err.response));
+    // console.log(userData);
+    let userDataClone = { ...userData };
+    let newProgress = [];
+    let newComplete = [];
+    let newProgressMembers = [];
+    let newCompleteMembers = [];
 
-      axios
-        .get(`${process.env.REACT_APP_API_URL}/invite/${userInfo.id}`)
-        .then((data) => {
-          setInvited(data.data);
-        })
-        .catch((err) => console.log(err.response));
+    if (!userDataClone.data.progress && !userDataClone.data.complete) {
+      return;
+    } else if (
+      !userDataClone.data.progress.length &&
+      userDataClone.data.complete !== 0
+    ) {
+      for (let i = 0; i < 3; i++) {
+        if (userDataClone.data.complete.length <= i) continue;
+        newComplete.push(userDataClone.data.complete[i]);
+        newCompleteMembers.push(userDataClone.data.complete[i].members);
+      }
+    } else if (
+      userDataClone.data.progress.length !== 0 &&
+      !userDataClone.data.complete
+    ) {
+      for (let i = 0; i < 3; i++) {
+        if (userDataClone.data.progress.length <= i) continue;
+        newProgress.push(userDataClone.data.progress[i]);
+        newProgressMembers.push(userDataClone.data.progress[i].members);
+      }
+    } else {
+      for (let i = 0; i < 3; i++) {
+        if (userDataClone.data.complete.length > i) {
+          newComplete.push(userDataClone.data.complete[i]);
+          newCompleteMembers.push(userDataClone.data.complete[i].members);
+        }
+        if (userDataClone.data.progress.length > i) {
+          newProgress.push(userDataClone.data.progress[i]);
+          newProgressMembers.push(userDataClone.data.progress[i].members);
+        }
+      }
     }
-  }, [isMypage]);
+
+    setProgress(newProgress);
+    setComplete(newComplete);
+    setProgressMember(newProgressMembers);
+    setCompleteMember(newCompleteMembers);
+  }, [update, isLogin, isMypage]);
+
   return (
     <Router>
       <Container>
@@ -134,6 +184,12 @@ export default function App() {
             switchBtn={switchBtn}
             invited={invited}
             handleInvitedList={handleInvitedList}
+            setUpdate={setUpdate}
+            update={update}
+            progress={progress}
+            complete={complete}
+            progressMembers={progressMembers}
+            completeMembers={completeMembers}
           />
           <Routes>
             <Route
@@ -181,9 +237,24 @@ export default function App() {
 
             <Route
               path="project/:projectId"
-              element={<Project id={userInfo.id} />}
+              element={
+                <Project
+                  id={userInfo.id}
+                  update={update}
+                  setUpdate={setUpdate}
+                />
+              }
             >
-              <Route path=":id" element={<GoalModal />} />
+              <Route
+                path=":id"
+                element={
+                  <GoalModal
+                    id={userInfo.id}
+                    update={update}
+                    setUpdate={setUpdate}
+                  />
+                }
+              />
             </Route>
 
             <Route path="complete" element={<Complete />}>

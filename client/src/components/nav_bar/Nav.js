@@ -17,6 +17,12 @@ export default function Nav({
   userData,
   invited,
   handleInvitedList,
+  setUpdate,
+  update,
+  progress,
+  complete,
+  progressMembers,
+  completeMembers,
 }) {
   const navigate = useNavigate();
   const [cookies, setCookie, removeCookie] = useCookies([]);
@@ -77,6 +83,12 @@ export default function Nav({
                 userInfo={userInfo}
                 userData={userData}
                 handleInvitedList={handleInvitedList}
+                setUpdate={setUpdate}
+                update={update}
+                progress={progress}
+                complete={complete}
+                progressMembers={progressMembers}
+                completeMembers={completeMembers}
               ></MiniMypage>
             ) : null}
           </>
