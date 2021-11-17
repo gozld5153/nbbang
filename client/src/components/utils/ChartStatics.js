@@ -126,9 +126,7 @@ const ChartStatics = ({ tempData, guide, setGuide, allMode }) => {
             <div>사소</div>
             <div>보통</div>
             <div>중요</div>
-            <div className="deadline">{descData.deadline}</div>
           </ProjectStaticsdetailDescriptionImportant>
-
           <h2>{descData.goalName || "정보가없음"}</h2>
           <p>{descData.description || "정보가없음"}</p>
         </ProjectStaticsdetailDescription>
@@ -272,15 +270,6 @@ const ProjectStaticsdetailDescriptionImportant = styled.div`
     width: 50px;
     margin: 0 10px;
     border-radius: 50%;
-  }
-
-  .deadline {
-    font-size: 1.5rem;
-    margin-left: auto;
-    width: 190px;
-    margin-right: 0;
-    position: relative;
-    left: 40px;
   }
 `;
 export default ChartStatics;
