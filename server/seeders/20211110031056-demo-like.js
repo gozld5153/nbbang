@@ -6,7 +6,6 @@ module.exports = {
       {
         userId: 1,
         goalId: 1,
-        agreement: true,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
