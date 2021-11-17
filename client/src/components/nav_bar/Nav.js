@@ -17,6 +17,7 @@ export default function Nav({
   userData,
   invited,
   handleInvitedList,
+  preview,
 }) {
   const navigate = useNavigate();
   const [cookies, setCookie, removeCookie] = useCookies([]);
@@ -74,6 +75,7 @@ export default function Nav({
                 userInfo={userInfo}
                 userData={userData}
                 handleInvitedList={handleInvitedList}
+                preview={preview}
               ></MiniMypage>
             ) : null}
           </>
@@ -180,6 +182,7 @@ const BigWrapper = styled.div`
   overflow: hidden;
   cursor: pointer;
 `;
+
 const Wrapper = styled.div`
   width: 20rem;
   height: inherit;
