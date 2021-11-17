@@ -13,8 +13,8 @@ export default function ProjectInfo({
   DataHandler,
   isMemberOpen,
   setMember,
-  setUpdate
-  ,update
+  setUpdate,
+  update
 }) {
   return (
     <Container>

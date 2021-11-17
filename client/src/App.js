@@ -197,9 +197,9 @@ export default function App() {
               />
             </Route>
 
-            <Route path="complete" element={<Complete />}>
+            {/* <Route path="complete" element={<Complete />}>
               <Route path=":project_id" element={<ProjectStatics />} />
-            </Route>
+            </Route> */}
           </Routes>
         </Frame>
       </Container>
