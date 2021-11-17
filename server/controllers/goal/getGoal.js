@@ -9,7 +9,7 @@ module.exports = async (req, res) => {
   // goalId 가 존재하면 단독 검색
   // req.query.details === true
 
-  if (req.query.goalId) {
+  if (req.query.goalId && req.query.userId) {
     let goalInfo;
 
     try {
@@ -26,7 +26,13 @@ module.exports = async (req, res) => {
               attributes: ["username"],
             },
           },
-          Like,
+          {
+            model: Like,
+            attributes: ["id"],
+            where: {
+              userId: req.query.userId,
+            },
+          },
         ],
       });
     } catch (err) {
@@ -38,6 +44,11 @@ module.exports = async (req, res) => {
       el.dataValues.username = el.dataValues.User.dataValues.username;
       delete el.dataValues.User;
     }
+    for (let el of goalInfo.dataValues.Likes) {
+      el.dataValues = el.dataValues.id;
+    }
+    goalInfo.dataValues.LikeId = goalInfo.dataValues.Likes;
+    delete goalInfo.dataValues.Likes;
 
     const data = goalInfo;
 
