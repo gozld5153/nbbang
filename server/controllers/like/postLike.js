@@ -4,7 +4,7 @@ module.exports = async (req, res) => {
   // TODO like 생성 구현
   // userId와 goalId 필요
   // req.body.userId req.body.goalId
-  if (!(req.body.userId && req.body.goalId && req.body.agreement)) {
+  if (!(req.body.userId && req.body.goalId)) {
     return res
       .status(400)
       .json({ data: null, message: "누락된 항목이 있습니다." });
