@@ -13,19 +13,19 @@ export default function Project({ id, update, setUpdate }) {
   const [isProjectOpen, setIsProjectOpen] = useState(false);
   const [isMemberOpen, setIsMemberOpen] = useState(false);
   const [myInfo, setMyInfo] = useState({
-    id: id,
-    username: "",
-    likeId: [],
+    // id: id,
+    // username: "",
+    // likeId: [],
   });
   const [projectInfo, setProjectInfo] = useState({
-    id: 0,
-    projectName: "",
-    captainId: 0,
-    state: "progress",
-    allImportant: 0,
-    completeImportant: 0,
-    description: "",
-    deadline: 0,
+    // id: 0,
+    // projectName: "",
+    // captainId: 0,
+    // state: "progress",
+    // allImportant: 0,
+    // completeImportant: 0,
+    // description: "",
+    // deadline: 0,
   });
   const [member, setMember] = useState([]);
   console.log("member", member);

@@ -17,6 +17,7 @@ import {
   ProjectDone,
 } from "./pages/MyPage";
 
+import Kakao from "./pages/Kakao";
 export default function App() {
   const [userData, setUserData] = useState({
     data: { completeCount: 0, progressCount: 0 },
@@ -47,7 +48,7 @@ export default function App() {
 
   const handleNavbar = () => {
     setIsLogin(true);
-    setIsModal(!isModal);
+    setIsModal(false);
     disableScroll.off();
   };
 
@@ -89,6 +90,23 @@ export default function App() {
     setIsMypage(false);
   };
 
+  // useEffect(() => {
+  //   const url = new URL(window.location.href);
+  //   const authorizationCode = url.searchParams.get("code");
+  //   axios
+  //     .post(
+  //       `${process.env.REACT_APP_API_URL}/oauth/kakao`,
+  //       {
+  //         code: authorizationCode,
+  //       },
+  //       {
+  //         withCredentials: true,
+  //       }
+  //     )
+  //     .then(() => handleNavbar())
+  //     .catch((err) => console.log(err.message));
+  // }, []);
+
   // 토큰이 유효하면 로그인 상태 유지 아니면 로그아웃
   useEffect(() => {
     axios
@@ -103,7 +121,6 @@ export default function App() {
       .then((data) => {
         axios(`${process.env.REACT_APP_API_URL}/project/${data}}`)
           .then((data) => {
-            console.log(data.data);
             setUserData(data.data);
           })
           .catch((err) => console.log(err.response));
@@ -205,6 +222,10 @@ export default function App() {
                   isOn={isOn}
                 />
               }
+            />
+            <Route
+              path="kakao"
+              element={<Kakao handleNavbar={handleNavbar} />}
             />
 
             {userInfo.id && (

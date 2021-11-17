@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
 
@@ -26,6 +26,7 @@ const Login = ({ handleNavbar, isOn }) => {
         .catch((err) => setErrMsg("You are Wrong!!"));
     }
   };
+
   return (
     <Container isOn={isOn}>
       <div>Sign in to Nbbang</div>
@@ -46,11 +47,21 @@ const Login = ({ handleNavbar, isOn }) => {
         <LoginBtn onClick={handleLogin}>Login</LoginBtn>
         <ErrMsg errMsg={errMsg}>{errMsg}</ErrMsg>
       </ErrBox>
-      <div>
-        <a href="https://kauth.kakao.com/oauth/authorize?client_id=3bcb5ae48e31dacbf58eb8cbcc65a29e&redirect_uri=http://localhost:3000&response_type=code">
-          kakao
+      <AuthBtn>
+        <a href="https://kauth.kakao.com/oauth/authorize?client_id=3bcb5ae48e31dacbf58eb8cbcc65a29e&redirect_uri=http://localhost:3000/kakao&response_type=code">
+          <img
+            src={`${process.env.PUBLIC_URL}/images/kakao_login_medium_narrow.png`}
+          ></img>
         </a>
-      </div>
+      </AuthBtn>
+      <AuthBtn>
+        <a href="https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=1U23Ur_IcT0URfeFcBRE&redirect_uri=http://localhost:3000&state=nbbang">
+          <img
+            src={`${process.env.PUBLIC_URL}/images/btnG_short.png`}
+            style={{ width: "11.5rem", height: "2.5rem" }}
+          ></img>
+        </a>
+      </AuthBtn>
     </Container>
   );
 };
@@ -95,7 +106,8 @@ const LoginBtn = styled.button`
   height: 2rem;
   width: 4rem;
   /* border-radius: 0.5rem; */
-  margin-top: 3rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
   &:hover {
     font-weight: bold;
   }
@@ -115,4 +127,7 @@ const ErrMsg = styled.div`
   position: absolute;
 `;
 
+const AuthBtn = styled.div`
+  margin-top: 0.5rem;
+`;
 export default Login;
