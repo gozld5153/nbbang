@@ -85,6 +85,7 @@ const NavContainer = styled.nav`
     background-image: ${(props) => props.profileImg};
     background-position: center;
     background-size: cover;
+    background-color: transparent;
   }
 `;
 
@@ -914,13 +915,20 @@ export function ProjectInProgressItems({ project, userId }) {
       </ProjectTeammates>
       <ProjectProgress>
         <Progressbar
-          value={parseInt(
-            (project.completeImportant / project.allImportant) * 100
-          )}
+          value={
+            project.allImportant === 0
+              ? 0
+              : parseInt(
+                  (project.completeImportant / project.allImportant) * 100
+                )
+          }
         />
       </ProjectProgress>
       <ProjectContribution>
-        {parseInt((myallimportant / mycompleteimportant) * 100)} %
+        {mycompleteimportant === 0
+          ? 0
+          : parseInt((myallimportant / mycompleteimportant) * 100)}
+        %
       </ProjectContribution>
     </ProjectItems>
   );
@@ -995,7 +1003,10 @@ export function ProjectDoneItems({ project, userId }) {
       </ProjectTeammates>
       <ProjectDescription>{project.description}</ProjectDescription>
       <ProjectContribution>
-        {parseInt((myallimportant / mycompleteimportant) * 100)} %
+        {mycompleteimportant === 0
+          ? 0
+          : parseInt((myallimportant / mycompleteimportant) * 100)}
+        %
       </ProjectContribution>
     </ProjectItems>
   );
