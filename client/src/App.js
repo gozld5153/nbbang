@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
 import disableScroll from "disable-scroll";
@@ -22,7 +18,6 @@ import {
 } from "./pages/MyPage";
 
 export default function App() {
-
   const [userData, setUserData] = useState({
     data: { completeCount: 0, progressCount: 0 },
   });
