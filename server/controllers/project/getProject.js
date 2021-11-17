@@ -57,6 +57,7 @@ module.exports = async (req, res) => {
         },
       ],
     });
+    // console.log(projectInfo.dataValues.captainId);
     // project 데이터 가공 important 집계 Goal 정보가 있다면
     let allImportant = 0;
     let completeImportant = 0;

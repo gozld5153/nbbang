@@ -109,7 +109,7 @@ module.exports = async (req, res) => {
             where: { id: info.dataValues.projectId, state: req.query.state },
           });
         }
-        // captain_name 추가
+        // captainName 추가
         const captainInfo = await User.findOne({
           where: {
             id: projectInfo.dataValues.captainId,
