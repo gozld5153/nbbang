@@ -49,8 +49,10 @@ const Login = ({ handleNavbar, isOn }) => {
       </ErrBox>
       <div>
         <a href="https://kauth.kakao.com/oauth/authorize?client_id=3bcb5ae48e31dacbf58eb8cbcc65a29e&redirect_uri=http://localhost:3000&response_type=code">
-          {" "}
-          kakao{" "}
+          kakao
+        </a>
+        <a href="https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=1U23Ur_IcT0URfeFcBRE&redirect_uri=http://localhost:3000&state=nbbang">
+          naver
         </a>
       </div>
     </Container>
