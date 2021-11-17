@@ -84,11 +84,10 @@ export default function Project({ id, update, setUpdate }) {
   }
 
   const projectModalOpener = () => {
-    if(projectInfo.captainId === myInfo.id)
-    setIsProjectOpen(!isProjectOpen);
+    if(projectInfo.captainId === myInfo.id) setIsProjectOpen(!isProjectOpen);
   };
   const memberModalOpener = () => {
-    setIsMemberOpen(!isMemberOpen);
+    if (projectInfo.captainId === myInfo.id) setIsMemberOpen(!isMemberOpen);
   };
 console.log('project :',projectInfo)
   return (
