@@ -341,7 +341,7 @@ const ProfileItems = styled.div`
             color: black;
           `
         : css`
-            text-shadow: 1px 1px #ddd, -1px -1px #aaa;
+            text-shadow: -1px -1px #ddd, 1px 1px #aaa;
           `};
   }
 
@@ -845,6 +845,7 @@ export function ProfileCard({ userInfo, setUserInfo, setPreview }) {
   );
 }
 export function ProjectInProgress({ userData, userId }) {
+  console.log(userData);
   const [InProgressProjects, setInProgressProjects] = useState(
     userData.data.progress
   );
@@ -879,14 +880,14 @@ export function ProjectInProgressItems({ project, userId }) {
     navigate(`/project/${projectId}`);
   };
 
-  let allimportant = project.allImportant;
+  let myallimportant;
   let mycompleteimportant;
   project.members.forEach((member) => {
     if (member.id === userId) {
-      mycompleteimportant = member.myCompleteImportant;
+      myallimportant = member.myAllimportant;
+      mycompleteimportant = member.myCompleteimportant;
     }
   });
-
   return (
     <ProjectItems
       onClick={() => {
@@ -924,9 +925,9 @@ export function ProjectInProgressItems({ project, userId }) {
         />
       </ProjectProgress>
       <ProjectContribution>
-        {allimportant === 0
+        {mycompleteimportant === 0
           ? 0
-          : parseInt((mycompleteimportant / allimportant) * 100)}
+          : parseInt((myallimportant / mycompleteimportant) * 100)}
         %
       </ProjectContribution>
     </ProjectItems>
@@ -936,7 +937,7 @@ export function ProjectDone({ userData, userId }) {
   const [CompleteProjects, setCompleteProjects] = useState(
     userData.data.complete
   );
-  if (userData.data.completeCount === 0) {
+  if (userData.data.progressCount === 0) {
     return <ErrorNotice page={"done"} />;
   }
   return (
@@ -967,11 +968,12 @@ export function ProjectDoneItems({ project, userId }) {
     navigate(`/complete/${projectId}`);
   };
 
+  let myallimportant;
   let mycompleteimportant;
-  let completeImportant = project.completeImportant;
   project.members.forEach((member) => {
     if (member.id === userId) {
-      mycompleteimportant = member.myCompleteImportant;
+      myallimportant = member.myAllimportant;
+      mycompleteimportant = member.myCompleteimportant;
     }
   });
   return (
@@ -1001,9 +1003,9 @@ export function ProjectDoneItems({ project, userId }) {
       </ProjectTeammates>
       <ProjectDescription>{project.description}</ProjectDescription>
       <ProjectContribution>
-        {completeImportant === 0
+        {mycompleteimportant === 0
           ? 0
-          : parseInt((mycompleteimportant / completeImportant) * 100)}
+          : parseInt((myallimportant / mycompleteimportant) * 100)}
         %
       </ProjectContribution>
     </ProjectItems>
