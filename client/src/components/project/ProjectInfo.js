@@ -14,7 +14,9 @@ export default function ProjectInfo({
   isMemberOpen,
   setMember,
   setUpdate,
+
   update
+
 }) {
   return (
     <Container>
@@ -43,7 +45,11 @@ export default function ProjectInfo({
           <ProjectMember>
             {member.map((el) => (
               <ProfileContainer len={5} color={el.color} key={el.id}>
-                <Profile len={5} src={el.profile} alt={el.username} />
+                <Profile
+                  len={5}
+                  src={`${process.env.REACT_APP_S3_IMG}/${el.profile}`}
+                  alt={el.username}
+                />
               </ProfileContainer>
             ))}
             <MemberModal
@@ -121,7 +127,7 @@ const ProjectName = styled.div`
   font-size: 3rem;
   color: white;
   padding: 1rem;
-  cursor:pointer;
+  cursor: pointer;
   background-color: black;
 `;
 const ProjectDueContainer = styled.div`

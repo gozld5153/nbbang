@@ -11,58 +11,15 @@ const MiniMypage = ({
   handleMypage,
   invited,
   handleInvitedList,
+  setUpdate,
+  update,
+  progress,
+  complete,
+  progressMembers,
+  completeMembers,
   preview,
 }) => {
-  const [progress, setProgress] = useState([]);
-  const [complete, setComplete] = useState([]);
-  const [progressMembers, setProgressMember] = useState([]);
-  const [completeMembers, setCompleteMember] = useState([]);
-  useEffect(() => {
-    // console.log(userData);
-    let userDataClone = { ...userData };
-    let newProgress = [];
-    let newComplete = [];
-    let newProgressMembers = [];
-    let newCompleteMembers = [];
 
-    if (!userDataClone.data.progress && !userDataClone.data.complete) {
-      return;
-    } else if (
-      !userDataClone.data.progress.length &&
-      userDataClone.data.complete !== 0
-    ) {
-      for (let i = 0; i < 3; i++) {
-        if (userDataClone.data.complete.length <= i) continue;
-        newComplete.push(userDataClone.data.complete[i].projectName);
-        newCompleteMembers.push(userDataClone.data.complete[i].members);
-      }
-    } else if (
-      userDataClone.data.progress.length !== 0 &&
-      !userDataClone.data.complete
-    ) {
-      for (let i = 0; i < 3; i++) {
-        if (userDataClone.data.progress.length <= i) continue;
-        newProgress.push(userDataClone.data.progress[i].projectName);
-        newProgressMembers.push(userDataClone.data.progress[i].members);
-      }
-    } else {
-      for (let i = 0; i < 3; i++) {
-        if (userDataClone.data.complete.length > i) {
-          newComplete.push(userDataClone.data.complete[i].projectName);
-          newCompleteMembers.push(userDataClone.data.complete[i].members);
-        }
-        if (userDataClone.data.progress.length > i) {
-          newProgress.push(userDataClone.data.progress[i].projectName);
-          newProgressMembers.push(userDataClone.data.progress[i].members);
-        }
-      }
-    }
-
-    setProgress(newProgress);
-    setComplete(newComplete);
-    setProgressMember(newProgressMembers);
-    setCompleteMember(newCompleteMembers);
-  }, []);
   return (
     <Container className={isMypage ? "add" : "hide"} isMypage={isMypage}>
       <MiniContainer>
@@ -77,6 +34,7 @@ const MiniMypage = ({
           progress={progress}
           members={progressMembers}
           handleMypage={handleMypage}
+          setUpdate={setUpdate}
         />
         <ResultProject
           complete={complete}
