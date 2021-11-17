@@ -14,9 +14,7 @@ export default function ProjectInfo({
   isMemberOpen,
   setMember,
   setUpdate,
-
-  update
-
+  update,
 }) {
   return (
     <Container>
