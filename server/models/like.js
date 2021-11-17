@@ -27,7 +27,6 @@ module.exports = (sequelize, DataTypes) => {
     {
       userId: DataTypes.INTEGER,
       goalId: DataTypes.INTEGER,
-      agreement: DataTypes.BOOLEAN,
     },
     {
       sequelize,

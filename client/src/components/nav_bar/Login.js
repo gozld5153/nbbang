@@ -48,14 +48,18 @@ const Login = ({ handleNavbar, isOn }) => {
         <ErrMsg errMsg={errMsg}>{errMsg}</ErrMsg>
       </ErrBox>
       <AuthBtn>
-        <a href="https://kauth.kakao.com/oauth/authorize?client_id=3bcb5ae48e31dacbf58eb8cbcc65a29e&redirect_uri=http://localhost:3000/kakao&response_type=code">
+        <a
+          href={`https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_KAKAO_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT_URI}&response_type=code`}
+        >
           <img
             src={`${process.env.PUBLIC_URL}/images/kakao_login_medium_narrow.png`}
           ></img>
         </a>
       </AuthBtn>
       <AuthBtn>
-        <a href="https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=1U23Ur_IcT0URfeFcBRE&redirect_uri=http://localhost:3000&state=nbbang">
+        <a
+          href={`https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${process.env.REACT_APP_NAVER_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_NAVER_REDIRECT_URI}&state=${process.env.REACT_APP_NAVER_STATE}`}
+        >
           <img
             src={`${process.env.PUBLIC_URL}/images/btnG_short.png`}
             style={{ width: "11.5rem", height: "2.5rem" }}

@@ -2,18 +2,20 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import styled, { keyframes } from "styled-components";
-const Kakao = ({ handleNavbar }) => {
+const Naver = ({ handleNavbar }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
     const url = new URL(window.location.href);
     const authorizationCode = url.searchParams.get("code");
+    const state = url.searchParams.get("state");
 
     axios
       .post(
-        `${process.env.REACT_APP_API_URL}/oauth/kakao`,
+        `${process.env.REACT_APP_API_URL}/oauth/naver`,
         {
           code: authorizationCode,
+          state,
         },
         {
           withCredentials: true,
@@ -23,7 +25,7 @@ const Kakao = ({ handleNavbar }) => {
         navigate("/");
         handleNavbar();
       })
-      .catch((err) => console.log(err.message));
+      .catch((err) => console.log(err.response));
   }, []);
   return (
     <Container>
@@ -56,7 +58,7 @@ const loadingSpin = keyframes`
     transform: rotate(360deg);
   }
 `;
-export default Kakao;
+export default Naver;
 
 const Container = styled.div`
   position: relative;

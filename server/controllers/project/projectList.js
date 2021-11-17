@@ -2,12 +2,6 @@ const { User, Project, UsersProjects, Goal } = require("../../models");
 
 module.exports = async (req, res) => {
   // TODO 프로젝트 목록 api 구현
-  // projectListByProgress
-  // req.query.state
-  // req.params.userId
-  // req.query.progresspage
-  // req.query.completePage
-  // 모든 배열들이 다 역순
 
   if (!req.params.userId) {
     return res.status(400).json({ data: null, message: "잘못된 요청입니다." });
@@ -55,7 +49,7 @@ module.exports = async (req, res) => {
         profile: el.dataValues.User.dataValues.profile,
         goal: el.dataValues.User.dataValues.Goals,
       };
-      if (el.id === projectInfo.dataValues.captainId) {
+      if (el.dataValues.userId === projectInfo.dataValues.captainId) {
         captain = tempObj;
       } else {
         crew.push(tempObj);
@@ -109,13 +103,13 @@ module.exports = async (req, res) => {
             where: { id: info.dataValues.projectId, state: req.query.state },
           });
         }
-        // captain_name 추가
+        // captainName 추가
         const captainInfo = await User.findOne({
           where: {
             id: projectInfo.dataValues.captainId,
           },
         });
-        projectInfo.dataValues.captain_name = captainInfo.dataValues.username;
+        projectInfo.dataValues.captainName = captainInfo.dataValues.username;
         // 프로젝트 진행도 allImportant completeImportant 추가
         // 프로젝트 아이디 info.dataValues.projectId
         // 프로젝트 아이디로 goal 테이블 검색해서 important 총합 구함

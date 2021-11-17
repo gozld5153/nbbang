@@ -18,6 +18,8 @@ import {
 } from "./pages/MyPage";
 
 import Kakao from "./pages/Kakao";
+import Naver from "./pages/Naver";
+
 export default function App() {
   const [userData, setUserData] = useState({
     data: { completeCount: 0, progressCount: 0 },
@@ -30,6 +32,7 @@ export default function App() {
   const [switchBtn, setSwitchBtn] = useState(false);
   const [isOn, setIsOn] = useState(false);
   const [invited, setInvited] = useState({});
+  const [preview, setPreview] = useState();
   const [update, setUpdate] = useState(true);
   //miniMypage에 쓰이는 state
   const [progress, setProgress] = useState([]);
@@ -90,24 +93,12 @@ export default function App() {
     setIsMypage(false);
   };
 
-  // useEffect(() => {
-  //   const url = new URL(window.location.href);
-  //   const authorizationCode = url.searchParams.get("code");
-  //   axios
-  //     .post(
-  //       `${process.env.REACT_APP_API_URL}/oauth/kakao`,
-  //       {
-  //         code: authorizationCode,
-  //       },
-  //       {
-  //         withCredentials: true,
-  //       }
-  //     )
-  //     .then(() => handleNavbar())
-  //     .catch((err) => console.log(err.message));
-  // }, []);
-
   // 토큰이 유효하면 로그인 상태 유지 아니면 로그아웃
+
+  useEffect(() => {
+    setPreview(`${process.env.REACT_APP_S3_IMG}/${userInfo.profile}`);
+  }, [userInfo.profile]);
+
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_API_URL}/users`, {
@@ -208,6 +199,7 @@ export default function App() {
             complete={complete}
             progressMembers={progressMembers}
             completeMembers={completeMembers}
+            preview={preview}
           />
           <Routes>
             <Route
@@ -227,12 +219,22 @@ export default function App() {
               path="kakao"
               element={<Kakao handleNavbar={handleNavbar} />}
             />
+            <Route
+              path="naver"
+              element={<Naver handleNavbar={handleNavbar} />}
+            />
 
             {userInfo.id && (
-              <Route path="mypage" element={<MyPage userInfo={userInfo} />}>
+              <Route path="mypage" element={<MyPage preview={preview} />}>
                 <Route
                   path="profile"
-                  element={<Profile userInfo={userInfo} />}
+                  element={
+                    <Profile
+                      userInfo={userInfo}
+                      setUserInfo={setUserInfo}
+                      setPreview={setPreview}
+                    />
+                  }
                 />
                 <Route
                   path="project-inprogress"
@@ -279,9 +281,9 @@ export default function App() {
               />
             </Route>
 
-            <Route path="complete" element={<Complete />}>
+            {/* <Route path="complete" element={<Complete />}>
               <Route path=":project_id" element={<ProjectStatics />} />
-            </Route>
+            </Route> */}
           </Routes>
         </Frame>
       </Container>

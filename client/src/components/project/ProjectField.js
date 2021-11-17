@@ -8,6 +8,7 @@ import GoalCreateModal from "./GoalCreateModal";
 
 
 export default function ProjectField({ myInfo, projectId, params, member, myLike,update,setUpdate }) {
+
   const [isTodo, setIsTodo] = useState([]);
   const [isProgress, setIsProgress] = useState([]);
   const [isComplete, setIsComplete] = useState([]);

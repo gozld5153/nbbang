@@ -17,7 +17,9 @@ const MiniMypage = ({
   complete,
   progressMembers,
   completeMembers,
+  preview,
 }) => {
+
   return (
     <Container className={isMypage ? "add" : "hide"} isMypage={isMypage}>
       <MiniContainer>
@@ -26,6 +28,7 @@ const MiniMypage = ({
           handleMypage={handleMypage}
           invited={invited}
           handleInvitedList={handleInvitedList}
+          preview={preview}
         />
         <MiniProject
           progress={progress}
