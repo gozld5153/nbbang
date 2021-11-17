@@ -38,7 +38,7 @@ module.exports = async (req, res) => {
         delete el.dataValues.User;
       }
       for (let el of goalInfo.dataValues.Likes) {
-        if (el.dataValues.userId === req.query.userId) {
+        if (el.dataValues.userId == req.query.userId) {
           goalInfo.dataValues.LikeId = el.dataValues.id;
         }
       }
