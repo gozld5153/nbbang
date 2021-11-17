@@ -32,7 +32,6 @@ export default function App() {
   const [preview, setPreview] = useState();
   const [update, setUpdate] = useState(true);
 
-
   const handleInvitedList = () => {
     axios
       .get(`${process.env.REACT_APP_API_URL}/invite/${userInfo.id}`)
@@ -118,8 +117,7 @@ export default function App() {
         console.log(`쿠키 ${err.response}`);
         setIsLogin(false);
       });
-
-  }, [isLogin,isMypage,update]);
+  }, [isLogin, isMypage, update]);
 
   return (
     <Router>
@@ -210,7 +208,6 @@ export default function App() {
                 }
               />
             </Route>
-
             {/* <Route path="complete" element={<Complete />}>
               <Route path=":project_id" element={<ProjectStatics />} />
             </Route> */}

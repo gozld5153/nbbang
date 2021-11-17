@@ -880,11 +880,10 @@ export function ProjectInProgressItems({ project, userId }) {
     navigate(`/project/${projectId}`);
   };
 
-  let myallimportant;
+  let allimportant = project.allImportant;
   let mycompleteimportant;
   project.members.forEach((member) => {
     if (member.id === userId) {
-      myallimportant = member.myAllimportant;
       mycompleteimportant = member.myCompleteimportant;
     }
   });
@@ -925,9 +924,9 @@ export function ProjectInProgressItems({ project, userId }) {
         />
       </ProjectProgress>
       <ProjectContribution>
-        {mycompleteimportant === 0
+        {allimportant === 0
           ? 0
-          : parseInt((myallimportant / mycompleteimportant) * 100)}
+          : parseInt((mycompleteimportant / allimportant) * 100)}
         %
       </ProjectContribution>
     </ProjectItems>
@@ -968,11 +967,10 @@ export function ProjectDoneItems({ project, userId }) {
     navigate(`/complete/${projectId}`);
   };
 
-  let myallimportant;
   let mycompleteimportant;
+  let completeImportant = project.completeImportant;
   project.members.forEach((member) => {
     if (member.id === userId) {
-      myallimportant = member.myAllimportant;
       mycompleteimportant = member.myCompleteimportant;
     }
   });
@@ -1003,9 +1001,9 @@ export function ProjectDoneItems({ project, userId }) {
       </ProjectTeammates>
       <ProjectDescription>{project.description}</ProjectDescription>
       <ProjectContribution>
-        {mycompleteimportant === 0
+        {completeImportant === 0
           ? 0
-          : parseInt((myallimportant / mycompleteimportant) * 100)}
+          : parseInt((mycompleteimportant / completeImportant) * 100)}
         %
       </ProjectContribution>
     </ProjectItems>
