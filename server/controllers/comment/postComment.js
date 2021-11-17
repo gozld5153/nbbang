@@ -3,7 +3,7 @@ const { Comment } = require("../../models");
 module.exports = async (req, res) => {
   // TODO comment 생성 구현
   // req.body에 생성내용 들어옴
-  if (!(req.body.userId && req.body.projectId && req.body.goalId)) {
+  if (!(req.body.userId && req.body.goalId)) {
     return res
       .status(400)
       .json({ data: null, message: "누락된 항목이 있습니다." });

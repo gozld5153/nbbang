@@ -30,6 +30,8 @@ export default function App() {
   const [isOn, setIsOn] = useState(false);
   const [invited, setInvited] = useState({});
   const [preview, setPreview] = useState();
+  const [update, setUpdate] = useState(true);
+
 
   const handleInvitedList = () => {
     axios
@@ -116,7 +118,8 @@ export default function App() {
         console.log(`쿠키 ${err.response}`);
         setIsLogin(false);
       });
-  }, [isLogin]);
+
+  }, [isLogin,isMypage,update]);
 
   return (
     <Router>
@@ -188,14 +191,29 @@ export default function App() {
 
             <Route
               path="project/:projectId"
-              element={<Project id={userInfo.id} />}
+              element={
+                <Project
+                  id={userInfo.id}
+                  update={update}
+                  setUpdate={setUpdate}
+                />
+              }
             >
-              <Route path=":id" element={<GoalModal />} />
+              <Route
+                path=":id"
+                element={
+                  <GoalModal
+                    id={userInfo.id}
+                    update={update}
+                    setUpdate={setUpdate}
+                  />
+                }
+              />
             </Route>
 
-            <Route path="complete" element={<Complete />}>
+            {/* <Route path="complete" element={<Complete />}>
               <Route path=":project_id" element={<ProjectStatics />} />
-            </Route>
+            </Route> */}
           </Routes>
         </Frame>
       </Container>

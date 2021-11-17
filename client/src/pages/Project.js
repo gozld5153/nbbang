@@ -7,7 +7,7 @@ import axios from "axios";
 import ProjectInfo from "../components/project/ProjectInfo";
 import ProjectField from "../components/project/ProjectField";
 
-export default function Project({ id }) {
+export default function Project({ id, update, setUpdate }) {
   const params = useParams();
 
   const [isProjectOpen, setIsProjectOpen] = useState(false);
@@ -46,32 +46,38 @@ export default function Project({ id }) {
   };
   console.log(params.projectId, id);
   useEffect(() => {
-    axios
-      .get(
-        `${process.env.REACT_APP_API_URL}/project/${params.projectId}/${id}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        }
-      )
-      .then((res) => {
-        setMyInfo(res.data.data.userInfo);
-        setProjectInfo({
-          id: res.data.data.projectInfo.id,
-          projectName: res.data.data.projectInfo.projectName,
-          captainId: res.data.data.projectInfo.captainId,
-          state: res.data.data.projectInfo.state,
-          description: res.data.data.projectInfo.description,
-          allImportant: res.data.data.projectInfo.allImportant,
-          completeImportant: res.data.data.projectInfo.completeImportant,
-          deadline: res.data.data.projectInfo.deadline,
-        });
-        setMember([...res.data.data.projectInfo.members]);
-      })
-      .catch((err) => console.log(err));
-  }, []);
+
+    if (update) {
+      setUpdate(false)
+    } else {
+      axios
+        .get(
+          `${process.env.REACT_APP_API_URL}/project/${params.projectId}/${id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            withCredentials: true,
+          }
+        )
+        .then((res) => {
+          setMyInfo(res.data.data.userInfo);
+          setProjectInfo({
+            id: res.data.data.projectInfo.id,
+            projectName: res.data.data.projectInfo.projectName,
+            captainId: res.data.data.projectInfo.captainId,
+            state: res.data.data.projectInfo.state,
+            description: res.data.data.projectInfo.description,
+            allImportant: res.data.data.projectInfo.allImportant,
+            completeImportant: res.data.data.projectInfo.completeImportant,
+            deadline: res.data.data.projectInfo.deadline,
+          });
+          setMember([...res.data.data.projectInfo.members]);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [update,id]);
+
 
   if (Object.keys(params).length === 2) {
     disableScroll.on();
@@ -82,8 +88,9 @@ export default function Project({ id }) {
   const projectModalOpener = () => {
     if (projectInfo.captainId === myInfo.id) setIsProjectOpen(!isProjectOpen);
   };
+
   const memberModalOpener = () => {
-    setIsMemberOpen(!isMemberOpen);
+    if (projectInfo.captainId === myInfo.id) setIsMemberOpen(!isMemberOpen);
   };
 
   return (
@@ -99,6 +106,8 @@ export default function Project({ id }) {
           DataHandler={DataHandler}
           isMemberOpen={isMemberOpen}
           setMember={setMember}
+          setUpdate={setUpdate}
+          update={update}
         />
         <ProjectField
           myInfo={myInfo}
@@ -106,6 +115,8 @@ export default function Project({ id }) {
           params={params}
           member={member}
           myLike={myInfo.likeId}
+          setUpdate={setUpdate}
+          update={update}
         />
       </ProjectFrame>
     </Container>

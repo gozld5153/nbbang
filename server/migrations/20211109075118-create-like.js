@@ -25,11 +25,6 @@ module.exports = {
           key: "id",
         },
       },
-      agreement: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

@@ -13,6 +13,8 @@ export default function ProjectInfo({
   DataHandler,
   isMemberOpen,
   setMember,
+  setUpdate,
+  update
 }) {
   return (
     <Container>
@@ -28,6 +30,8 @@ export default function ProjectInfo({
               member={member}
               projectInfo={projectInfo}
               DataHandler={DataHandler}
+              setUpdate={setUpdate}
+              update={update}
             />
           </ProjectNameContainer>
           <ProjectDueContainer>
@@ -38,13 +42,8 @@ export default function ProjectInfo({
           <Invite onClick={memberModalOpener}>INVITE</Invite>
           <ProjectMember>
             {member.map((el) => (
-              <ProfileContainer len={5} color={el.color}>
-                <Profile
-                  len={5}
-                  key={el.id}
-                  src={el.profile}
-                  alt={el.username}
-                />
+              <ProfileContainer len={5} color={el.color} key={el.id}>
+                <Profile len={5} src={el.profile} alt={el.username} />
               </ProfileContainer>
             ))}
             <MemberModal
@@ -122,6 +121,7 @@ const ProjectName = styled.div`
   font-size: 3rem;
   color: white;
   padding: 1rem;
+  cursor:pointer;
   background-color: black;
 `;
 const ProjectDueContainer = styled.div`
