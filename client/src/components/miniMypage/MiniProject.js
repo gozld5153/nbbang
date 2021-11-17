@@ -8,14 +8,18 @@ const Project = ({ progress, members, handleMypage }) => {
     navigate("/mypage/project-inprogress");
     handleMypage();
   };
+  const handleMoveProject = (id) => {
+    navigate(`/project/${id}`);
+    handleMypage();
+  };
   return (
     <>
-      <div>진행중인 프로젝트</div>
+      <div onClick={handleMoveMypage}>진행중인 프로젝트</div>
       <div>
         <ul>
           {progress.map((project, idx) => (
-            <li key={idx} onClick={handleMoveMypage}>
-              <p>{project}</p>
+            <li key={idx} onClick={() => handleMoveProject(project.id)}>
+              <p>{project.projectName}</p>
               {members[idx].map((name, idx) => (
                 <span key={idx}>{name.username}</span>
               ))}
@@ -27,13 +31,20 @@ const Project = ({ progress, members, handleMypage }) => {
   );
 };
 
-const MiniProject = ({ progress, members }) => {
+const MiniProject = ({ progress, members, handleMypage }) => {
+  const navigate = useNavigate();
+  const handleMoveMypage = () => {
+    navigate("/mypage/project-inprogress");
+    handleMypage();
+  };
   return (
     <Container>
       {progress.length > 0 ? (
         <Project progress={progress} members={members} />
       ) : (
-        <div>진행 중인 프로젝트가 없습니다.</div>
+        <div onClick={handleMoveMypage} style={{ cursor: "pointer" }}>
+          진행 중인 프로젝트가 없습니다.
+        </div>
       )}
     </Container>
   );

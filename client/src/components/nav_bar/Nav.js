@@ -34,6 +34,9 @@ export default function Nav({
   };
 
   const handleProject = () => {
+    if (isMypage) {
+      handleMypage();
+    }
     axios
       .post(`${process.env.REACT_APP_API_URL}/project`, {
         projectName: "새로운 프로젝트",

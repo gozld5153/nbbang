@@ -18,7 +18,6 @@ const Login = ({ handleNavbar, isOn }) => {
       setErrMsg("Please enter information");
     } else {
       //todo axios 통신요청
-      console.log(`${process.env.REACT_APP_API_URL}`);
       axios //
         .post(`${process.env.REACT_APP_API_URL}/users/signin`, loginInfo, {
           withCredentials: true,

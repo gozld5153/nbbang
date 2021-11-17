@@ -16,6 +16,7 @@ const MiniMypage = ({
   const [complete, setComplete] = useState([]);
   const [progressMembers, setProgressMember] = useState([]);
   const [completeMembers, setCompleteMember] = useState([]);
+
   useEffect(() => {
     // console.log(userData);
     let userDataClone = { ...userData };
@@ -24,37 +25,34 @@ const MiniMypage = ({
     let newProgressMembers = [];
     let newCompleteMembers = [];
 
-    if (
-      userDataClone.data.progress.length === 0 &&
-      userDataClone.data.complete.length === 0
-    ) {
+    if (!userDataClone.data.progress && !userDataClone.data.complete) {
       return;
     } else if (
-      userDataClone.data.progress.length === 0 &&
-      userDataClone.data.complete.length !== 0
+      !userDataClone.data.progress.length &&
+      userDataClone.data.complete !== 0
     ) {
       for (let i = 0; i < 3; i++) {
         if (userDataClone.data.complete.length <= i) continue;
-        newComplete.push(userDataClone.data.complete[i].projectName);
+        newComplete.push(userDataClone.data.complete[i]);
         newCompleteMembers.push(userDataClone.data.complete[i].members);
       }
     } else if (
       userDataClone.data.progress.length !== 0 &&
-      userDataClone.data.complete.length === 0
+      !userDataClone.data.complete
     ) {
       for (let i = 0; i < 3; i++) {
         if (userDataClone.data.progress.length <= i) continue;
-        newProgress.push(userDataClone.data.progress[i].projectName);
+        newProgress.push(userDataClone.data.progress[i]);
         newProgressMembers.push(userDataClone.data.progress[i].members);
       }
     } else {
       for (let i = 0; i < 3; i++) {
         if (userDataClone.data.complete.length > i) {
-          newComplete.push(userDataClone.data.complete[i].projectName);
+          newComplete.push(userDataClone.data.complete[i]);
           newCompleteMembers.push(userDataClone.data.complete[i].members);
         }
         if (userDataClone.data.progress.length > i) {
-          newProgress.push(userDataClone.data.progress[i].projectName);
+          newProgress.push(userDataClone.data.progress[i]);
           newProgressMembers.push(userDataClone.data.progress[i].members);
         }
       }

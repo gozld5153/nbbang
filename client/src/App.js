@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
 import disableScroll from "disable-scroll";
@@ -22,7 +18,6 @@ import {
 } from "./pages/MyPage";
 
 export default function App() {
-
   const [userData, setUserData] = useState({
     data: { completeCount: 0, progressCount: 0 },
   });
@@ -43,6 +38,7 @@ export default function App() {
       })
       .catch((err) => console.log(err.response));
   };
+
   const handleNavbar = () => {
     setIsLogin(true);
     setIsModal(!isModal);
@@ -97,27 +93,31 @@ export default function App() {
       .then((data) => {
         setUserInfo(data.data.data.userInfo);
         setIsLogin(true);
-        return data.data.data.userInfo.id;
-      })
-      .then((data) => {
-        axios(`${process.env.REACT_APP_API_URL}/project/${data}}`)
-          .then((data) => {
-            setUserData(data.data);
-          })
-          .catch((err) => console.log(err.response));
-
-        axios
-          .get(`${process.env.REACT_APP_API_URL}/invite/${data}`)
-          .then((data) => {
-            setInvited(data.data);
-          })
-          .catch((err) => console.log(err.response));
       })
       .catch((err) => {
         console.log(`쿠키 ${err.response}`);
         setIsLogin(false);
       });
   }, [isLogin]);
+
+  useEffect(() => {
+    if (isMypage) {
+      axios
+        .get(`${process.env.REACT_APP_API_URL}/project/${userInfo.id}}`)
+        .then((data) => {
+          console.log(data.data);
+          setUserData(data.data);
+        })
+        .catch((err) => console.log(err.response));
+
+      axios
+        .get(`${process.env.REACT_APP_API_URL}/invite/${userInfo.id}`)
+        .then((data) => {
+          setInvited(data.data);
+        })
+        .catch((err) => console.log(err.response));
+    }
+  }, [isMypage]);
   return (
     <Router>
       <Container>
