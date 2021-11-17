@@ -2,38 +2,41 @@ import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-const Project = ({ progress, members, handleMypage }) => {
+const Project = ({ progress, members, handleMypage, setUpdate }) => {
   const navigate = useNavigate();
   const handleMoveMypage = () => {
     navigate("/mypage/project-inprogress");
     handleMypage();
   };
-  return (
-    <>
-      <div>진행중인 프로젝트</div>
-      <div>
-        <ul>
-          {progress.map((project, idx) => (
-            <li key={idx} onClick={handleMoveMypage}>
-              <p>{project}</p>
-              {members[idx].map((name, idx) => (
-                <span key={idx}>{name.username}</span>
-              ))}
-            </li>
-          ))}
-        </ul>
-      </div>
-    </>
-  );
-};
-
-const MiniProject = ({ progress, members }) => {
+  const handleMoveProject = (id) => {
+    setUpdate(true);
+    navigate(`/project/${id}`);
+    handleMypage();
+  };
   return (
     <Container>
       {progress.length > 0 ? (
-        <Project progress={progress} members={members} />
+        <>
+          <div onClick={handleMoveMypage} style={{ cursor: "pointer" }}>
+            진행중인 프로젝트
+          </div>
+          <div>
+            <ul>
+              {progress.map((project, idx) => (
+                <li key={idx} onClick={() => handleMoveProject(project.id)}>
+                  <p>{project.projectName}</p>
+                  {members[idx].map((name, idx) => (
+                    <span key={idx}>{name.username} &nbsp;</span>
+                  ))}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </>
       ) : (
-        <div>진행 중인 프로젝트가 없습니다.</div>
+        <div onClick={handleMoveMypage} style={{ cursor: "pointer" }}>
+          진행중인 프로젝트가 없습니다.
+        </div>
       )}
     </Container>
   );
@@ -71,4 +74,4 @@ const Container = styled.div`
   }
 `;
 
-export default MiniProject;
+export default Project;

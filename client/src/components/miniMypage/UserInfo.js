@@ -6,7 +6,13 @@ import { BsMailbox2 } from "react-icons/bs";
 import { GiExitDoor } from "react-icons/gi";
 import { AiFillCheckCircle, AiFillCloseCircle } from "react-icons/ai";
 
-const UserInfo = ({ userInfo, handleMypage, invited, handleInvitedList }) => {
+const UserInfo = ({
+  userInfo,
+  handleMypage,
+  invited,
+  handleInvitedList,
+  preview,
+}) => {
   const navigate = useNavigate();
   const [changeForm, setChangeForm] = useState(false);
   const handleMoveMypage = () => {
@@ -21,7 +27,7 @@ const UserInfo = ({ userInfo, handleMypage, invited, handleInvitedList }) => {
   const handleAcceptInvite = (obj) => {
     axios
       .post(
-        `${process.env.REACT_APP_API_URL}/project/${obj.projectId}/${userInfo.Id}`,
+        `${process.env.REACT_APP_API_URL}/project/addmember/${obj.projectId}/${userInfo.id}`,
         {
           color: obj.color,
         }
@@ -35,6 +41,7 @@ const UserInfo = ({ userInfo, handleMypage, invited, handleInvitedList }) => {
       .then(() => handleInvitedList())
       .catch((err) => console.log(err.response));
   };
+
   return (
     <Container>
       {changeForm ? (
@@ -51,10 +58,10 @@ const UserInfo = ({ userInfo, handleMypage, invited, handleInvitedList }) => {
                   return (
                     <div>
                       {obj.captainName} 님이 당신을 초대하였습니다.
-                      <button onClick={(obj) => handleAcceptInvite(obj)}>
+                      <button onClick={() => handleAcceptInvite(obj)}>
                         <AiFillCheckCircle size="1.2rem" />
                       </button>
-                      <button onClick={(obj) => handleRejectInvite(obj)}>
+                      <button onClick={() => handleRejectInvite(obj)}>
                         <AiFillCloseCircle size="1.2rem" />
                       </button>
                     </div>
@@ -73,10 +80,7 @@ const UserInfo = ({ userInfo, handleMypage, invited, handleInvitedList }) => {
             <NumberOfInvite>{invited.data.length}</NumberOfInvite>
           )}
           <ImgContainer onClick={handleMoveMypage}>
-            <img
-              src={`${process.env.REACT_APP_S3_IMG}/${userInfo.profile}`}
-              alt=""
-            />
+            <img src={preview} alt="" />
           </ImgContainer>
           <UserInfoContainer>
             <div>

@@ -8,7 +8,6 @@ import "react-color-palette/lib/css/styles.css";
 export default function MemberModal({
   memberModalOpener,
   isMemberOpen,
-  setMember,
   member,
   projectInfo,
 }) {
@@ -84,7 +83,7 @@ export default function MemberModal({
         }
       )
       .then(() => {
-        memberModalOpener();
+        reseter();
       });
     
     
@@ -98,12 +97,15 @@ export default function MemberModal({
   return (
     <ModalContainer isMemberOpen={isMemberOpen}>
       Search email
-      <input
-        value={searchEmail}
-        onChange={searchHandler}
-        onKeyPress={enterHandler}
-        type="text"
-      />
+      <InputContainer>
+        <input
+          value={searchEmail}
+          onChange={searchHandler}
+          onKeyPress={enterHandler}
+          type="text"
+        />
+        <PressEnter>Enter</PressEnter>
+      </InputContainer>
       <ul>
         {searchMember.map((el) => (
           <li onClick={() => selectHandler(el.id)} key={el.id}>
@@ -146,11 +148,29 @@ const ModalContainer = styled.div`
 
   input {
     border-bottom: 1px solid black;
-    width: 12rem;
+    width: 9rem;
     height: 2rem;
     font-size: 1.2rem;
     margin-bottom: 1rem;
+    padding-left:1rem;
+    margin-left: 2rem;
   }
+`;
+
+const InputContainer = styled.div`
+  display:flex;
+
+`;
+    
+const PressEnter = styled.div`
+  position: relative;
+  top: 0.3rem;
+  height: 1.7rem;
+  font-size: 1.4rem;
+  color: white;
+  border-radius: 0.3rem 0.3rem 0.3rem 0;
+  padding: 0.1rem 0.2rem 0 0.2rem;
+  background-color: black;
 `;
 
 const SubmitContainer = styled.div`

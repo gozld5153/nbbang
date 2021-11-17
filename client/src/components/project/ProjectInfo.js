@@ -13,6 +13,10 @@ export default function ProjectInfo({
   DataHandler,
   isMemberOpen,
   setMember,
+  setUpdate,
+
+  update
+
 }) {
   return (
     <Container>
@@ -28,6 +32,8 @@ export default function ProjectInfo({
               member={member}
               projectInfo={projectInfo}
               DataHandler={DataHandler}
+              setUpdate={setUpdate}
+              update={update}
             />
           </ProjectNameContainer>
           <ProjectDueContainer>
@@ -38,11 +44,10 @@ export default function ProjectInfo({
           <Invite onClick={memberModalOpener}>INVITE</Invite>
           <ProjectMember>
             {member.map((el) => (
-              <ProfileContainer len={5} color={el.color}>
+              <ProfileContainer len={5} color={el.color} key={el.id}>
                 <Profile
                   len={5}
-                  key={el.id}
-                  src={el.profile}
+                  src={`${process.env.REACT_APP_S3_IMG}/${el.profile}`}
                   alt={el.username}
                 />
               </ProfileContainer>
@@ -61,8 +66,10 @@ export default function ProjectInfo({
         <RateContainer>
           <RateFrame>
             <RateName>
-              프로젝트 진행률{" "}
-              {`${projectInfo.completeImportant / projectInfo.allImportant * 100}%`}
+              프로젝트 진행률
+              {`${
+                (projectInfo.completeImportant / projectInfo.allImportant) * 100
+              }%`}
             </RateName>
             <RateBar
               important={projectInfo.completeImportant}
@@ -94,33 +101,33 @@ export default function ProjectInfo({
 }
 
 const Container = styled.div`
-  display:flex;
-  flex-direction:column;
+  display: flex;
+  flex-direction: column;
 `;
-
 
 const ProjectInfomation = styled.div`
   display: inherit;
   justify-content: space-between;
   align-items: center;
-  margin:1rem;
+  margin: 1rem;
   padding: 1rem;
   background-color: #ffffff;
 `;
 const ProjectInfoContainer = styled.div`
-  display:inherit;
+  display: inherit;
 `;
 const ProjectNameContainer = styled.div`
   position: relative;
   display: inherit;
-  justify-content:center;
-  align-items:center;
+  justify-content: center;
+  align-items: center;
 `;
 const ProjectName = styled.div`
   font-family: "Anton", sans-serif;
   font-size: 3rem;
   color: white;
   padding: 1rem;
+  cursor: pointer;
   background-color: black;
 `;
 const ProjectDueContainer = styled.div`
@@ -133,21 +140,21 @@ const ProjectDue = styled.div`
   font-family: "Anton", sans-serif;
 `;
 const MemberContainer = styled.div`
-  display:flex;
-  align-items:flex-end;
+  display: flex;
+  align-items: flex-end;
 `;
 const Invite = styled.div`
-  font-size:1.5rem;
+  font-size: 1.5rem;
   font-family: "Anton", sans-serif;
   writing-mode: vertical-rl;
   text-orientation: mixed;
-  margin-right:0.5rem;
-  padding-bottom:0.3rem;
-  cursor:pointer;
+  margin-right: 0.5rem;
+  padding-bottom: 0.3rem;
+  cursor: pointer;
 `;
 const ProjectMember = styled.div`
-position: relative;
-display:flex;
+  position: relative;
+  display: flex;
 `;
 const ProfileContainer = styled.div`
   width: ${(props) => `${props.len}rem`};
@@ -164,10 +171,8 @@ const ProfileContainer = styled.div`
 const Profile = styled.img`
   width: ${(props) => `${props.len}rem`};
   height: ${(props) => `${props.len}rem`};
-  border-radius:${(props) => `${props.len / 2}rem`};
+  border-radius: ${(props) => `${props.len / 2}rem`};
 `;
-
-
 
 const ProjectProgress = styled.div`
   display: flex;
@@ -188,8 +193,8 @@ const RateContainer = styled.div`
   }
 `;
 const RateFrame = styled.div`
-  position:relative;
-  display:flex;
+  position: relative;
+  display: flex;
   height: 3rem;
   border-radius: 0.5rem;
   /* margin: 0.5rem 0 0.5rem 0; */
@@ -203,7 +208,7 @@ const RateName = styled.div`
   color: #ffffff;
 `;
 const RateBar = styled.div`
-  flex-grow:${(props)=> props.important};
-  height:inherit;
-  background-color: ${(props) => props.color}
+  flex-grow: ${(props) => props.important};
+  height: inherit;
+  background-color: ${(props) => props.color};
 `;

@@ -75,13 +75,9 @@ module.exports = async (req, res) => {
     // color 추가 important 추가
     projectInfo.dataValues.members = [];
     for (let el of projectInfo.dataValues.UsersProjects) {
-      console.log(el.dataValues.User.dataValues.id);
-      console.log(projectInfo.dataValues.captainId);
       if (
         el.dataValues.User.dataValues.id === projectInfo.dataValues.captainId
       ) {
-        console.log("asdfaf", el.dataValues.User.dataValues.username);
-
         projectInfo.dataValues.captainName =
           el.dataValues.User.dataValues.username;
       }
