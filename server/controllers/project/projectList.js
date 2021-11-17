@@ -29,6 +29,8 @@ module.exports = async (req, res) => {
             attributes: ["username", "profile"],
             include: {
               model: Goal,
+              required: false,
+              where: { projectId: req.params.userId },
               attributes: ["goalName", "important", "description", "deadline"],
             },
           },
