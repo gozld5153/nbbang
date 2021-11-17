@@ -29,12 +29,14 @@ export default function App() {
   const [switchBtn, setSwitchBtn] = useState(false);
   const [isOn, setIsOn] = useState(false);
   const [invited, setInvited] = useState({});
+  const [preview, setPreview] = useState();
   const [update, setUpdate] = useState(true);
   //miniMypage에 쓰이는 state
   const [progress, setProgress] = useState([]);
   const [complete, setComplete] = useState([]);
   const [progressMembers, setProgressMember] = useState([]);
   const [completeMembers, setCompleteMember] = useState([]);
+
 
   const handleInvitedList = () => {
     axios
@@ -90,6 +92,13 @@ export default function App() {
   };
 
   // 토큰이 유효하면 로그인 상태 유지 아니면 로그아웃
+
+
+  useEffect(() => {
+    setPreview(`${process.env.REACT_APP_S3_IMG}/${userInfo.profile}`);
+  }, [userInfo.profile]);
+
+
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_API_URL}/users`, {
@@ -119,6 +128,7 @@ export default function App() {
         console.log(`쿠키 ${err.response}`);
         setIsLogin(false);
       });
+
   }, [isLogin, update]);
 
   useEffect(() => {
@@ -169,6 +179,7 @@ export default function App() {
     }
   }, [isMypage]);
 
+
   return (
     <Router>
       <Container>
@@ -185,12 +196,16 @@ export default function App() {
             switchBtn={switchBtn}
             invited={invited}
             handleInvitedList={handleInvitedList}
+
             setUpdate={setUpdate}
             update={update}
             progress={progress}
             complete={complete}
             progressMembers={progressMembers}
             completeMembers={completeMembers}
+
+            preview={preview}
+
           />
           <Routes>
             <Route
@@ -208,10 +223,16 @@ export default function App() {
             />
 
             {userInfo.id && (
-              <Route path="mypage" element={<MyPage userInfo={userInfo} />}>
+              <Route path="mypage" element={<MyPage preview={preview} />}>
                 <Route
                   path="profile"
-                  element={<Profile userInfo={userInfo} />}
+                  element={
+                    <Profile
+                      userInfo={userInfo}
+                      setUserInfo={setUserInfo}
+                      setPreview={setPreview}
+                    />
+                  }
                 />
                 <Route
                   path="project-inprogress"
@@ -258,9 +279,9 @@ export default function App() {
               />
             </Route>
 
-            <Route path="complete" element={<Complete />}>
+            {/* <Route path="complete" element={<Complete />}>
               <Route path=":project_id" element={<ProjectStatics />} />
-            </Route>
+            </Route> */}
           </Routes>
         </Frame>
       </Container>

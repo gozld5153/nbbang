@@ -108,6 +108,12 @@ export default function GoalModal({ id, update, setUpdate }) {
 
   const commentHandler = (e) => {
     if (e.key === "Enter" && comment) {
+      console.log('여기 보세요~',{
+        userId: id,
+        projectId: params.projectId,
+        goalId: params.id,
+        content: e.target.value,
+      });
       axios
         .post(
           `${process.env.REACT_APP_API_URL}/comment`,
@@ -125,18 +131,8 @@ export default function GoalModal({ id, update, setUpdate }) {
           }
         )
         .then(() => {
-          axios
-            .get(`${process.env.REACT_APP_API_URL}/goal?goalId=${params.id}`, {
-              headers: {
-                "Content-Type": "application/json",
-              },
-              withCredentials: true,
-            })
-            .then((res) => {
-              DataHandler("comments", res.data.data.Comments);
-              setComment("");
-              setUpdate(true);
-            });
+          setComment("");
+          setUpdate(true);
         });
     }
   };
@@ -203,8 +199,8 @@ export default function GoalModal({ id, update, setUpdate }) {
       .post(
         `${process.env.REACT_APP_API_URL}/like`,
         {
-          user_id: id,
-          goal_id: params.id,
+          userId: id,
+          goalId: Number(params.id),
         },
         {
           headers: {
@@ -220,7 +216,7 @@ export default function GoalModal({ id, update, setUpdate }) {
 
   const LikeDeleter = () => {
     axios
-      .delete(`${process.env.REACT_APP_API_URL}/like/${"likeId"}`, {
+      .delete(`${process.env.REACT_APP_API_URL}/like/${goal.LikeId}`, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -248,7 +244,7 @@ export default function GoalModal({ id, update, setUpdate }) {
     }
   }, [update,id]);
 
-
+console.log('LikeId',goal)
   return (
     <Container>
       <ModalContainer>
@@ -281,7 +277,7 @@ export default function GoalModal({ id, update, setUpdate }) {
         </EditContainer>
         <Title>State</Title>
         <NoEditContainer isEditing={isEditing}>
-          {state.filter((el) => goal.state === el[1])[0][0]}
+          {goal.state ? state.filter((el) => goal.state === el[1])[0][0] : null}
         </NoEditContainer>
         <EditContainer isEditing={isEditing}>
           <ul>
@@ -344,7 +340,9 @@ export default function GoalModal({ id, update, setUpdate }) {
         </EditContainer>
         <Title>Important</Title>
         <NoEditContainer isEditing={isEditing}>
-          {important.filter((el) => goal.important === el[1])[0][0]}
+          {goal.important
+            ? important.filter((el) => goal.important === el[1])[0][0]
+            : null}
         </NoEditContainer>
         <EditContainer isEditing={isEditing}>
           <ul>
@@ -397,7 +395,7 @@ export default function GoalModal({ id, update, setUpdate }) {
               <CommentContainer key={el.id}>
                 <CommentTitle>
                   <CommentsTitleFrame>
-                    <div>{el.userId}</div>
+                    <div>{el.username}</div>
                     <div>
                       {`${el.createdAt
                         .toLocaleString()
@@ -425,8 +423,12 @@ export default function GoalModal({ id, update, setUpdate }) {
           <PressEnter>Enter</PressEnter>
         </InputContainer>
         <LikeContainer>
-          <LikeBTN onClick={LikeHandler}>AGREE</LikeBTN>
-          <LikeBTN onClick={LikeDeleter}>REJECT</LikeBTN>
+          <LikeBTN onClick={LikeHandler} like={goal.LikeId}>
+            AGREE
+          </LikeBTN>
+          <LikeBTN onClick={LikeDeleter} like={!goal.LikeId}>
+            REJECT
+          </LikeBTN>
         </LikeContainer>
         <Pen src={`${process.env.PUBLIC_URL}/images/pen.png`} />
       </ModalContainer>
@@ -621,10 +623,10 @@ const LikeContainer = styled.div`
 const LikeBTN = styled.button`
   width: 9rem;
   height: 3rem;
-  font-size:2rem;
-  color:white;
-  font-family:anton;
-  background-color: black;
+  font-size: 2rem;
+  color: ${(props) => (props.like ? "white" : "black")};
+  font-family: anton;
+  background-color: ${(props) => (props.like ? "black" : "white")};
   margin: 1rem;
 `;
 

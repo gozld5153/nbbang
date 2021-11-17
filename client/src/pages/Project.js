@@ -35,8 +35,9 @@ export default function Project({ id, update, setUpdate }) {
     console.log(newObject.description);
     setProjectInfo({ ...newObject });
   };
-
+  console.log(params.projectId, id);
   useEffect(() => {
+
     if (update) {
       setUpdate(false);
     } else {
@@ -68,6 +69,7 @@ export default function Project({ id, update, setUpdate }) {
     }
   }, [update, id]);
 
+
   if (Object.keys(params).length === 2) {
     disableScroll.on();
   } else {
@@ -77,10 +79,12 @@ export default function Project({ id, update, setUpdate }) {
   const projectModalOpener = () => {
     if (projectInfo.captainId === myInfo.id) setIsProjectOpen(!isProjectOpen);
   };
+
   const memberModalOpener = () => {
-    setIsMemberOpen(!isMemberOpen);
+    if (projectInfo.captainId === myInfo.id) setIsMemberOpen(!isMemberOpen);
   };
-  console.log("project :", projectInfo);
+
+
   return (
     <Container>
       <ProjectFrame>
