@@ -33,7 +33,9 @@ module.exports = async (req, res) => {
       console.log(err);
     }
 
-    return res.status(400).json({ data: userInfo, message: "ok" });
+    return res
+      .status(200)
+      .json({ data: { userInfo: userInfo.dataValues }, message: "ok" });
   }
   // ! NAVER Oauth 끝
   // ! KAKAO Oauth 시작

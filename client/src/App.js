@@ -17,6 +17,9 @@ import {
   ProjectDone,
 } from "./pages/MyPage";
 
+import Kakao from "./pages/Kakao";
+import Naver from "./pages/Naver";
+
 export default function App() {
   const [userData, setUserData] = useState({
     data: { completeCount: 0, progressCount: 0 },
@@ -37,7 +40,6 @@ export default function App() {
   const [progressMembers, setProgressMember] = useState([]);
   const [completeMembers, setCompleteMember] = useState([]);
 
-
   const handleInvitedList = () => {
     axios
       .get(`${process.env.REACT_APP_API_URL}/invite/${userInfo.id}`)
@@ -49,7 +51,7 @@ export default function App() {
 
   const handleNavbar = () => {
     setIsLogin(true);
-    setIsModal(!isModal);
+    setIsModal(false);
     disableScroll.off();
   };
 
@@ -93,11 +95,9 @@ export default function App() {
 
   // 토큰이 유효하면 로그인 상태 유지 아니면 로그아웃
 
-
   useEffect(() => {
     setPreview(`${process.env.REACT_APP_S3_IMG}/${userInfo.profile}`);
   }, [userInfo.profile]);
-
 
   useEffect(() => {
     axios
@@ -112,7 +112,6 @@ export default function App() {
       .then((data) => {
         axios(`${process.env.REACT_APP_API_URL}/project/${data}}`)
           .then((data) => {
-            console.log(data.data);
             setUserData(data.data);
           })
           .catch((err) => console.log(err.response));
@@ -128,7 +127,6 @@ export default function App() {
         console.log(`쿠키 ${err.response}`);
         setIsLogin(false);
       });
-
   }, [isLogin, update]);
 
   useEffect(() => {
@@ -179,7 +177,6 @@ export default function App() {
     }
   }, [isMypage]);
 
-
   return (
     <Router>
       <Container>
@@ -196,16 +193,13 @@ export default function App() {
             switchBtn={switchBtn}
             invited={invited}
             handleInvitedList={handleInvitedList}
-
             setUpdate={setUpdate}
             update={update}
             progress={progress}
             complete={complete}
             progressMembers={progressMembers}
             completeMembers={completeMembers}
-
             preview={preview}
-
           />
           <Routes>
             <Route
@@ -220,6 +214,14 @@ export default function App() {
                   isOn={isOn}
                 />
               }
+            />
+            <Route
+              path="kakao"
+              element={<Kakao handleNavbar={handleNavbar} />}
+            />
+            <Route
+              path="naver"
+              element={<Naver handleNavbar={handleNavbar} />}
             />
 
             {userInfo.id && (
