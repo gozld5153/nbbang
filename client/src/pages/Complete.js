@@ -1,11 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-<<<<<<< HEAD
-import styled from "styled-components";
-import { useParams, Outlet } from "react-router-dom";
-import { MdArrowBackIosNew, MdArrowForwardIos } from "react-icons/md";
-import ChartStatics from "../components/utils/ChartStatics";
-import { CompletePageData } from "../mockdata/CompletePageData";
-=======
 import { useParams, Outlet } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
@@ -14,7 +7,6 @@ import ChartStatics from "../components/utils/ChartStatics";
 import LoadingNotice from "../components/utils/LoadingSpinner";
 
 import { MdArrowBackIosNew, MdArrowForwardIos } from "react-icons/md";
->>>>>>> c2cd46566d4e4efbe1a1c2f8b47f333c98befb00
 
 export const Complete = () => {
   return (
@@ -25,16 +17,6 @@ export const Complete = () => {
 };
 
 export const ProjectStatics = () => {
-<<<<<<< HEAD
-  // const params = useParams();
-  const crewScroll = useRef(null);
-  const [projectData, setProjectData] = useState(CompletePageData);
-  const params = { projectId: 1 };
-  // - projectId로 요청함
-
-  const { captain, crew } = projectData.usersGoal;
-  const staticsData = [captain].concat(crew);
-=======
   const crewScroll = useRef(null);
 
   const { project_id } = useParams();
@@ -64,7 +46,6 @@ export const ProjectStatics = () => {
         console.log(err);
       });
   }, [project_id]);
->>>>>>> c2cd46566d4e4efbe1a1c2f8b47f333c98befb00
 
   useEffect(() => {
     window.addEventListener("wheel", handleMouseWheel, { passive: false });
@@ -73,11 +54,6 @@ export const ProjectStatics = () => {
     };
   }, []);
 
-<<<<<<< HEAD
-  // useEffect 프로젝트 정보 가져오는 거 추가하기
-
-=======
->>>>>>> c2cd46566d4e4efbe1a1c2f8b47f333c98befb00
   const handleCrewScroll = (event) => {
     const clsName = event.target.classList[0];
 
@@ -97,15 +73,6 @@ export const ProjectStatics = () => {
       top = 0;
     } else if (top >= 0 && top < 1000 && Y > 0) {
       top = 1000;
-<<<<<<< HEAD
-    } else if (top >= 1000 && top < 1961 && Y < 0) {
-      top = 0;
-    } else if (top >= 1000 && top < 1961 && Y > 0) {
-      top = 1961;
-    } else if (top >= 1961 && Y < 0) {
-      top = 1000;
-    } else if (top >= 1961 && Y > 0) return;
-=======
     } else if (top >= 1000 && top < 1975 && Y < 0) {
       top = 0;
     } else if (top >= 1000 && top < 1975 && Y > 0) {
@@ -113,36 +80,19 @@ export const ProjectStatics = () => {
     } else if (top >= 1975 && Y < 0) {
       top = 1000;
     } else if (top >= 1975 && Y > 0) return;
->>>>>>> c2cd46566d4e4efbe1a1c2f8b47f333c98befb00
 
     window.scroll({ top, left: 0, behavior: "smooth" });
   };
 
-<<<<<<< HEAD
-=======
   if (!projectData.projectId && !crew && !captain) {
     return <LoadingNotice />;
   }
   console.log(projectData);
->>>>>>> c2cd46566d4e4efbe1a1c2f8b47f333c98befb00
   return (
     <ProjectCompleteWrapper>
       <ProjectPresentationContainer>
         <ProjectPresentationHeadline>PRESENTATION</ProjectPresentationHeadline>
         <ProjectPresentationContent>
-<<<<<<< HEAD
-          <iframe
-            width="860"
-            height="505"
-            src={`https://www.youtube.com/embed/${projectData.presentation.slice(
-              -11
-            )}`}
-            title="YouTube video player"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullscreen
-          />
-=======
           {projectData.presentation ? (
             <iframe
               width="860"
@@ -161,7 +111,6 @@ export const ProjectStatics = () => {
             </ProjectPresentatinError>
           )}
 
->>>>>>> c2cd46566d4e4efbe1a1c2f8b47f333c98befb00
           <ProjectPresentationDescription>
             <img
               src={`${process.env.PUBLIC_URL}/images/nbbang-logo.png`}
@@ -189,13 +138,6 @@ export const ProjectStatics = () => {
           </ProjectTeammatesCrewScroll>
         </ProjectTeammatesColumnName>
         <ProjectTeammatesItemsList>
-<<<<<<< HEAD
-          <ProjectTeammatesCards teammates={captain} />
-          <ProjectTeammatesCrew ref={crewScroll}>
-            {crew.map((crew) => (
-              <ProjectTeammatesCards teammates={crew} key={crew.username} />
-            ))}
-=======
           <ProjectTeammatesCards captain={true} teammates={captain} />
           <ProjectTeammatesCrew ref={crewScroll}>
             {crew.length === 0 ? (
@@ -211,7 +153,6 @@ export const ProjectStatics = () => {
                 />
               ))
             )}
->>>>>>> c2cd46566d4e4efbe1a1c2f8b47f333c98befb00
           </ProjectTeammatesCrew>
         </ProjectTeammatesItemsList>
       </ProjectTeammatesContainer>
@@ -223,22 +164,6 @@ export const ProjectStatics = () => {
   );
 };
 
-<<<<<<< HEAD
-export const ProjectTeammatesCards = ({ teammates }) => {
-  return (
-    <ProjectTeammatesCardsContainer>
-      <ProjectTeammatesProfile>
-        <img src={teammates.profile} alt="" />
-        <ProjectTeammatesProfileDescription>
-          <span>{teammates.username}</span>
-          <span>미니언 1호</span>
-        </ProjectTeammatesProfileDescription>
-      </ProjectTeammatesProfile>
-      <ProjectTeammatesDetail>
-        {teammates.goal.map((goal) => (
-          <ProjectTeammatesDetailBox goal={goal} key={goal.username} />
-        ))}
-=======
 export const ProjectTeammatesCards = ({ teammates, captain, crew }) => {
   console.log(teammates, teammates.goal);
   return (
@@ -263,7 +188,6 @@ export const ProjectTeammatesCards = ({ teammates, captain, crew }) => {
             <ProjectTeammatesDetailBox goal={goal} key={goal.username} />
           ))
         )}
->>>>>>> c2cd46566d4e4efbe1a1c2f8b47f333c98befb00
       </ProjectTeammatesDetail>
     </ProjectTeammatesCardsContainer>
   );
@@ -280,12 +204,6 @@ export const ProjectTeammatesDetailBox = ({ goal }) => {
 };
 
 export const ProjectStaticsdetailComponent = ({ staticsData }) => {
-<<<<<<< HEAD
-  const allData = staticsData.map((item) => {
-    return {
-      username: item.username,
-      totalGoal: item.goal.reduce((acc, cur) => acc + cur.important, 0),
-=======
   const goalTotal = staticsData.reduce(
     (acc, item) => item.goal.reduce((a, c) => a + c, 0) + acc,
     0
@@ -297,7 +215,6 @@ export const ProjectStaticsdetailComponent = ({ staticsData }) => {
         item.goal.length === 0
           ? 0
           : item.goal.reduce((acc, cur) => acc + cur.important, 0),
->>>>>>> c2cd46566d4e4efbe1a1c2f8b47f333c98befb00
     };
   });
 
@@ -327,38 +244,6 @@ export const ProjectStaticsdetailComponent = ({ staticsData }) => {
 
   return (
     <>
-<<<<<<< HEAD
-      <ProjectTeammateslist selected={selected}>
-        <div className={"allUser"} onClick={handleTeammateData}>
-          <img
-            src={`${process.env.PUBLIC_URL}/images/ALL_logo.svg`}
-            alt=""
-            title={"ALL"}
-            style={{ opacity: selected === "allUser" ? "100%" : "50%" }}
-          />
-        </div>
-        {personalDatas.map((data) => {
-          return (
-            <div className={data.username} onClick={handleTeammateData}>
-              <img
-                src={data.profile}
-                alt=""
-                title={data.username}
-                style={{ opacity: selected === data.username ? "100%" : "50%" }}
-              />
-            </div>
-          );
-        })}
-      </ProjectTeammateslist>
-      <ProjectStaticsdetail>
-        <ChartStatics
-          tempData={tempData}
-          guide={guide}
-          setGuide={setGuide}
-          allMode={allMode}
-        />
-      </ProjectStaticsdetail>
-=======
       {goalTotal === 0 ? (
         <ProjectStaticsError>
           <strong>진행한 작업들이</strong> 없습니다
@@ -401,7 +286,6 @@ export const ProjectStaticsdetailComponent = ({ staticsData }) => {
           </ProjectStaticsdetail>
         </>
       )}
->>>>>>> c2cd46566d4e4efbe1a1c2f8b47f333c98befb00
     </>
   );
 };
@@ -466,11 +350,7 @@ const ProjectPresentationDescription = styled.div`
 
 const ProjectTeammatesContainer = styled.div`
   width: 100%;
-<<<<<<< HEAD
-  height: 98vh;
-=======
   height: 99.7vh;
->>>>>>> c2cd46566d4e4efbe1a1c2f8b47f333c98befb00
   flex-direction: column;
   padding: 90px 150px;
   border-bottom: 5px solid black;
@@ -572,11 +452,7 @@ const ProjectTeammatesProfileDescription = styled.div`
   }
 `;
 const ProjectTeammatesDetail = styled.div`
-<<<<<<< HEAD
-  height: 500px;
-=======
   height: 520px;
->>>>>>> c2cd46566d4e4efbe1a1c2f8b47f333c98befb00
   width: 305px;
   border-radius: 10px;
   overflow: hidden;
@@ -600,11 +476,7 @@ const ProjectGoalDescription = styled.div`
 
 const ProjectStaticsContainer = styled.div`
   width: 100%;
-<<<<<<< HEAD
-  height: 98vh;
-=======
   height: 99vh;
->>>>>>> c2cd46566d4e4efbe1a1c2f8b47f333c98befb00
   flex-direction: column;
   padding: 100px 150px;
   border-bottom: 5px solid black;
@@ -646,8 +518,6 @@ const ProjectStaticsdetail = styled.div`
   width: 100%;
   height: 570px;
 `;
-<<<<<<< HEAD
-=======
 
 const ProjectPresentatinError = styled.div`
   width: 860px;
@@ -721,4 +591,3 @@ const ProjectStaticsError = styled.div`
     font-style: italic;
   }
 `;
->>>>>>> c2cd46566d4e4efbe1a1c2f8b47f333c98befb00
