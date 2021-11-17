@@ -9,16 +9,24 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      // models.Comment.belongsTo(models.User, { foreignKey: "user_id" });
-      // models.Comment.belongsTo(models.Project, { foreignKey: "project_id" });
-      // models.Comment.belongsTo(models.Goal, { foreignKey: "goal_id" });
+      Comment.belongsTo(models.User, {
+        foreignKey: {
+          name: "userId",
+        },
+        onDelete: "CASCADE",
+      });
+      Comment.belongsTo(models.Goal, {
+        foreignKey: {
+          name: "goalId",
+        },
+        onDelete: "CASCADE",
+      });
     }
   }
   Comment.init(
     {
-      user_id: DataTypes.INTEGER,
-      project_id: DataTypes.INTEGER,
-      goal_id: DataTypes.INTEGER,
+      userId: DataTypes.INTEGER,
+      goalId: DataTypes.INTEGER,
       content: DataTypes.STRING,
     },
     {

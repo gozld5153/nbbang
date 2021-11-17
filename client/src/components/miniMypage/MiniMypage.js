@@ -4,30 +4,43 @@ import MiniProject from "./MiniProject";
 import ResultProject from "./ResultProject";
 import styled, { keyframes } from "styled-components";
 
-const MiniMypage = ({ userInfo, isMypage, userData }) => {
-  const [progress, setProgress] = useState([]);
-  const [complete, setComplete] = useState([]);
-  const [members, setMember] = useState([]);
-  useEffect(() => {
-    let newProgress = [];
-    let newComplete = [];
-    let newMembers = [];
+const MiniMypage = ({
+  userInfo,
+  isMypage,
+  userData,
+  handleMypage,
+  invited,
+  handleInvitedList,
+  setUpdate,
+  update,
+  progress,
+  complete,
+  progressMembers,
+  completeMembers,
+  preview,
+}) => {
 
-    for (let i = 0; i < 3; i++) {
-      newProgress.push(userData[i].project_name);
-      newComplete.push(userData[i].project_name);
-      newMembers.push(userData[i].users);
-    }
-    setProgress(newProgress);
-    setComplete(newComplete);
-    setMember(newMembers);
-  }, []);
   return (
     <Container className={isMypage ? "add" : "hide"} isMypage={isMypage}>
       <MiniContainer>
-        <UserInfo userInfo={userInfo} />
-        <MiniProject progress={progress} members={members} />
-        <ResultProject complete={complete} members={members} />
+        <UserInfo
+          userInfo={userInfo}
+          handleMypage={handleMypage}
+          invited={invited}
+          handleInvitedList={handleInvitedList}
+          preview={preview}
+        />
+        <MiniProject
+          progress={progress}
+          members={progressMembers}
+          handleMypage={handleMypage}
+          setUpdate={setUpdate}
+        />
+        <ResultProject
+          complete={complete}
+          members={completeMembers}
+          handleMypage={handleMypage}
+        />
       </MiniContainer>
     </Container>
   );
@@ -37,41 +50,44 @@ export default MiniMypage;
 
 const moveLeft = keyframes`
   0% {
-    transform: translateX(0)
+    transform: scaleY(0)
   }
   50% {
-    transform: translateX(-50%)
+    transform: scaleY(50%)
   }
   100% {
-    transform: translateX(-100%)
+    transform: scaleY(100%)
   }
 `;
 
 const moveHide = keyframes`
   0% {
-    transform: translateX(0)
+    transform: scaleY(100%)
   }
   50% {
-    transform: translateX(50%)
+    transform: scaleY(50%)
   }
   100% {
-    transform: translateX(100%)
+    transform: scaleY(0)
   }
 `;
 
 const Container = styled.div`
-  position: fixed;
-  height: 93vh;
-  width: 30%;
-
-  right: ${(props) => (props.isMypage ? "-30%" : "0")};
-  top: 7vh;
-  background-color: #e7ecf0;
+  position: absolute;
+  height: 80vh;
+  width: 470px;
+  transform-origin: top;
+  top: 6rem;
+  right: 0;
+  z-index: 990;
+  background-color: #f6f2f1;
+  border-left: 4px solid black;
+  border-bottom: 3px solid black;
   &.hide {
     animation: ${moveHide} 0.4s linear forwards;
   }
   &.add {
-    animation: ${moveLeft} 0.4s linear forwards;
+    animation: ${moveLeft} 0.5s linear forwards;
   }
 `;
 
@@ -79,6 +95,7 @@ const MiniContainer = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
+
   flex-direction: column;
   > :nth-child(1) {
     flex: 30%;

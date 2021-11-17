@@ -5,18 +5,14 @@ import axios from 'axios'
 import { ColorPicker, useColor } from "react-color-palette";
 import "react-color-palette/lib/css/styles.css";
 
-import MemberMockData from '../../mockdata/MemberMockData'
-
 export default function MemberModal({
   memberModalOpener,
   isMemberOpen,
-  setMember,
   member,
   projectInfo,
 }) {
   const [searchEmail, setSearchEmail] = useState("");
   const [color, setColor] = useColor("hex", "#121212")
-    
   const [searchMember, setSearchMember] = useState([
     {
       id: 0,
@@ -40,7 +36,7 @@ export default function MemberModal({
   const selectHandler = (id) => {
     let select = searchMember.filter((el) => el.id === id)[0];
     setSearchEmail(select.email);
-    setSelectMember({ ...select });
+    setSelectMember({ ...selectMember, ...select });
   };
 
   const selectColor = (data) => {
@@ -49,16 +45,16 @@ export default function MemberModal({
   }
 
   const enterHandler = (e) => {
-    // const email = e.target.value;
     if (e.key === "Enter" && searchEmail) {
-      // axios.get(`http://server.nbbang.ml/project/`, {
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   withCredentials: true,
-      // });
+      axios
+        .get(`${process.env.REACT_APP_API_URL}/users/search/${searchEmail}`, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        })
+        .then((res) => setSearchMember(res.data.data));
 
-      setSearchMember([...MemberMockData]);
     }
   };
 
@@ -71,72 +67,120 @@ export default function MemberModal({
     if (reduplication && selectMember.username) {
       return alert("이미 가입된 맴버입니다.");
     }
-    axios.put(
-      `http://server.nbbang.ml/project`,
-      {
-        id: projectInfo.id,
-        member: [...member, selectMember],
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
+    axios
+      .post(
+        `${process.env.REACT_APP_API_URL}/invite`,
+        {
+          projectId: projectInfo.id,
+          userId: selectMember.id,
+          color:selectMember.color,
         },
-        withCredentials: true,
-      }
-    );
-    setMember([...member, selectMember]);
-    memberModalOpener();
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      )
+      .then(() => {
+        reseter();
+      });
+    
+    
   };
 
-
+  const reseter = () => {
+    setSearchMember([]);
+    setSearchEmail('');
+    memberModalOpener();
+  };
   return (
-    <Container isMemberOpen={isMemberOpen}>
-      <ModalContainer>
-        <button onClick={memberModalOpener}>close</button>
+    <ModalContainer isMemberOpen={isMemberOpen}>
+      Search email
+      <InputContainer>
         <input
           value={searchEmail}
           onChange={searchHandler}
           onKeyPress={enterHandler}
           type="text"
         />
-        <ul>
-          {searchMember.map((el) => (
-            <li onClick={() => selectHandler(el.id)} key={el.id}>
-              {el.email}
-            </li>
-          ))}
-        </ul>
-        색깔 선택
-        <ColorPicker
-          width={456}
-          height={228}
-          color={color}
-          onChange={selectColor}
-          hideHSV
-          dark
-        />
-        <button onClick={closeHandler}>초대</button>
-      </ModalContainer>
-    </Container>
+        <PressEnter>Enter</PressEnter>
+      </InputContainer>
+      <ul>
+        {searchMember.map((el) => (
+          <li onClick={() => selectHandler(el.id)} key={el.id}>
+            {el.email}
+          </li>
+        ))}
+      </ul>
+      What is his color?
+      <ColorPicker
+        width={240}
+        height={40}
+        color={color}
+        onChange={selectColor}
+        hideHSV
+        hideRGB
+        dark
+      />
+      <SubmitContainer>
+        <button onClick={reseter}>close</button>
+        <button onClick={closeHandler}>invite</button>
+      </SubmitContainer>
+    </ModalContainer>
   );
 }
 
-const Container = styled.div`
-  position: absolute;
-  top: 0;
-  display: ${(props) => (props.isMemberOpen ? "flex" : "none")};
-  justify-content: center;
-  align-items: center;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.3);
-`;
 
 const ModalContainer = styled.div`
-  display: flex;
+  position: absolute;
+  top: 6rem;
+  right: -1rem;
+  display: ${(props) => (props.isMemberOpen ? "flex" : "none")};
   flex-direction: column;
-  width: 50vw;
-  height: 50vh;
-  border: 1px solid black;
+  align-items: center;
+  width: 17rem;
+  border: 0.4rem solid black;
+  font-size: 1.4rem;
+  padding: 1rem;
   background-color: white;
+  z-index: 99999;
+
+  input {
+    border-bottom: 1px solid black;
+    width: 9rem;
+    height: 2rem;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    padding-left:1rem;
+    margin-left: 2rem;
+  }
+`;
+
+const InputContainer = styled.div`
+  display:flex;
+
+`;
+    
+const PressEnter = styled.div`
+  position: relative;
+  top: 0.3rem;
+  height: 1.7rem;
+  font-size: 1.4rem;
+  color: white;
+  border-radius: 0.3rem 0.3rem 0.3rem 0;
+  padding: 0.1rem 0.2rem 0 0.2rem;
+  background-color: black;
+`;
+
+const SubmitContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width:100%;
+  margin-top: 0.2rem;
+  padding: 0 2rem;
+
+  button {
+    font-size: 1.2rem;
+  }
 `;

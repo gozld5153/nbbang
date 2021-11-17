@@ -2,19 +2,28 @@ import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-const ResultProject = ({ complete, members }) => {
+const ResultProject = ({ complete, members, handleMypage }) => {
   const navigate = useNavigate();
-
+  const handleMoveMypage = () => {
+    navigate("/mypage/project-done");
+    handleMypage();
+  };
+  const handleMoveProject = (id) => {
+    navigate(`/complete/${id}`);
+    handleMypage();
+  };
   return (
     <Container>
       {complete.length > 0 ? (
         <>
-          <div>완료한 프로젝트</div>
+          <div onClick={handleMoveMypage} style={{ cursor: "pointer" }}>
+            완료한 프로젝트
+          </div>
           <div>
             <ul>
               {complete.map((project, idx) => (
-                <li key={idx} onClick={() => navigate("project-done")}>
-                  <p>{project}</p>
+                <li key={idx} onClick={() => handleMoveProject(project.id)}>
+                  <p>{project.projectName}</p>
                   {members[idx].map((name, idx) => (
                     <span key={idx}>{name.username} &nbsp;</span>
                   ))}
@@ -24,7 +33,9 @@ const ResultProject = ({ complete, members }) => {
           </div>
         </>
       ) : (
-        <div>완료한 프로젝트가 없습니다.</div>
+        <div onClick={handleMoveMypage} style={{ cursor: "pointer" }}>
+          완료한 프로젝트가 없습니다.
+        </div>
       )}
     </Container>
   );
