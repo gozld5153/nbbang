@@ -119,7 +119,7 @@ export default function App() {
         console.log(`쿠키 ${err.response}`);
         setIsLogin(false);
       });
-  }, [isLogin, isMypage, update]);
+  }, [isLogin, update]);
 
   useEffect(() => {
     // console.log(userData);
@@ -128,45 +128,46 @@ export default function App() {
     let newComplete = [];
     let newProgressMembers = [];
     let newCompleteMembers = [];
-
-    if (!userDataClone.data.progress && !userDataClone.data.complete) {
-      return;
-    } else if (
-      !userDataClone.data.progress.length &&
-      userDataClone.data.complete !== 0
-    ) {
-      for (let i = 0; i < 3; i++) {
-        if (userDataClone.data.complete.length <= i) continue;
-        newComplete.push(userDataClone.data.complete[i]);
-        newCompleteMembers.push(userDataClone.data.complete[i].members);
-      }
-    } else if (
-      userDataClone.data.progress.length !== 0 &&
-      !userDataClone.data.complete
-    ) {
-      for (let i = 0; i < 3; i++) {
-        if (userDataClone.data.progress.length <= i) continue;
-        newProgress.push(userDataClone.data.progress[i]);
-        newProgressMembers.push(userDataClone.data.progress[i].members);
-      }
-    } else {
-      for (let i = 0; i < 3; i++) {
-        if (userDataClone.data.complete.length > i) {
+    if (isMypage) {
+      if (!userDataClone.data.progress && !userDataClone.data.complete) {
+        return;
+      } else if (
+        !userDataClone.data.progress.length &&
+        userDataClone.data.complete !== 0
+      ) {
+        for (let i = 0; i < 3; i++) {
+          if (userDataClone.data.complete.length <= i) continue;
           newComplete.push(userDataClone.data.complete[i]);
           newCompleteMembers.push(userDataClone.data.complete[i].members);
         }
-        if (userDataClone.data.progress.length > i) {
+      } else if (
+        userDataClone.data.progress.length !== 0 &&
+        !userDataClone.data.complete
+      ) {
+        for (let i = 0; i < 3; i++) {
+          if (userDataClone.data.progress.length <= i) continue;
           newProgress.push(userDataClone.data.progress[i]);
           newProgressMembers.push(userDataClone.data.progress[i].members);
         }
+      } else {
+        for (let i = 0; i < 3; i++) {
+          if (userDataClone.data.complete.length > i) {
+            newComplete.push(userDataClone.data.complete[i]);
+            newCompleteMembers.push(userDataClone.data.complete[i].members);
+          }
+          if (userDataClone.data.progress.length > i) {
+            newProgress.push(userDataClone.data.progress[i]);
+            newProgressMembers.push(userDataClone.data.progress[i].members);
+          }
+        }
       }
-    }
 
-    setProgress(newProgress);
-    setComplete(newComplete);
-    setProgressMember(newProgressMembers);
-    setCompleteMember(newCompleteMembers);
-  }, [update, isLogin, isMypage]);
+      setProgress(newProgress);
+      setComplete(newComplete);
+      setProgressMember(newProgressMembers);
+      setCompleteMember(newCompleteMembers);
+    }
+  }, [isMypage]);
 
   return (
     <Router>
