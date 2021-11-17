@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from 'axios'
 import AWS from "aws-sdk";
 
@@ -11,16 +11,19 @@ import { ko } from "date-fns/esm/locale";
 
 import getGoalId from '../../mockdata/GoalOneMockData'
 
-export default function GoalModal() {
+export default function GoalModal({ id, update, setUpdate }) {
   const params = useParams();
   const navigate = useNavigate();
-  const location = useLocation();
   const important = [
     ["사소", 1],
     ["보통", 2],
     ["중요", 3],
   ];
-  const state = [["Todo", 'todo'], ['Progress', 'progress'], ['Complete', 'complete']];
+  const state = [
+    ["Todo", "todo"],
+    ["Progress", "progress"],
+    ["Complete", "complete"],
+  ];
   AWS.config.update({
     region: `${process.env.REACT_APP_AWS_REGION}`,
     credentials: new AWS.CognitoIdentityCredentials({
@@ -29,7 +32,7 @@ export default function GoalModal() {
   });
   const [goal, setGoal] = useState(getGoalId);
   const [isEditing, setIsEditing] = useState(false);
-  const [comment, setComment] = useState('')
+  const [comment, setComment] = useState("");
   const [selectDate, setSelectDate] = useState({
     startDate: new Date(),
     endDate: new Date(),
@@ -52,13 +55,13 @@ export default function GoalModal() {
       .then(() => {
         navigate(-1);
       });
-  }
+  };
 
   const onEdit = () => {
-    if (goal.userId === location.state.myInfo.id) {
+    if (goal.userId === id) {
       setIsEditing(!isEditing);
     } else {
-      alert('권한이 없습니다.')
+      alert("권한이 없습니다.");
     }
     if (isEditing === true) {
       axios
@@ -66,7 +69,7 @@ export default function GoalModal() {
           `${process.env.REACT_APP_API_URL}/goal`,
           {
             id: params.id,
-            userId: location.state.myInfo.id,
+            userId: id,
             projectId: params.projectId,
             goalName: goal.goalName,
             state: goal.state,
@@ -83,16 +86,26 @@ export default function GoalModal() {
             withCredentials: true,
           }
         )
-        .then((res) => {
-          setGoal({ ...goal, id: res.data.data[0] });
+        .then(() => {
+          setUpdate(true);
         });
     }
-  }
+  };
   const deleteComment = (data) => {
-    if (data.UserId === location.state.myInfo.id) {
-      axios.delete(`${process.env.REACT_APP_API_URL}/comment/${data.id}`);
+    if (data.UserId === id) {
+      axios
+        .delete(`${process.env.REACT_APP_API_URL}/comment/${data.id}`)
+        .then(() => setUpdate(true));
     }
-  }
+  };
+
+  const deleteFile = (data) => {
+    if (data.UserId === id) {
+      axios
+        .delete(`${process.env.REACT_APP_API_URL}/file/${data.id}`)
+        .then(() => setUpdate(true));
+    }
+  };
 
   const commentHandler = (e) => {
     if (e.key === "Enter" && comment) {
@@ -100,7 +113,7 @@ export default function GoalModal() {
         .post(
           `${process.env.REACT_APP_API_URL}/comment`,
           {
-            userId: location.state.myInfo.id,
+            userId: id,
             projectId: params.projectId,
             goalId: params.id,
             content: e.target.value,
@@ -123,60 +136,120 @@ export default function GoalModal() {
             .then((res) => {
               DataHandler("comments", res.data.data.Comments);
               setComment("");
+              setUpdate(true);
             });
         });
-      
     }
-  }
+  };
 
   const handleFileInput = (e) => {
-  // input 태그를 통해 선택한 파일 객체
-    
-    
+    // input 태그를 통해 선택한 파일 객체
+    if (id !== goal.userId) {
+      return;
+    }
 
-    const file = e.target.files[0]
+    const file = e.target.files[0];
     // const fileName = e.target.value.split("\\")[
     //   e.target.value.split("\\").length - 1
     // ];
 
-  // S3 SDK에 내장된 업로드 함수
-  const upload = new AWS.S3.ManagedUpload({
-    params: {
-      Bucket: `${process.env.REACT_APP_S3_FILE_BUCKET}`, // 업로드할 대상 버킷명
-      Key: file.name, // 업로드할 파일명 (* 확장자를 추가해야 합니다!)
-      Body: file, // 업로드할 파일 객체
-    },
-  });
-    console.log(upload);
+    // S3 SDK에 내장된 업로드 함수
+    const upload = new AWS.S3.ManagedUpload({
+      params: {
+        Bucket: `${process.env.REACT_APP_S3_FILE_BUCKET}`, // 업로드할 대상 버킷명
+        Key: file.name, // 업로드할 파일명 (* 확장자를 추가해야 합니다!)
+        Body: file, // 업로드할 파일 객체
+      },
+    });
 
-  const promise = upload.promise()
+    const promise = upload.promise();
 
-  promise.then(
-    function (data) {
-      
-      console.log(data.Location)
-      console.log(data.key)
-      alert("이미지 업로드에 성공했습니다.")
-    },
-    function (err) {
-      return alert("오류가 발생했습니다: ", err.message);
-    }
-  )
-}
-  
+    promise.then(
+      function (data) {
+        console.log({
+          userId: id,
+          goalId: Number(params.id),
+          fileName: data.key,
+          description: data.Location,
+        });
+        axios
+          .post(
+            `${process.env.REACT_APP_API_URL}/file`,
+            {
+              userId: id,
+              goalId: params.id,
+              fileName: data.key,
+              description: data.Location,
+            },
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+              withCredentials: true,
+            }
+          )
+          .then(() => {
+            alert("이미지 업로드에 성공했습니다.");
+            setUpdate(true);
+          });
+      },
+      function (err) {
+        return alert("오류가 발생했습니다: ", err.message);
+      }
+    );
+  };
 
-  useEffect(() => {
+  const LikeHandler = () => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}/goal?goalId=${params.id}`, {
+      .post(
+        `${process.env.REACT_APP_API_URL}/like`,
+        {
+          user_id: id,
+          goal_id: params.id,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      )
+      .then(() => {
+        setUpdate(true);
+      });
+  };
+
+  const LikeDeleter = () => {
+    axios
+      .delete(`${process.env.REACT_APP_API_URL}/like/${"likeId"}`, {
         headers: {
           "Content-Type": "application/json",
         },
         withCredentials: true,
       })
-      .then((res) => {
-        setGoal(res.data.data);
+      .then(() => {
+        setUpdate(true);
       });
-  }, []);
+  };
+
+  useEffect(() => {
+    if (update) {
+      setUpdate(false);
+    } else {
+      axios
+        .get(`${process.env.REACT_APP_API_URL}/goal?goalId=${params.id}&userId=${id}`, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        })
+        .then((res) => {
+          setGoal(res.data.data);
+        });
+    }
+  }, [update]);
+
+  console.log("params", params);
 
   return (
     <Container>
@@ -215,9 +288,14 @@ export default function GoalModal() {
         <EditContainer isEditing={isEditing}>
           <ul>
             {state.map((el) => (
-              <li onClick={() => DataHandler("state", el[1])} key={el[1]}>
+              <SelectState
+                onClick={() => DataHandler("state", el[1])}
+                key={el[1]}
+                content={el[1]}
+                select={goal.state}
+              >
                 {el[0]}
-              </li>
+              </SelectState>
             ))}
           </ul>
         </EditContainer>
@@ -273,9 +351,14 @@ export default function GoalModal() {
         <EditContainer isEditing={isEditing}>
           <ul>
             {important.map((el) => (
-              <li onClick={() => DataHandler("important", el[1])} key={el[1]}>
+              <SelectImportant
+                onClick={() => DataHandler("important", el[1])}
+                key={el[1]}
+                content={el[1]}
+                select={goal.important}
+              >
                 {el[0]}
-              </li>
+              </SelectImportant>
             ))}
           </ul>
         </EditContainer>
@@ -289,17 +372,24 @@ export default function GoalModal() {
             onChange={(e) => DataHandler("description", e.target.value)}
           />
         </EditContainer>
-
         <FileContainer>
           <Title>File</Title>
-          <FileUploaderContainer
-            onChange={handleFileInput}
-          >
+          <FileUploaderContainer onChange={handleFileInput}>
             <img src={`${process.env.PUBLIC_URL}/images/save.png`} alt="save" />
             <FileUploader type="file" />
           </FileUploaderContainer>
         </FileContainer>
-        {goal.Files ? goal.Files.map((el) => el.fileName) : null}
+        {goal.Files
+          ? goal.Files.map((el) => (
+              <FileView key={el.fileName}>
+                <Clip href={el.description}>{el.fileName}</Clip>
+                <CommentsClose
+                  onClick={() => deleteFile(el)}
+                  src={`${process.env.PUBLIC_URL}/images/commentDelete.png`}
+                />
+              </FileView>
+            ))
+          : null}
         {
           // 파일 업로드 하는 방법 찾기
         }
@@ -327,13 +417,20 @@ export default function GoalModal() {
               </CommentContainer>
             ))
           : null}
-        <input
-          type="text"
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-          onKeyPress={commentHandler}
-        />
-        <EditContainer isEditing={isEditing}></EditContainer>
+        <InputContainer>
+          <CommentsInput
+            type="text"
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            onKeyPress={commentHandler}
+          />
+          <PressEnter>Enter</PressEnter>
+        </InputContainer>
+        <LikeContainer>
+          <LikeBTN onClick={LikeHandler}>AGREE</LikeBTN>
+          <LikeBTN onClick={LikeDeleter}>REJECT</LikeBTN>
+        </LikeContainer>
+        <Pen src={`${process.env.PUBLIC_URL}/images/pen.png`} />
       </ModalContainer>
     </Container>
   );
@@ -371,7 +468,8 @@ const ModalContainer = styled.div`
   }
 
   textarea {
-    width: 17rem;
+    width: 25rem;
+    height: 5rem;
     resize: none;
     margin-bottom: 1.3rem;
   }
@@ -391,7 +489,7 @@ const CloseButton = styled.img`
 
 const EditButton = styled.img`
   position: absolute;
-  top: 0.3rem;
+  top: 0.2rem;
   right: 1.7rem;
   width: 1.5rem;
   cursor: pointer;
@@ -479,3 +577,63 @@ const FileUploaderContainer = styled.label`
 const FileUploader = styled.input`
   display:none;
   `
+
+const InputContainer = styled.div`
+  display:flex;
+`;
+
+const CommentsInput = styled.input`
+  width: 20rem;
+  border-bottom:0.2rem solid black;
+`;
+
+const PressEnter = styled.div`
+  font-size: 1.3rem;
+  color: white;
+  border-radius: 0.2rem 0.2rem 0.2rem 0;
+  padding: 0.3rem;
+  background-color: black;
+`;
+
+const Clip = styled.a`
+  :hover {
+    color:blue
+  }
+`;
+
+const SelectImportant = styled.li`
+  color:${(props) => props.content === props.select ? 'red' : 'black'};
+  cursor:pointer;
+`;
+
+const SelectState = styled.li`
+  color: ${(props) => (props.content === props.select ? "red" : "black")};
+  cursor: pointer;
+`;
+
+const FileView = styled.div`
+  display:flex;
+  justify-content:space-between;
+`;
+
+const LikeContainer = styled.div`
+  display:flex;
+`;
+
+const LikeBTN = styled.button`
+  width: 9rem;
+  height: 3rem;
+  font-size:2rem;
+  color:white;
+  font-family:anton;
+  background-color: black;
+  margin: 1rem;
+`;
+
+const Pen = styled.img`
+  position:absolute;
+  top:6rem;
+  right:-5rem;
+  width: 15rem;
+  transform:rotate(-45deg)
+`

@@ -5,6 +5,11 @@ const axios = require("axios");
 module.exports = async (req, res) => {
   // TODO 마이페이지 내정보
   // 토큰으로만 정보 들어옴
+  if (!req.cookies.accessToken) {
+    return res
+      .status(400)
+      .json({ data: null, message: "토큰이 존재하지 않습니다." });
+  }
   // ! KAKAO Oauth
   if (req.cookies.accessToken.kakaoAccessToken) {
     // 토큰 받아옴
@@ -43,7 +48,7 @@ module.exports = async (req, res) => {
       .status(400)
       .json({ data: null, message: "토큰이 존재하지 않습니다." });
   }
-  const token = req.cookies.accessToken;
+  const token = req.cookies.accessToken.nbbangAccessToken;
   let decoded;
   try {
     decoded = jwt.verify(token, process.env.ACCESS_SECRET);

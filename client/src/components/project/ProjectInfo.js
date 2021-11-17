@@ -38,10 +38,9 @@ export default function ProjectInfo({
           <Invite onClick={memberModalOpener}>INVITE</Invite>
           <ProjectMember>
             {member.map((el) => (
-              <ProfileContainer len={5} color={el.color}>
+              <ProfileContainer len={5} color={el.color} key={el.id}>
                 <Profile
                   len={5}
-                  key={el.id}
                   src={el.profile}
                   alt={el.username}
                 />
@@ -61,10 +60,7 @@ export default function ProjectInfo({
         <RateContainer>
           <RateFrame>
             <RateName>
-              프로젝트 진행률{" "}
-              {`${
-                (projectInfo.completeImportant / projectInfo.allImportant) * 100
-              }%`}
+              프로젝트 진행률
             </RateName>
             <RateBar
               important={projectInfo.completeImportant}
@@ -123,6 +119,7 @@ const ProjectName = styled.div`
   font-size: 3rem;
   color: white;
   padding: 1rem;
+  cursor:pointer;
   background-color: black;
 `;
 const ProjectDueContainer = styled.div`

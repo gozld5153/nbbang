@@ -13,6 +13,8 @@ export default function GoalCreateModal({
   isTodo,
   setIsTodo,
   projectId,
+  update,
+  setUpdate
 }) {
   // 기능 clear
   let today = new Date();
@@ -85,28 +87,9 @@ export default function GoalCreateModal({
           withCredentials: true,
         }
       )
-      .then((res) => {
-        goalData.id = res.data.data.id;
-        setIsTodo([...isTodo, goalData]);
+      .then(() => {
+        setUpdate(true);
         createModalOpener();
-        setGoalData({
-          id: null,
-          userId: myInfo.id,
-          goalName: "",
-          description: "",
-          state: "todo",
-          important: 1,
-          deadline: `${today
-            .toLocaleString()
-            .split(" ")
-            .join("")
-            .slice(0, 10)} ~ 
-              ${today.toLocaleString().split(" ").join("").slice(0, 10)}`,
-          agreement: 0,
-          file: [],
-          comments: [],
-        });
-        setSelectDate({ startDate: new Date(), endDate: new Date() });
       });
   };
 
