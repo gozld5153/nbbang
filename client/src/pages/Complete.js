@@ -1,9 +1,20 @@
 import React, { useState, useEffect, useRef } from "react";
+<<<<<<< HEAD
 import styled from "styled-components";
 import { useParams, Outlet } from "react-router-dom";
 import { MdArrowBackIosNew, MdArrowForwardIos } from "react-icons/md";
 import ChartStatics from "../components/utils/ChartStatics";
 import { CompletePageData } from "../mockdata/CompletePageData";
+=======
+import { useParams, Outlet } from "react-router-dom";
+import styled from "styled-components";
+import axios from "axios";
+
+import ChartStatics from "../components/utils/ChartStatics";
+import LoadingNotice from "../components/utils/LoadingSpinner";
+
+import { MdArrowBackIosNew, MdArrowForwardIos } from "react-icons/md";
+>>>>>>> c2cd46566d4e4efbe1a1c2f8b47f333c98befb00
 
 export const Complete = () => {
   return (
@@ -14,6 +25,7 @@ export const Complete = () => {
 };
 
 export const ProjectStatics = () => {
+<<<<<<< HEAD
   // const params = useParams();
   const crewScroll = useRef(null);
   const [projectData, setProjectData] = useState(CompletePageData);
@@ -22,6 +34,37 @@ export const ProjectStatics = () => {
 
   const { captain, crew } = projectData.usersGoal;
   const staticsData = [captain].concat(crew);
+=======
+  const crewScroll = useRef(null);
+
+  const { project_id } = useParams();
+  const [projectData, setProjectData] = useState({});
+  let captain;
+  let crew;
+  let staticsData;
+
+  if (projectData.usersGoal) {
+    captain = projectData.usersGoal.captain;
+    crew = projectData.usersGoal.crew;
+    staticsData = [captain].concat(crew);
+  }
+
+  useEffect(() => {
+    axios({
+      method: "GET",
+      url: `${
+        process.env.REACT_APP_API_URL
+      }/project/${project_id}?completePage=${true}`,
+      withCredential: true,
+    })
+      .then((response) => {
+        setProjectData(response.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [project_id]);
+>>>>>>> c2cd46566d4e4efbe1a1c2f8b47f333c98befb00
 
   useEffect(() => {
     window.addEventListener("wheel", handleMouseWheel, { passive: false });
@@ -30,8 +73,11 @@ export const ProjectStatics = () => {
     };
   }, []);
 
+<<<<<<< HEAD
   // useEffect 프로젝트 정보 가져오는 거 추가하기
 
+=======
+>>>>>>> c2cd46566d4e4efbe1a1c2f8b47f333c98befb00
   const handleCrewScroll = (event) => {
     const clsName = event.target.classList[0];
 
@@ -51,6 +97,7 @@ export const ProjectStatics = () => {
       top = 0;
     } else if (top >= 0 && top < 1000 && Y > 0) {
       top = 1000;
+<<<<<<< HEAD
     } else if (top >= 1000 && top < 1961 && Y < 0) {
       top = 0;
     } else if (top >= 1000 && top < 1961 && Y > 0) {
@@ -58,15 +105,32 @@ export const ProjectStatics = () => {
     } else if (top >= 1961 && Y < 0) {
       top = 1000;
     } else if (top >= 1961 && Y > 0) return;
+=======
+    } else if (top >= 1000 && top < 1975 && Y < 0) {
+      top = 0;
+    } else if (top >= 1000 && top < 1975 && Y > 0) {
+      top = 1975;
+    } else if (top >= 1975 && Y < 0) {
+      top = 1000;
+    } else if (top >= 1975 && Y > 0) return;
+>>>>>>> c2cd46566d4e4efbe1a1c2f8b47f333c98befb00
 
     window.scroll({ top, left: 0, behavior: "smooth" });
   };
 
+<<<<<<< HEAD
+=======
+  if (!projectData.projectId && !crew && !captain) {
+    return <LoadingNotice />;
+  }
+  console.log(projectData);
+>>>>>>> c2cd46566d4e4efbe1a1c2f8b47f333c98befb00
   return (
     <ProjectCompleteWrapper>
       <ProjectPresentationContainer>
         <ProjectPresentationHeadline>PRESENTATION</ProjectPresentationHeadline>
         <ProjectPresentationContent>
+<<<<<<< HEAD
           <iframe
             width="860"
             height="505"
@@ -78,6 +142,26 @@ export const ProjectStatics = () => {
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullscreen
           />
+=======
+          {projectData.presentation ? (
+            <iframe
+              width="860"
+              height="505"
+              src={`https://www.youtube.com/embed/${projectData.presentation.slice(
+                -11
+              )}`}
+              title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullscreen
+            />
+          ) : (
+            <ProjectPresentatinError>
+              <strong>프레젠테이션이</strong> 없습니다
+            </ProjectPresentatinError>
+          )}
+
+>>>>>>> c2cd46566d4e4efbe1a1c2f8b47f333c98befb00
           <ProjectPresentationDescription>
             <img
               src={`${process.env.PUBLIC_URL}/images/nbbang-logo.png`}
@@ -105,11 +189,29 @@ export const ProjectStatics = () => {
           </ProjectTeammatesCrewScroll>
         </ProjectTeammatesColumnName>
         <ProjectTeammatesItemsList>
+<<<<<<< HEAD
           <ProjectTeammatesCards teammates={captain} />
           <ProjectTeammatesCrew ref={crewScroll}>
             {crew.map((crew) => (
               <ProjectTeammatesCards teammates={crew} key={crew.username} />
             ))}
+=======
+          <ProjectTeammatesCards captain={true} teammates={captain} />
+          <ProjectTeammatesCrew ref={crewScroll}>
+            {crew.length === 0 ? (
+              <ProjectCrewNoneError>
+                <strong>크루가</strong> 없습니다
+              </ProjectCrewNoneError>
+            ) : (
+              crew.map((crew, idx) => (
+                <ProjectTeammatesCards
+                  crew={idx + 1}
+                  teammates={crew}
+                  key={crew.username}
+                />
+              ))
+            )}
+>>>>>>> c2cd46566d4e4efbe1a1c2f8b47f333c98befb00
           </ProjectTeammatesCrew>
         </ProjectTeammatesItemsList>
       </ProjectTeammatesContainer>
@@ -121,6 +223,7 @@ export const ProjectStatics = () => {
   );
 };
 
+<<<<<<< HEAD
 export const ProjectTeammatesCards = ({ teammates }) => {
   return (
     <ProjectTeammatesCardsContainer>
@@ -135,6 +238,32 @@ export const ProjectTeammatesCards = ({ teammates }) => {
         {teammates.goal.map((goal) => (
           <ProjectTeammatesDetailBox goal={goal} key={goal.username} />
         ))}
+=======
+export const ProjectTeammatesCards = ({ teammates, captain, crew }) => {
+  console.log(teammates, teammates.goal);
+  return (
+    <ProjectTeammatesCardsContainer>
+      <ProjectTeammatesProfile>
+        <img
+          src={`${process.env.REACT_APP_S3_IMG}/${teammates.profile}`}
+          alt=""
+        />
+        <ProjectTeammatesProfileDescription>
+          <span>{teammates.username}</span>
+          <span>{captain ? "팀장" : `팀원 ${crew}`}</span>
+        </ProjectTeammatesProfileDescription>
+      </ProjectTeammatesProfile>
+      <ProjectTeammatesDetail>
+        {!teammates.goal || teammates.goal.length === 0 ? (
+          <ProjectGoalError>
+            <strong>수행한 것이</strong>없습니다
+          </ProjectGoalError>
+        ) : (
+          teammates.goal.map((goal) => (
+            <ProjectTeammatesDetailBox goal={goal} key={goal.username} />
+          ))
+        )}
+>>>>>>> c2cd46566d4e4efbe1a1c2f8b47f333c98befb00
       </ProjectTeammatesDetail>
     </ProjectTeammatesCardsContainer>
   );
@@ -151,10 +280,24 @@ export const ProjectTeammatesDetailBox = ({ goal }) => {
 };
 
 export const ProjectStaticsdetailComponent = ({ staticsData }) => {
+<<<<<<< HEAD
   const allData = staticsData.map((item) => {
     return {
       username: item.username,
       totalGoal: item.goal.reduce((acc, cur) => acc + cur.important, 0),
+=======
+  const goalTotal = staticsData.reduce(
+    (acc, item) => item.goal.reduce((a, c) => a + c, 0) + acc,
+    0
+  );
+  const allData = staticsData.map((item) => {
+    return {
+      username: item.username,
+      totalGoal:
+        item.goal.length === 0
+          ? 0
+          : item.goal.reduce((acc, cur) => acc + cur.important, 0),
+>>>>>>> c2cd46566d4e4efbe1a1c2f8b47f333c98befb00
     };
   });
 
@@ -184,6 +327,7 @@ export const ProjectStaticsdetailComponent = ({ staticsData }) => {
 
   return (
     <>
+<<<<<<< HEAD
       <ProjectTeammateslist selected={selected}>
         <div className={"allUser"} onClick={handleTeammateData}>
           <img
@@ -214,6 +358,50 @@ export const ProjectStaticsdetailComponent = ({ staticsData }) => {
           allMode={allMode}
         />
       </ProjectStaticsdetail>
+=======
+      {goalTotal === 0 ? (
+        <ProjectStaticsError>
+          <strong>진행한 작업들이</strong> 없습니다
+          <h3>( 통계 확인 불가 )</h3>
+        </ProjectStaticsError>
+      ) : (
+        <>
+          {" "}
+          <ProjectTeammateslist selected={selected}>
+            <div className={"allUser"} onClick={handleTeammateData}>
+              <img
+                src={`${process.env.PUBLIC_URL}/images/ALL_logo.svg`}
+                alt=""
+                title={"ALL"}
+                style={{ opacity: selected === "allUser" ? "100%" : "50%" }}
+              />
+            </div>
+            {personalDatas.map((data) => {
+              return (
+                <div className={data.username} onClick={handleTeammateData}>
+                  <img
+                    src={`${process.env.REACT_APP_S3_IMG}/${data.profile}`}
+                    alt=""
+                    title={data.username}
+                    style={{
+                      opacity: selected === data.username ? "100%" : "50%",
+                    }}
+                  />
+                </div>
+              );
+            })}
+          </ProjectTeammateslist>
+          <ProjectStaticsdetail>
+            <ChartStatics
+              tempData={tempData}
+              guide={guide}
+              setGuide={setGuide}
+              allMode={allMode}
+            />
+          </ProjectStaticsdetail>
+        </>
+      )}
+>>>>>>> c2cd46566d4e4efbe1a1c2f8b47f333c98befb00
     </>
   );
 };
@@ -278,7 +466,11 @@ const ProjectPresentationDescription = styled.div`
 
 const ProjectTeammatesContainer = styled.div`
   width: 100%;
+<<<<<<< HEAD
   height: 98vh;
+=======
+  height: 99.7vh;
+>>>>>>> c2cd46566d4e4efbe1a1c2f8b47f333c98befb00
   flex-direction: column;
   padding: 90px 150px;
   border-bottom: 5px solid black;
@@ -380,7 +572,11 @@ const ProjectTeammatesProfileDescription = styled.div`
   }
 `;
 const ProjectTeammatesDetail = styled.div`
+<<<<<<< HEAD
   height: 500px;
+=======
+  height: 520px;
+>>>>>>> c2cd46566d4e4efbe1a1c2f8b47f333c98befb00
   width: 305px;
   border-radius: 10px;
   overflow: hidden;
@@ -404,7 +600,11 @@ const ProjectGoalDescription = styled.div`
 
 const ProjectStaticsContainer = styled.div`
   width: 100%;
+<<<<<<< HEAD
   height: 98vh;
+=======
+  height: 99vh;
+>>>>>>> c2cd46566d4e4efbe1a1c2f8b47f333c98befb00
   flex-direction: column;
   padding: 100px 150px;
   border-bottom: 5px solid black;
@@ -446,3 +646,79 @@ const ProjectStaticsdetail = styled.div`
   width: 100%;
   height: 570px;
 `;
+<<<<<<< HEAD
+=======
+
+const ProjectPresentatinError = styled.div`
+  width: 860px;
+  height: 500px;
+  font-size: 4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  strong {
+    display: block;
+    color: red;
+    font-weight: 600;
+    margin-bottom: 30px;
+  }
+`;
+
+const ProjectCrewNoneError = styled.div`
+  width: 860px;
+  height: 500px;
+  font-size: 4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  strong {
+    display: block;
+    color: orange;
+    font-weight: 600;
+    margin-bottom: 30px;
+  }
+`;
+
+const ProjectGoalError = styled.div`
+  margin: auto 0;
+  width: 295px;
+  height: 500px;
+  padding: 150px 0;
+  font-size: 2rem;
+  text-align: center;
+
+  strong {
+    margin-bottom: 10px;
+    display: block;
+    color: purple;
+    font-weight: 600;
+  }
+`;
+
+const ProjectStaticsError = styled.div`
+  width: 100%;
+  height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-size: 5rem;
+  strong {
+    display: block;
+    margin-bottom: 30px;
+    color: skyblue;
+    font-weight: 600;
+  }
+
+  h3 {
+    margin-top: 50px;
+    color: gray;
+    font-size: 2rem;
+    font-style: italic;
+  }
+`;
+>>>>>>> c2cd46566d4e4efbe1a1c2f8b47f333c98befb00
