@@ -17,6 +17,9 @@ import {
   ProjectDone,
 } from "./pages/MyPage";
 
+import Kakao from "./pages/Kakao";
+import Naver from "./pages/Naver";
+
 export default function App() {
   const [userData, setUserData] = useState({
     data: { completeCount: 0, progressCount: 0 },
@@ -48,7 +51,7 @@ export default function App() {
 
   const handleNavbar = () => {
     setIsLogin(true);
-    setIsModal(!isModal);
+    setIsModal(false);
     disableScroll.off();
   };
 
@@ -211,6 +214,14 @@ export default function App() {
                   isOn={isOn}
                 />
               }
+            />
+            <Route
+              path="kakao"
+              element={<Kakao handleNavbar={handleNavbar} />}
+            />
+            <Route
+              path="naver"
+              element={<Naver handleNavbar={handleNavbar} />}
             />
 
             {userInfo.id && (

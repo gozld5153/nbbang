@@ -31,14 +31,13 @@ export default function ProjectModal({
     }
     return null;
   };
-  // const selectcap = () => {
-  //   if (member.length) {
-  //     console.log("member", member);
-  //     return member.filter((el) => el.id === projectInfo.captainId)[0].username;
-  //   }
-  //   return null;
-  // };
-  const captain = "heheh";
+  const selectcap = () => {
+    if (member.length && update) {
+      return member.filter((el) => el.id === projectInfo.captainId)[0].username;
+    }
+    return null;
+  };
+  const captain = selectcap();
   const [isOpen, setIsOpen] = useState(false);
   const [selectDate, setSelectDate] = useState({
     startDate: defaultStartDate(),
