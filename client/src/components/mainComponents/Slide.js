@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 const Slide = ({ images = [] }) => {
   const [curSlide, setCurSlide] = useState(0);
@@ -43,6 +43,15 @@ const Slide = ({ images = [] }) => {
           </h1>
         </ChildrenWrapper>
       </Wrapper>
+      <BigWrapper>
+        <TextDiv>
+          <div>NBBANG</div>
+          <div>NBBANG</div>
+          <div>NBBANG</div>
+          <div>NBBANG</div>
+          <div>NBBANG</div>
+        </TextDiv>
+      </BigWrapper>
     </Container>
   );
 };
@@ -67,20 +76,21 @@ const IndicatorWrapper = styled.div`
 `;
 
 const Container = styled.div`
-  height: 60vh;
+  /* width: 88vw; */
+  height: 54.95rem;
   border-bottom: 2px solid #2e3032;
-  padding: 2rem;
+  /* padding: 2rem; */
 `;
 
 const Wrapper = styled.div`
   width: 100%;
-  height: 100%;
-  margin: 0 auto;
+  height: 30.95rem;
+
   display: flex;
   flex-wrap: nowrap;
   overflow: hidden;
   position: relative;
-  border-radius: 20px;
+  /* border-radius: 20px; */
 `;
 const Slider = styled.div`
   width: 100%;
@@ -97,4 +107,53 @@ const ChildrenWrapper = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
 `;
+
+const SlideMoving2 = keyframes`
+      0% {
+      left: 0;
+    }
+    100% {
+      left: -1230px;
+    }
+`;
+
+const BigWrapper = styled.div`
+  margin-top: 1.5rem;
+  margin-right: 0.2rem;
+  display: flex;
+  height: inherit;
+  overflow: hidden;
+  cursor: pointer;
+  height: 14rem;
+`;
+
+const TextDiv = styled.div`
+  width: 20rem;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  position: relative;
+  /* background-color: blue; */
+  animation-name: ${SlideMoving2};
+  animation-duration: 10s;
+  animation-timing-function: linear;
+  animation-direction: normal;
+  animation-iteration-count: infinite;
+  > div {
+    font-family: "Anton", sans-serif;
+    font-size: 10rem;
+    letter-spacing: 1rem;
+    margin: 0 1.5rem 0 1.5rem;
+  }
+  > :nth-child(2) {
+    color: white;
+    -webkit-text-stroke: 0.1rem black;
+  }
+  > :nth-child(4) {
+    color: white;
+    -webkit-text-stroke: 0.1rem black;
+    margin-left: 1rem;
+  }
+`;
+
 export default Slide;
