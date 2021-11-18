@@ -14,7 +14,7 @@ module.exports = async (req, res) => {
     });
   }
 
-  api_url =
+  const api_url =
     "https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=" +
     NAVER_CLIENT_ID +
     "&client_secret=" +

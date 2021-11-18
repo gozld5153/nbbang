@@ -68,7 +68,7 @@ export default function Nav({
         {isLogin ? (
           <>
             <BtnMenu isLogin={isLogin} onClick={handleProject}>
-              Project
+              Create
             </BtnMenu>
             <MypageBtn
               isLogin={isLogin}
