@@ -206,10 +206,18 @@ export default function Main({
         <MainContainer ref={divT}>
           <MainComponent />
         </MainContainer>
-        <MainContainer ref={div4}>4</MainContainer>
-        <MainContainer ref={div5}>5</MainContainer>
-        <MainContainer ref={div6}>6</MainContainer>
-        <MainContainer ref={div7}>7</MainContainer>
+        <MainContainer ref={div4} isActive={testIdx === 4}>
+          4
+        </MainContainer>
+        <MainContainer ref={div5} isActive={testIdx === 5}>
+          5
+        </MainContainer>
+        <MainContainer ref={div6} isActive={testIdx === 6}>
+          6
+        </MainContainer>
+        <MainContainer ref={div7} isActive={testIdx === 7}>
+          7
+        </MainContainer>
       </>
       <DotContainer>
         {Array(8)
@@ -253,5 +261,6 @@ const Dot = styled.div`
 
 const MainContainer = styled.div`
   height: 54.95rem;
-  border-bottom: 1px solid black;
+  border-bottom: 2px solid #2e3032;
+  margin: 1rem 0 1rem 0;
 `;
