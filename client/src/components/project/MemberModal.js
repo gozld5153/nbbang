@@ -54,7 +54,19 @@ export default function MemberModal({
           withCredentials: true,
         })
         .then((res) => setSearchMember(res.data.data));
+    }
+  };
 
+  const enterButtonHandler = (e) => {
+    if (searchEmail) {
+      axios
+        .get(`${process.env.REACT_APP_API_URL}/users/search/${searchEmail}`, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        })
+        .then((res) => setSearchMember(res.data.data));
     }
   };
 
@@ -104,7 +116,7 @@ export default function MemberModal({
           onKeyPress={enterHandler}
           type="text"
         />
-        <PressEnter>Enter</PressEnter>
+        <PressEnter onClick={enterButtonHandler}>Enter</PressEnter>
       </InputContainer>
       <ul>
         {searchMember.map((el) => (
@@ -171,6 +183,7 @@ const PressEnter = styled.div`
   border-radius: 0.3rem 0.3rem 0.3rem 0;
   padding: 0.1rem 0.2rem 0 0.2rem;
   background-color: black;
+  cursor:pointer;
 `;
 
 const SubmitContainer = styled.div`
