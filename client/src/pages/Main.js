@@ -4,8 +4,7 @@ import Slide from "../components/mainComponents/Slide";
 import image1 from "../components/mainComponents/img/image1.png";
 import image2 from "../components/mainComponents/img/image2.jpg";
 import image3 from "../components/mainComponents/img/image3.png";
-import MainComponent from "../components/mainComponents/MainComponent";
-import MainDefaultComponent from '../components/mainComponents/MainDefaultComponent'
+import MainDefaultComponent from "../components/mainComponents/MainDefaultComponent";
 import { useEffect, useRef, useState } from "react";
 
 export default function Main({
@@ -176,12 +175,12 @@ export default function Main({
     window.scroll({ top: scrollTopPosition, behavior: "smooth" });
   };
 
-  // useEffect(() => {
-  //   window.addEventListener("wheel", handleMouseWheel, { passive: false });
-  //   return () => {
-  //     window.removeEventListener("wheel", handleMouseWheel, { passive: false });
-  //   };
-  // }, [isModal]);
+  useEffect(() => {
+    window.addEventListener("wheel", handleMouseWheel, { passive: false });
+    return () => {
+      window.removeEventListener("wheel", handleMouseWheel, { passive: false });
+    };
+  }, [isModal]);
 
   return (
     <Container ref={containerEle} isModal={isModal}>
@@ -207,9 +206,9 @@ export default function Main({
             ]}
             underText="일단 버튼을 누르라. 그럼 길이 열릴것이다 -한태규"
             numberColor="black"
-            backgroundColor="#656565"
+            backgroundColor="#bdbddb"
             imageArr={[
-              `${process.env.PUBLIC_URL}/images/enter_project.png`,
+              `${process.env.PUBLIC_URL}/images/MainGIF/main1.gif`,
               `${process.env.PUBLIC_URL}/images/bbang.png`,
             ]}
           />
@@ -225,9 +224,9 @@ export default function Main({
             ]}
             underText="일단 버튼을 누르라. 그럼 길이 열릴것이다 -한태규"
             numberColor="black"
-            backgroundColor="#656565"
+            backgroundColor="#bdbddb"
             imageArr={[
-              `${process.env.PUBLIC_URL}/images/logo.png`,
+              `${process.env.PUBLIC_URL}/images/MainGIF/main2.gif`,
               `${process.env.PUBLIC_URL}/images/bbang.png`,
             ]}
           />
@@ -243,9 +242,9 @@ export default function Main({
             ]}
             underText="일단 버튼을 누르라. 그럼 길이 열릴것이다 -한태규"
             numberColor="black"
-            backgroundColor="#656565"
+            backgroundColor="#bdbddb"
             imageArr={[
-              `${process.env.PUBLIC_URL}/images/logo.png`,
+              `${process.env.PUBLIC_URL}/images/MainGIF/main3.gif`,
               `${process.env.PUBLIC_URL}/images/bbang.png`,
             ]}
           />
@@ -261,9 +260,9 @@ export default function Main({
             ]}
             underText="일단 버튼을 누르라. 그럼 길이 열릴것이다 -한태규"
             numberColor="black"
-            backgroundColor="#656565"
+            backgroundColor="#bdbddb"
             imageArr={[
-              `${process.env.PUBLIC_URL}/images/logo.png`,
+              `${process.env.PUBLIC_URL}/images/MainGIF/main4.gif`,
               `${process.env.PUBLIC_URL}/images/bbang.png`,
             ]}
           />
@@ -280,9 +279,9 @@ export default function Main({
             ]}
             underText="일단 버튼을 누르라. 그럼 길이 열릴것이다 -한태규"
             numberColor="black"
-            backgroundColor="#656565"
+            backgroundColor="#bdbddb"
             imageArr={[
-              `${process.env.PUBLIC_URL}/images/logo.png`,
+              `${process.env.PUBLIC_URL}/images/MainGIF/main5.gif`,
               `${process.env.PUBLIC_URL}/images/bbang.png`,
             ]}
           />
@@ -297,35 +296,35 @@ export default function Main({
             ]}
             underText="일단 버튼을 누르라. 그럼 길이 열릴것이다 -한태규"
             numberColor="black"
-            backgroundColor="#656565"
+            backgroundColor="#bdbddb"
             imageArr={[
-              `${process.env.PUBLIC_URL}/images/logo.png`,
+              `${process.env.PUBLIC_URL}/images/MainGIF/main6.gif`,
               `${process.env.PUBLIC_URL}/images/bbang.png`,
             ]}
           />
         </MainContainer>
         <MainContainer ref={div7}>
           <MainDefaultComponent
-            idx={6}
+            idx={7}
             title={[
               "결과 확인하기",
               " - nav에서 mypage버튼 누르기",
               " - 원하는 완료한 프로젝트 선택하기",
-              " - 결과를 감상하기"
+              " - 결과를 감상하기",
             ]}
             underText="일단 버튼을 누르라. 그럼 길이 열릴것이다 -한태규"
             numberColor="black"
-            backgroundColor="#656565"
+            backgroundColor="#bdbddb"
             imageArr={[
-              `${process.env.PUBLIC_URL}/images/logo.png`,
+              `${process.env.PUBLIC_URL}/images/MainGIF/main7.gif`,
               `${process.env.PUBLIC_URL}/images/bbang.png`,
             ]}
           />
         </MainContainer>
-        <MainContainer ref={div4}>4</MainContainer>
+        {/* <MainContainer ref={div4}>4</MainContainer>
         <MainContainer ref={div5}>5</MainContainer>
         <MainContainer ref={div6}>6</MainContainer>
-        <MainContainer ref={div7}>7</MainContainer>
+        <MainContainer ref={div7}>7</MainContainer> */}
       </>
       <DotContainer>
         {Array(8)
@@ -369,5 +368,6 @@ const Dot = styled.div`
 
 const MainContainer = styled.div`
   height: 54.95rem;
+  margin: 1rem 0;
   border-bottom: 1px solid black;
 `;
