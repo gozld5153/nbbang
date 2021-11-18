@@ -6,7 +6,6 @@ import { ImArrowLeft, ImArrowUp } from "react-icons/im";
 
 const ChartStatics = ({ tempData, guide, setGuide, allMode }) => {
   const [descData, setDecsData] = useState({});
-
   let labels;
   let data;
 
@@ -88,7 +87,6 @@ const ChartStatics = ({ tempData, guide, setGuide, allMode }) => {
                     return "";
                   },
                   footer: function (tooltipItem) {
-                    console.log(tooltipItem);
                     return `${parseInt(
                       (tooltipItem[0].dataset.data[tooltipItem[0].dataIndex] /
                         tooltipItem[0].dataset.data.reduce(

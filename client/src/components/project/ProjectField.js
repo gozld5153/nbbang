@@ -6,9 +6,15 @@ import axios from "axios";
 import Goal from "./Goal";
 import GoalCreateModal from "./GoalCreateModal";
 
-
-export default function ProjectField({ myInfo, projectId, params, member, myLike,update,setUpdate }) {
-
+export default function ProjectField({
+  myInfo,
+  projectId,
+  params,
+  member,
+  myLike,
+  update,
+  setUpdate,
+}) {
   const [isTodo, setIsTodo] = useState([]);
   const [isProgress, setIsProgress] = useState([]);
   const [isComplete, setIsComplete] = useState([]);
@@ -45,7 +51,7 @@ export default function ProjectField({ myInfo, projectId, params, member, myLike
     }
   }, [update]);
 
-  console.log("fieldGoal :", goalList);
+  // console.log("fieldGoal :", goalList);
   return (
     <Container>
       <Frame>
@@ -62,13 +68,11 @@ export default function ProjectField({ myInfo, projectId, params, member, myLike
                 <GoalContainer>
                   {el.map((goal) => (
                     <div
-                      onClick={() =>
-                      {
+                      onClick={() => {
                         navigate(`./${goal.id}`, {
                           replace: false,
-                        })
-                      }
-                      }
+                        });
+                      }}
                       key={goal.id}
                     >
                       <Goal goalInfo={goal} member={member} myLike={myLike} />
@@ -94,7 +98,6 @@ export default function ProjectField({ myInfo, projectId, params, member, myLike
           projectId={projectId}
           update={update}
           setUpdate={setUpdate}
-
         />
         <Outlet />
       </Frame>

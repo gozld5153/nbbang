@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from 'axios'
+import axios from "axios";
 import AWS from "aws-sdk";
 
 import DatePicker from "react-datepicker";
@@ -34,7 +34,7 @@ export default function GoalModal({ id, update, setUpdate }) {
     startDate: new Date(),
     endDate: new Date(),
   });
-  console.log('goal :',goal)
+  // console.log("goal :", goal);
 
   const DataHandler = (key, value) => {
     let newObject = goal;
@@ -56,7 +56,7 @@ export default function GoalModal({ id, update, setUpdate }) {
   };
 
   const onEdit = () => {
-    console.log(goal,id);
+    // console.log(goal, id);
     if (goal.userId === id) {
       setIsEditing(!isEditing);
     } else {
@@ -108,12 +108,12 @@ export default function GoalModal({ id, update, setUpdate }) {
 
   const commentHandler = (e) => {
     if (e.key === "Enter" && comment) {
-      console.log('여기 보세요~',{
-        userId: id,
-        projectId: params.projectId,
-        goalId: params.id,
-        content: e.target.value,
-      });
+      // console.log("여기 보세요~", {
+      //   userId: id,
+      //   projectId: params.projectId,
+      //   goalId: params.id,
+      //   content: e.target.value,
+      // });
       axios
         .post(
           `${process.env.REACT_APP_API_URL}/comment`,
@@ -161,12 +161,12 @@ export default function GoalModal({ id, update, setUpdate }) {
 
     promise.then(
       function (data) {
-        console.log({
-          userId: id,
-          goalId: Number(params.id),
-          fileName: data.key,
-          description: data.Location,
-        });
+        // console.log({
+        //   userId: id,
+        //   goalId: Number(params.id),
+        //   fileName: data.key,
+        //   description: data.Location,
+        // });
         axios
           .post(
             `${process.env.REACT_APP_API_URL}/file`,
@@ -232,19 +232,22 @@ export default function GoalModal({ id, update, setUpdate }) {
       setUpdate(false);
     } else {
       axios
-        .get(`${process.env.REACT_APP_API_URL}/goal?goalId=${params.id}&userId=${id}`, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        })
+        .get(
+          `${process.env.REACT_APP_API_URL}/goal?goalId=${params.id}&userId=${id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            withCredentials: true,
+          }
+        )
         .then((res) => {
           setGoal(res.data.data);
         });
     }
-  }, [update,id]);
+  }, [update, id]);
 
-console.log('LikeId',goal)
+  // console.log('LikeId',goal)
   return (
     <Container>
       <ModalContainer>
@@ -484,7 +487,7 @@ const CloseButton = styled.img`
   top: 0.5rem;
   right: 0.5rem;
   width: 1rem;
-  cursor:pointer;
+  cursor: pointer;
 `;
 
 const EditButton = styled.img`
@@ -508,22 +511,19 @@ const Title = styled.div`
   margin: 1rem 0 0.5rem 0;
 `;
 
-const Daypicker = styled.div`
-`;
+const Daypicker = styled.div``;
 
 const StyleDatePicker = styled(DatePicker)`
   width: 8rem;
   font-size: 1.4rem;
 `;
 
-const CommentContainer = styled.div`
-`;
+const CommentContainer = styled.div``;
 
 const NoEditContainer = styled.div`
   display: ${(props) => (props.isEditing ? "none" : "default")};
-  border-bottom:0.2rem solid black;
+  border-bottom: 0.2rem solid black;
   margin-right: 4rem;
-  
 `;
 
 const EditContainer = styled.div`
@@ -531,10 +531,10 @@ const EditContainer = styled.div`
 `;
 
 const CommentTitle = styled.div`
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-flex-end;
-  `;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-flex-end;
+`;
 
 const CommentsTitleFrame = styled.div`
   display: flex;
@@ -555,36 +555,36 @@ const CommentsTitleFrame = styled.div`
 
 const CommentsClose = styled.img`
   width: 1rem;
-  border-radius:50%;
+  border-radius: 50%;
 `;
 
 const FileContainer = styled.div`
-  display:flex;
-  align-items:center;
+  display: flex;
+  align-items: center;
 `;
-  
+
 const FileUploaderContainer = styled.label`
   cursor: pointer;
 
   img {
     position: relative;
-    top:0.2rem;
+    top: 0.2rem;
     width: 1.5rem;
-    margin-left:0.5rem;
+    margin-left: 0.5rem;
   }
 `;
 
 const FileUploader = styled.input`
-  display:none;
-  `
+  display: none;
+`;
 
 const InputContainer = styled.div`
-  display:flex;
+  display: flex;
 `;
 
 const CommentsInput = styled.input`
   width: 20rem;
-  border-bottom:0.2rem solid black;
+  border-bottom: 0.2rem solid black;
 `;
 
 const PressEnter = styled.div`
@@ -597,13 +597,13 @@ const PressEnter = styled.div`
 
 const Clip = styled.a`
   :hover {
-    color:blue
+    color: blue;
   }
 `;
 
 const SelectImportant = styled.li`
-  color:${(props) => props.content === props.select ? 'red' : 'black'};
-  cursor:pointer;
+  color: ${(props) => (props.content === props.select ? "red" : "black")};
+  cursor: pointer;
 `;
 
 const SelectState = styled.li`
@@ -612,12 +612,12 @@ const SelectState = styled.li`
 `;
 
 const FileView = styled.div`
-  display:flex;
-  justify-content:space-between;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const LikeContainer = styled.div`
-  display:flex;
+  display: flex;
 `;
 
 const LikeBTN = styled.button`
@@ -631,9 +631,9 @@ const LikeBTN = styled.button`
 `;
 
 const Pen = styled.img`
-  position:absolute;
-  top:6rem;
-  right:-5rem;
+  position: absolute;
+  top: 6rem;
+  right: -5rem;
   width: 15rem;
-  transform:rotate(-45deg)
-`
+  transform: rotate(-45deg);
+`;

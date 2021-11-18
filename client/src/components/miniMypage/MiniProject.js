@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
 const Project = ({ progress, members, handleMypage, setUpdate }) => {
+  console.log(progress);
   const navigate = useNavigate();
   const handleMoveMypage = () => {
     navigate("/mypage/project-inprogress");
@@ -26,7 +27,12 @@ const Project = ({ progress, members, handleMypage, setUpdate }) => {
                 <li key={idx} onClick={() => handleMoveProject(project.id)}>
                   <p>{project.projectName}</p>
                   {members[idx].map((name, idx) => (
-                    <span key={idx}>{name.username} &nbsp;</span>
+                    <img
+                      src={`${process.env.REACT_APP_S3_IMG}/${name.profile}`}
+                      key={idx}
+                      alt=""
+                      title={name.username}
+                    />
                   ))}
                 </li>
               ))}
@@ -48,6 +54,9 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  &:hover {
+    background: #ddd;
+  }
   > :nth-child(1) {
     font-weight: bold;
     font-size: 2rem;
@@ -68,7 +77,12 @@ const Container = styled.div`
         font-weight: bold;
       }
       > p {
-        margin-bottom: 0.5rem;
+        margin-top: 0.5rem;
+      }
+      img {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
       }
     }
   }

@@ -28,14 +28,14 @@ export default function Project({ id, update, setUpdate }) {
     // deadline: 0,
   });
   const [member, setMember] = useState([]);
-  console.log("member", member);
+  // console.log("member", member);
   const DataHandler = (key, value) => {
     let newObject = projectInfo;
     newObject[key] = value;
     console.log(newObject.description);
     setProjectInfo({ ...newObject });
   };
-  console.log(params.projectId, id);
+  // console.log(params.projectId, id);
   useEffect(() => {
     if (update) {
       setUpdate(false);
@@ -81,7 +81,7 @@ export default function Project({ id, update, setUpdate }) {
   const memberModalOpener = () => {
     if (projectInfo.captainId === myInfo.id) setIsMemberOpen(!isMemberOpen);
   };
-  console.log(projectInfo);
+  // console.log(projectInfo);
 
   return (
     <Container>

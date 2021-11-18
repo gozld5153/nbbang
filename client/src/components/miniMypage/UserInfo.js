@@ -104,7 +104,11 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   border-bottom: solid 2px #2e3032;
+  padding-left: 2rem;
   color: #2e3032;
+  &:hover {
+    background: #ddd;
+  }
 `;
 const ImgContainer = styled.div`
   flex-shrink: 0;
@@ -119,15 +123,21 @@ const ImgContainer = styled.div`
     width: 100%;
     height: 100%;
     object-fit: contain;
+    border-radius: 50%;
   }
 `;
 const UserInfoContainer = styled.div`
   width: 100%;
   > div {
     word-break: break-all;
-    margin: 2rem;
+    margin: 1rem;
     font-weight: bold;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
+  }
+
+  div:nth-of-type(2) {
+    font-style: italic;
+    color: gray;
   }
 `;
 

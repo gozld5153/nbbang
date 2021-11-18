@@ -87,7 +87,7 @@ export const ProjectStatics = () => {
   if (!projectData.projectId && !crew && !captain) {
     return <LoadingNotice />;
   }
-  console.log(projectData);
+
   return (
     <ProjectCompleteWrapper>
       <ProjectPresentationContainer>
@@ -165,7 +165,6 @@ export const ProjectStatics = () => {
 };
 
 export const ProjectTeammatesCards = ({ teammates, captain, crew }) => {
-  console.log(teammates, teammates.goal);
   return (
     <ProjectTeammatesCardsContainer>
       <ProjectTeammatesProfile>
@@ -251,7 +250,6 @@ export const ProjectStaticsdetailComponent = ({ staticsData }) => {
         </ProjectStaticsError>
       ) : (
         <>
-          {" "}
           <ProjectTeammateslist selected={selected}>
             <div className={"allUser"} onClick={handleTeammateData}>
               <img

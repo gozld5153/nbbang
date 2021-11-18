@@ -333,7 +333,7 @@ const ProfileItems = styled.div`
     border: none;
     height: 80px;
     font-size: 1.75rem;
-    font-weight: 570;
+    font-weight: 500;
 
     ${(props) =>
       props.editMode
@@ -410,10 +410,12 @@ const ProjectName = styled.div`
   display: flex;
   padding: 20px;
   width: 400px;
-  > img {
-    border-radius: 10px;
-    border: 1px solid gray;
+  > div:nth-of-type(1) {
     width: 60px;
+    font-size: 2.5rem;
+    font-weight: 600;
+    font-family: "Anton", sans-serif;
+    line-height: 1.3;
   }
   > div {
     margin-left: 20px;
@@ -860,8 +862,12 @@ export function ProjectInProgress({ userData, userId }) {
           <span>현재 나의 기여도</span>
         </ProjectColumnName>
         <ProjectContainer>
-          {InProgressProjects.map((project) => (
-            <ProjectInProgressItems project={project} userId={userId} />
+          {InProgressProjects.map((project, idx) => (
+            <ProjectInProgressItems
+              idx={idx + 1}
+              project={project}
+              userId={userId}
+            />
           ))}
         </ProjectContainer>
         <ProjectPageInProgressPagination
@@ -873,7 +879,7 @@ export function ProjectInProgress({ userData, userId }) {
     );
   }
 }
-export function ProjectInProgressItems({ project, userId }) {
+export function ProjectInProgressItems({ project, userId, idx }) {
   const navigate = useNavigate();
   const handleMoveProject = (projectId) => {
     navigate(`/project/${projectId}`);
@@ -894,10 +900,7 @@ export function ProjectInProgressItems({ project, userId }) {
       }}
     >
       <ProjectName>
-        <img
-          src={`${process.env.PUBLIC_URL}/images/project-logo-sample.png`}
-          alt=""
-        />
+        <div>{idx}</div>
         <div>
           <span>{project.projectName}</span>
           <span>{project.deadline.split("~")[0]}</span>
@@ -948,8 +951,8 @@ export function ProjectDone({ userData, userId }) {
         <span>나의 기여도</span>
       </ProjectColumnName>
       <ProjectContainer>
-        {CompleteProjects.map((project) => (
-          <ProjectDoneItems project={project} userId={userId} />
+        {CompleteProjects.map((project, idx) => (
+          <ProjectDoneItems project={project} userId={userId} idx={idx + 1} />
         ))}
       </ProjectContainer>
       <ProjectPageCompletePagination
@@ -961,7 +964,7 @@ export function ProjectDone({ userData, userId }) {
   );
 }
 
-export function ProjectDoneItems({ project, userId }) {
+export function ProjectDoneItems({ project, userId, idx }) {
   const navigate = useNavigate();
   const handleMoveProject = (projectId) => {
     navigate(`/complete/${projectId}`);
@@ -981,10 +984,7 @@ export function ProjectDoneItems({ project, userId }) {
       }}
     >
       <ProjectName>
-        <img
-          src={`${process.env.PUBLIC_URL}/images/project-logo-sample.png`}
-          alt=""
-        />
+        <div>{idx}</div>
         <div>
           <span>{project.projectName}</span>
           <span>{project.deadline.split("~")[1]}</span>
