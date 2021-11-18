@@ -113,7 +113,7 @@ const SlideMoving2 = keyframes`
       left: 0;
     }
     100% {
-      left: -1230px;
+      left: -1227px;
     }
 `;
 

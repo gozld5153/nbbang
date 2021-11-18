@@ -108,12 +108,6 @@ export default function GoalModal({ id, update, setUpdate }) {
 
   const commentHandler = (e) => {
     if (e.key === "Enter" && comment) {
-      // console.log("여기 보세요~", {
-      //   userId: id,
-      //   projectId: params.projectId,
-      //   goalId: params.id,
-      //   content: e.target.value,
-      // });
       axios
         .post(
           `${process.env.REACT_APP_API_URL}/comment`,
@@ -122,6 +116,31 @@ export default function GoalModal({ id, update, setUpdate }) {
             projectId: params.projectId,
             goalId: params.id,
             content: e.target.value,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            withCredentials: true,
+          }
+        )
+        .then(() => {
+          setComment("");
+          setUpdate(true);
+        });
+    }
+  };
+
+  const commentClickHandler = () => {
+    if (comment) {
+      axios
+        .post(
+          `${process.env.REACT_APP_API_URL}/comment`,
+          {
+            userId: id,
+            projectId: params.projectId,
+            goalId: params.id,
+            content: comment,
           },
           {
             headers: {
@@ -371,68 +390,73 @@ export default function GoalModal({ id, update, setUpdate }) {
             onChange={(e) => DataHandler("description", e.target.value)}
           />
         </EditContainer>
-        <FileContainer>
-          <Title>File</Title>
-          <FileUploaderContainer onChange={handleFileInput}>
-            <img src={`${process.env.PUBLIC_URL}/images/save.png`} alt="save" />
-            <FileUploader type="file" />
-          </FileUploaderContainer>
-        </FileContainer>
-        {goal.Files
-          ? goal.Files.map((el) => (
-              <FileView key={el.fileName}>
-                <Clip href={el.description}>{el.fileName}</Clip>
-                <CommentsClose
-                  onClick={() => deleteFile(el)}
-                  src={`${process.env.PUBLIC_URL}/images/commentDelete.png`}
-                />
-              </FileView>
-            ))
-          : null}
-        {
-          // 파일 업로드 하는 방법 찾기
-        }
-        <Title>Comments</Title>
-        {goal.Comments
-          ? goal.Comments.map((el) => (
-              <CommentContainer key={el.id}>
-                <CommentTitle>
-                  <CommentsTitleFrame>
-                    <div>{el.username}</div>
-                    <div>
-                      {`${el.createdAt
-                        .toLocaleString()
-                        .split(" ")
-                        .join("")
-                        .slice(0, 10)}`}
-                    </div>
-                  </CommentsTitleFrame>
+        <NoEditLastContainer isEditing={isEditing}>
+          <FileContainer>
+            <Title>File</Title>
+            <FileUploaderContainer onChange={handleFileInput}>
+              <img
+                src={`${process.env.PUBLIC_URL}/images/save.png`}
+                alt="save"
+              />
+              <FileUploader type="file" />
+            </FileUploaderContainer>
+          </FileContainer>
+          {goal.Files
+            ? goal.Files.map((el) => (
+                <FileView key={el.fileName}>
+                  <Clip href={el.description}>{el.fileName}</Clip>
                   <CommentsClose
-                    onClick={() => deleteComment(el)}
+                    onClick={() => deleteFile(el)}
                     src={`${process.env.PUBLIC_URL}/images/commentDelete.png`}
                   />
-                </CommentTitle>
-                <div>{el.content}</div>
-              </CommentContainer>
-            ))
-          : null}
-        <InputContainer>
-          <CommentsInput
-            type="text"
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-            onKeyPress={commentHandler}
-          />
-          <PressEnter>Enter</PressEnter>
-        </InputContainer>
-        <LikeContainer>
-          <LikeBTN onClick={LikeHandler} like={goal.LikeId}>
-            AGREE
-          </LikeBTN>
-          <LikeBTN onClick={LikeDeleter} like={!goal.LikeId}>
-            REJECT
-          </LikeBTN>
-        </LikeContainer>
+                </FileView>
+              ))
+            : null}
+          {
+            // 파일 업로드 하는 방법 찾기
+          }
+          <Title>Comments</Title>
+          {goal.Comments
+            ? goal.Comments.map((el) => (
+                <CommentContainer key={el.id}>
+                  <CommentTitle>
+                    <CommentsTitleFrame>
+                      <div>{el.username}</div>
+                      <div>
+                        {`${el.createdAt
+                          .toLocaleString()
+                          .split(" ")
+                          .join("")
+                          .slice(0, 10)}`}
+                      </div>
+                    </CommentsTitleFrame>
+                    <CommentsClose
+                      onClick={() => deleteComment(el)}
+                      src={`${process.env.PUBLIC_URL}/images/commentDelete.png`}
+                    />
+                  </CommentTitle>
+                  <div>{el.content}</div>
+                </CommentContainer>
+              ))
+            : null}
+          <InputContainer>
+            <CommentsInput
+              type="text"
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              onKeyPress={commentHandler}
+            />
+            <PressEnter onClick={commentClickHandler}>Enter</PressEnter>
+          </InputContainer>
+          <LikeContainer>
+            <LikeBTN onClick={LikeHandler} like={goal.LikeId}>
+              AGREE
+            </LikeBTN>
+            <LikeBTN onClick={LikeDeleter} like={!goal.LikeId}>
+              REJECT
+            </LikeBTN>
+          </LikeContainer>
+        </NoEditLastContainer>
         <Pen src={`${process.env.PUBLIC_URL}/images/pen.png`} />
       </ModalContainer>
     </Container>
@@ -516,6 +540,7 @@ const Daypicker = styled.div``;
 const StyleDatePicker = styled(DatePicker)`
   width: 8rem;
   font-size: 1.4rem;
+  cursor: pointer;
 `;
 
 const CommentContainer = styled.div``;
@@ -523,6 +548,15 @@ const CommentContainer = styled.div``;
 const NoEditContainer = styled.div`
   display: ${(props) => (props.isEditing ? "none" : "default")};
   border-bottom: 0.2rem solid black;
+  margin-right: 4rem;
+
+  :nth-child(6) {
+    border-bottom: none;
+  }
+`;
+
+const NoEditLastContainer = styled.div`
+  display: ${(props) => (props.isEditing ? "none" : "default")};
   margin-right: 4rem;
 `;
 
@@ -556,6 +590,7 @@ const CommentsTitleFrame = styled.div`
 const CommentsClose = styled.img`
   width: 1rem;
   border-radius: 50%;
+  cursor: pointer;
 `;
 
 const FileContainer = styled.div`
@@ -593,6 +628,7 @@ const PressEnter = styled.div`
   border-radius: 0.2rem 0.2rem 0.2rem 0;
   padding: 0.3rem;
   background-color: black;
+  cursor: pointer;
 `;
 
 const Clip = styled.a`

@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { set } from "date-fns/esm";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
 export default function MainDefaultComponent({
@@ -8,16 +9,8 @@ export default function MainDefaultComponent({
   imageArr,
   underText,
   idx,
+  testIdx,
 }) {
-  const [page, setPage] = useState(0);
-  const handlePage = (direction) => {
-    if (direction === "up" && page !== 0) {
-      setPage(page - 1);
-    }
-    if (direction === "down" && page !== imageArr.length - 1) {
-      setPage(page + 1);
-    }
-  };
   return (
     <Container>
       <ContentContainer>
@@ -34,16 +27,8 @@ export default function MainDefaultComponent({
                 })}
               </Content>
             </ContentBox>
-            <ImgFrame>
-              <ImgButton
-                onClick={() => handlePage("up")}
-                src={`${process.env.PUBLIC_URL}/images/back.png`}
-              />
-              <ImgButton
-                onClick={() => handlePage("down")}
-                src={`${process.env.PUBLIC_URL}/images/front.png`}
-              />
-              <ImgBox page={page}>
+            <ImgFrame idx={idx} testIdx={testIdx}>
+              <ImgBox>
                 {imageArr.map((el) => (
                   <ImgContent src={el} />
                 ))}
@@ -111,6 +96,7 @@ const Content = styled.div`
   }
 
   p {
+    color: #efefef;
     font-size: 2rem;
     margin: 0.5rem 0;
   }
@@ -122,10 +108,12 @@ const ImgFrame = styled.div`
   width: 38.6rem;
   overflow: hidden;
   background-color: white;
+  left: ${({ idx, testIdx }) => (idx === testIdx ? 0 : "50px")};
+  opacity: ${({ idx, testIdx }) => (idx === testIdx ? 1 : 0)};
+  transition: all 1.3s linear;
 `;
 const ImgBox = styled.div`
   position: relative;
-  top: ${(props) => `-${props.page * 25}rem`};
   display: flex;
   flex-direction: column;
 `;
@@ -134,22 +122,6 @@ const ImgContent = styled.img`
   width: 38.6rem;
   box-shadow: 1px 1px 7px black;
   background: contain;
-`;
-const ImgButton = styled.img`
-  position: absolute;
-  width: 2rem;
-  z-index: 9999;
-  cursor: pointer;
-
-  :first-child {
-    bottom: 0;
-    right: 1.7rem;
-  }
-
-  :nth-child(2) {
-    bottom: 0;
-    right: 0rem;
-  }
 `;
 
 const UnderText = styled.div`

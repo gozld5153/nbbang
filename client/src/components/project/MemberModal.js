@@ -62,6 +62,7 @@ export default function MemberModal({
           });
           setSearchMember(res.data.data)
         });
+
     }
   };
 
@@ -84,6 +85,7 @@ export default function MemberModal({
           });
           setSearchMember(res.data.data);
         });
+
     }
   };
 
@@ -216,6 +218,7 @@ const SerchList = styled.div`
       color:blue;
     }
   }
+
 `;
 
 const SubmitContainer = styled.div`
