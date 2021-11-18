@@ -20,7 +20,7 @@ export default MainComponent;
 
 const Container = styled.div`
   width: 100%;
-  height: 70vh;
+  height: 54.95rem;
   margin: 1rem auto;
   display: flex;
   color: #35353d;

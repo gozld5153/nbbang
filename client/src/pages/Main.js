@@ -157,8 +157,7 @@ export default function Main({
 }
 
 const Container = styled.div`
-  width: 80vw;
-  margin: 0 auto;
+  width: 87.5vw;
   position: relative;
   height: 100%;
 `;

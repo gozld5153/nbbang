@@ -65,9 +65,9 @@ export default function ProjectInfo({
           <RateFrame>
             <RateName>
               프로젝트 진행률
-              {`${
+              {/* {`${
                 (projectInfo.completeImportant / projectInfo.allImportant) * 100
-              }%`}
+              }%`} */}
             </RateName>
             <RateBar
               important={projectInfo.completeImportant}
