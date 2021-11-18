@@ -20,5 +20,5 @@ export NAVER_STATE=$(aws ssm get-parameters --region ap-northeast-2 --names NAVE
 
 export NODE_ENV="production"
 
-# authbind --deep pm2 start index.js
+authbind --deep pm2 start index.js
 
