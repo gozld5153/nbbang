@@ -84,7 +84,7 @@ const InnerBox = styled.div`
 const ContentBox = styled.div`
   width: 50rem;
   height: 30rem;
-  background-color: #656565;
+  background-color: ${(props) => props.backgroundColor};
 `;
 const Content = styled.div`
   margin: 8rem 1rem 1rem 1.5rem;
@@ -105,7 +105,7 @@ const Content = styled.div`
 const ImgFrame = styled.div`
   position: relative;
   height: 25rem;
-  width: 35.6rem;
+  width: 38.6rem;
   overflow: hidden;
   background-color: white;
   left: ${({ idx, testIdx }) => (idx === testIdx ? 0 : "50px")};
@@ -119,7 +119,9 @@ const ImgBox = styled.div`
 `;
 const ImgContent = styled.img`
   height: 25rem;
-  width: 35.6rem;
+  width: 38.6rem;
+  box-shadow: 1px 1px 7px black;
+  background: contain;
 `;
 
 const UnderText = styled.div`

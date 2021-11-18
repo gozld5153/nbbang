@@ -102,7 +102,7 @@ export default function GoalCreateModal({
           onClick={modalCloser}
         />
         <Title>Mission Name</Title>
-        <input
+        <GoalNameInput
           onChange={(e) => goalDataHandler("goalName", e.target.value)}
           value={goalData.goalName}
           type="text"
@@ -195,6 +195,13 @@ const Container = styled.div`
   z-index: 9999999;
 `;
 
+const GoalNameInput = styled.input`
+  width: 17rem;
+  border-bottom: 0.2rem solid black;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+`;
+
 const CloseButton = styled.img`
   position: absolute;
   top: 0.5rem;
@@ -212,12 +219,6 @@ const ModalContainer = styled.div`
   padding: 1rem;
   background-color: white;
 
-  input {
-    width: 8rem;
-    border-bottom: 0.2rem solid black;
-    font-size: 1.2rem;
-    margin-bottom: 1rem;
-  }
   ul {
     display:flex;
     align-items:flex-end;
@@ -247,11 +248,19 @@ const Title = styled.div`
 
 const Daypicker = styled.div`
   display: flex;
-  justify-content:flex-start;
+  justify-content: flex-start;
+
+  input {
+    width: 8rem;
+    border-bottom: 0.2rem solid black;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
 `;
 
 const StyleDatePicker = styled(DatePicker)`
   width: 8rem;
   font-size: 1.4rem;
+  text-align:center;
   border-bottom: 0.2rem solid black;
 `;
