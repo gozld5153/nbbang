@@ -31,7 +31,6 @@ export default function Project({ id, update, setUpdate }) {
   const DataHandler = (key, value) => {
     let newObject = projectInfo;
     newObject[key] = value;
-    console.log(newObject.description);
     setProjectInfo({ ...newObject });
   };
   useEffect(() => {
