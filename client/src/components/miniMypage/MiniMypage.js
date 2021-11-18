@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import UserInfo from "./UserInfo";
 import MiniProject from "./MiniProject";
 import ResultProject from "./ResultProject";
@@ -19,7 +19,6 @@ const MiniMypage = ({
   completeMembers,
   preview,
 }) => {
-
   return (
     <Container className={isMypage ? "add" : "hide"} isMypage={isMypage}>
       <MiniContainer>

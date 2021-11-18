@@ -209,7 +209,7 @@ export default function Main({
             ]}
             underText="일단 버튼을 누르라. 그럼 길이 열릴것이다 - 한태규"
             numberColor="black"
-            backgroundColor="#6D9886"
+            backgroundColor="#B7F0B1"
             imageArr={[
               `${process.env.PUBLIC_URL}/images/MainGIF/main1.gif`,
               `${process.env.PUBLIC_URL}/images/bbang.png`,
@@ -228,7 +228,7 @@ export default function Main({
             ]}
             underText="입력하라, 그럼 너는 정상에 설 것이다. - Brokeback Mt"
             numberColor="black"
-            backgroundColor="#6D9886"
+            backgroundColor="#B2EBF4"
             imageArr={[
               `${process.env.PUBLIC_URL}/images/MainGIF/main2.gif`,
               `${process.env.PUBLIC_URL}/images/bbang.png`,
@@ -247,7 +247,7 @@ export default function Main({
             ]}
             underText="초대하라, 너는 거부당할 것이다 - Mosol Thirty"
             numberColor="black"
-            backgroundColor="#6D9886"
+            backgroundColor="#FFC19E"
             imageArr={[
               `${process.env.PUBLIC_URL}/images/MainGIF/main3.gif`,
               `${process.env.PUBLIC_URL}/images/bbang.png`,
@@ -266,7 +266,7 @@ export default function Main({
             ]}
             underText="시작하라, 시작은 시작일 뿐이다 - 박명수"
             numberColor="black"
-            backgroundColor="#6D9886"
+            backgroundColor="#D1B2FF"
             imageArr={[
               `${process.env.PUBLIC_URL}/images/MainGIF/main4.gif`,
               `${process.env.PUBLIC_URL}/images/bbang.png`,
@@ -286,7 +286,7 @@ export default function Main({
             ]}
             underText="고치고 고치고 또 고쳐라 처음으로 돌아가고 싶을 것이다. - programmer"
             numberColor="black"
-            backgroundColor="#6D9886"
+            backgroundColor="#FFB2D9"
             imageArr={[
               `${process.env.PUBLIC_URL}/images/MainGIF/main5.gif`,
               `${process.env.PUBLIC_URL}/images/bbang.png`,
@@ -304,7 +304,7 @@ export default function Main({
             ]}
             underText="자 이제 시작이야! - 피카츄"
             numberColor="black"
-            backgroundColor="#6D9886"
+            backgroundColor="#FAED7D"
             imageArr={[
               `${process.env.PUBLIC_URL}/images/MainGIF/main6.gif`,
               `${process.env.PUBLIC_URL}/images/bbang.png`,
@@ -323,7 +323,7 @@ export default function Main({
             ]}
             underText="수행한 것이 없습니다 - 진짜팀장"
             numberColor="black"
-            backgroundColor="#6D9886"
+            backgroundColor="#BDBDBD"
             imageArr={[
               `${process.env.PUBLIC_URL}/images/MainGIF/main7.gif`,
               `${process.env.PUBLIC_URL}/images/bbang.png`,
@@ -407,7 +407,6 @@ const MainContainer = styled.div`
   }
   p {
     font-family: "Jua", sans-serif;
-    color: #efefef;
     position: relative;
     top: ${({ isActive }) => (isActive ? 0 : "20px")};
     opacity: ${({ isActive }) => (isActive ? 1 : 0)};

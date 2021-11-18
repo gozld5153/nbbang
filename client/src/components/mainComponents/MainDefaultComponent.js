@@ -1,5 +1,4 @@
-import { set } from "date-fns/esm";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 
 export default function MainDefaultComponent({
@@ -15,7 +14,9 @@ export default function MainDefaultComponent({
     <Container>
       <ContentContainer>
         <ContentFrame backgroundColor={backgroundColor}>
-          <NumberComponent numberColor={numberColor}>0{idx}</NumberComponent>
+          <NumberComponent numberColor={numberColor}>
+            0<strong>{idx}</strong>
+          </NumberComponent>
           <InnerBox>
             <ContentBox>
               <Content>
@@ -75,7 +76,11 @@ const NumberComponent = styled.div`
   left: 2rem;
   font-size: 20rem;
   font-family: "Teko", sans-serif;
-  color: ${(props) => props.numberColor};
+  color: white;
+  -webkit-text-stroke: 0.3rem black;
+  strong {
+    color: ${(props) => props.numberColor};
+  }
 `;
 const InnerBox = styled.div`
   display: flex;
@@ -96,7 +101,7 @@ const Content = styled.div`
   }
 
   p {
-    color: #efefef;
+    color: #666;
     font-size: 2rem;
     margin: 0.5rem 0;
   }
@@ -129,4 +134,5 @@ const UnderText = styled.div`
   font-weight: 600;
   color: gray;
   padding: 1rem 0 0 10rem;
+  font-style: italic;
 `;
