@@ -26,7 +26,7 @@ module.exports = {
       },
       color: {
         type: Sequelize.STRING,
-        defaultValue: "blue",
+        defaultValue: "#0000ff",
       },
       createdAt: {
         allowNull: false,
