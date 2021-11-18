@@ -21,6 +21,7 @@ module.exports = async (req, res) => {
     await UsersProjects.create({
       userId: req.body.captainId,
       projectId: response.dataValues.id,
+      color: "red",
     });
   } catch (err) {
     console.log(err);

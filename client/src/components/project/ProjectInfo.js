@@ -63,7 +63,12 @@ export default function ProjectInfo({
       <ProjectProgress>
         <RateContainer>
           <RateFrame>
-            <RateName>프로젝트 진행률</RateName>
+            <RateName>
+              프로젝트 진행률
+              {/* {`${
+                (projectInfo.completeImportant / projectInfo.allImportant) * 100
+              }%`} */}
+            </RateName>
             <RateBar
               important={projectInfo.completeImportant}
               color="#AFAFAF"

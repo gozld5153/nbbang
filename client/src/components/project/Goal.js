@@ -20,7 +20,7 @@ export default function Goal({ goalInfo, member, myLike }) {
     if (member.filter((el) => el.id === userId)[0]) {
       return member.filter((el) => el.id === userId)[0].color;
     }
-  }
+  };
   return (
     <Container color={colorpick()}>
       <ImportantText state={importantText[important - 1]}>
@@ -35,7 +35,7 @@ export default function Goal({ goalInfo, member, myLike }) {
                 <Icon
                   src={
                     Likes >= member.length / 2
-                      ? `${process.env.PUBLIC_URL}/images/agreeclear.png`
+                      ? `${process.env.PUBLIC_URL}/images/agreeClear.png`
                       : myLike.includes(id)
                       ? `${process.env.PUBLIC_URL}/images/agreeActive.png`
                       : `${process.env.PUBLIC_URL}/images/agreeDisable.png`
@@ -70,9 +70,8 @@ const Container = styled.div`
 `;
 
 const ImportantText = styled.div`
-  color: ${(props) =>
-  props.state === "중요"? 'red': 'black'};
-  font-weight:600;
+  color: ${(props) => (props.state === "중요" ? "red" : "black")};
+  font-weight: 600;
   margin-left: 0.5rem;
 `;
 
@@ -84,24 +83,22 @@ const GoalName = styled.div`
 `;
 
 const DetailContainer = styled.div`
-  display:flex;
-  justify-content:space-between;
+  display: flex;
+  justify-content: space-between;
   margin-left: 0.5rem;
 `;
 const ButtonContainer = styled.div`
-  display:flex;
+  display: flex;
 `;
-const IconContainer = styled.div`
-`;
+const IconContainer = styled.div``;
 const Icon = styled.img`
   position: relative;
   top: 0.1rem;
   width: 1rem;
   margin-left: 0.2rem;
-
 `;
 
 const Deadline = styled.div`
   position: relative;
-  top:0.2rem;
+  top: 0.2rem;
 `;

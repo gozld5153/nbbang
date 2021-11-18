@@ -19,6 +19,11 @@ export default function Main({
   const divF = useRef();
   const divS = useRef();
   const divT = useRef();
+  const div4 = useRef();
+  const div5 = useRef();
+  const div6 = useRef();
+  const div7 = useRef();
+
   const [testIdx, setTestIdx] = useState(0);
   let scrollTopPosition = 0;
 
@@ -28,10 +33,10 @@ export default function Main({
     const scrollY = window.pageYOffset;
     const wheelMove = e.deltaY;
 
-    const slideTop =
-      containerEle.current.getBoundingClientRect().top +
-      window.pageYOffset -
-      100;
+    const slideTop = 0;
+    // containerEle.current.getBoundingClientRect().top +
+    // window.pageYOffset -
+    // 100;
 
     const divFtop = Math.round(
       divF.current.getBoundingClientRect().top + window.pageYOffset - 100
@@ -41,6 +46,18 @@ export default function Main({
     );
     const divTtop = Math.round(
       divT.current.getBoundingClientRect().top + window.pageYOffset - 100
+    );
+    const div4top = Math.round(
+      div4.current.getBoundingClientRect().top + window.pageYOffset - 100
+    );
+    const div5top = Math.round(
+      div5.current.getBoundingClientRect().top + window.pageYOffset - 100
+    );
+    const div6top = Math.round(
+      div6.current.getBoundingClientRect().top + window.pageYOffset - 100
+    );
+    const div7top = Math.round(
+      div7.current.getBoundingClientRect().top + window.pageYOffset - 100
     );
 
     // console.log(`컨테이너 상단 위치: ${slideTop}`);
@@ -61,6 +78,18 @@ export default function Main({
       } else if (scrollY < divTtop) {
         scrollTopPosition = divTtop;
         setTestIdx(3);
+      } else if (scrollY < div4top) {
+        scrollTopPosition = div4top;
+        setTestIdx(4);
+      } else if (scrollY < div5top) {
+        scrollTopPosition = div5top;
+        setTestIdx(5);
+      } else if (scrollY < div6top) {
+        scrollTopPosition = div6top;
+        setTestIdx(6);
+      } else if (scrollY < div7top) {
+        scrollTopPosition = div7top;
+        setTestIdx(7);
       }
     } else if (wheelMove < 0) {
       if (scrollY <= divFtop) {
@@ -69,9 +98,21 @@ export default function Main({
       } else if (scrollY <= divStop && scrollY > divFtop) {
         scrollTopPosition = divFtop;
         setTestIdx(1);
-      } else if (scrollY > divStop) {
+      } else if (scrollY <= divTtop && scrollY > divStop) {
         scrollTopPosition = divStop;
         setTestIdx(2);
+      } else if (scrollY <= div4top && scrollY > divTtop) {
+        scrollTopPosition = divTtop;
+        setTestIdx(3);
+      } else if (scrollY <= div5top && scrollY > div4top) {
+        scrollTopPosition = div4top;
+        setTestIdx(4);
+      } else if (scrollY <= div6top && scrollY > div5top) {
+        scrollTopPosition = div5top;
+        setTestIdx(5);
+      } else if (scrollY <= div7top && scrollY > div6top) {
+        scrollTopPosition = div6top;
+        setTestIdx(6);
       }
     }
 
@@ -93,6 +134,18 @@ export default function Main({
     const divTtop = Math.round(
       divT.current.getBoundingClientRect().top + window.pageYOffset - 100
     );
+    const div4top = Math.round(
+      div4.current.getBoundingClientRect().top + window.pageYOffset - 100
+    );
+    const div5top = Math.round(
+      div5.current.getBoundingClientRect().top + window.pageYOffset - 100
+    );
+    const div6top = Math.round(
+      div6.current.getBoundingClientRect().top + window.pageYOffset - 100
+    );
+    const div7top = Math.round(
+      div7.current.getBoundingClientRect().top + window.pageYOffset - 100
+    );
 
     if (idx === 0) {
       setTestIdx(0);
@@ -106,6 +159,18 @@ export default function Main({
     } else if (idx === 3) {
       setTestIdx(3);
       scrollTopPosition = divTtop;
+    } else if (idx === 4) {
+      setTestIdx(4);
+      scrollTopPosition = div4top;
+    } else if (idx === 5) {
+      setTestIdx(5);
+      scrollTopPosition = div5top;
+    } else if (idx === 6) {
+      setTestIdx(6);
+      scrollTopPosition = div6top;
+    } else if (idx === 7) {
+      setTestIdx(7);
+      scrollTopPosition = div7top;
     }
     window.scroll({ top: scrollTopPosition, behavior: "smooth" });
   };
@@ -141,9 +206,13 @@ export default function Main({
         <MainContainer ref={divT}>
           <MainComponent />
         </MainContainer>
+        <MainContainer ref={div4}>4</MainContainer>
+        <MainContainer ref={div5}>5</MainContainer>
+        <MainContainer ref={div6}>6</MainContainer>
+        <MainContainer ref={div7}>7</MainContainer>
       </>
       <DotContainer>
-        {Array(4)
+        {Array(8)
           .fill(0)
           .map((_, idx) => (
             <Dot
@@ -157,8 +226,8 @@ export default function Main({
 }
 
 const Container = styled.div`
-  width: 80vw;
-  margin: 0 auto;
+  width: 87.5vw;
+  /* margin: 0 auto; */
   position: relative;
   height: 100%;
 `;
@@ -182,4 +251,7 @@ const Dot = styled.div`
   cursor: pointer;
 `;
 
-const MainContainer = styled.div``;
+const MainContainer = styled.div`
+  height: 54.95rem;
+  border-bottom: 1px solid black;
+`;
