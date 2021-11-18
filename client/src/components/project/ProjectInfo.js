@@ -16,6 +16,7 @@ export default function ProjectInfo({
   setUpdate,
   update,
 }) {
+  console.log('info', member)
   return (
     <Container>
       <ProjectInfomation>
