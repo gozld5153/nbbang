@@ -322,6 +322,10 @@ export default function Main({
             ]}
           />
         </MainContainer>
+        <MainContainer ref={div4}>4</MainContainer>
+        <MainContainer ref={div5}>5</MainContainer>
+        <MainContainer ref={div6}>6</MainContainer>
+        <MainContainer ref={div7}>7</MainContainer>
       </>
       <DotContainer>
         {Array(8)

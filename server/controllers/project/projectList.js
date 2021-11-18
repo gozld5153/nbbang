@@ -47,6 +47,7 @@ module.exports = async (req, res) => {
     let crew = [];
     for (let el of projectInfo.dataValues.UsersProjects) {
       let tempObj = {
+        color: el.dataValues.color,
         username: el.dataValues.User.dataValues.username,
         profile: el.dataValues.User.dataValues.profile,
         goal: el.dataValues.User.dataValues.Goals,
