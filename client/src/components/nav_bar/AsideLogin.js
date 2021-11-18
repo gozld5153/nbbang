@@ -16,9 +16,10 @@ const SignupBtn = styled.button`
   font-family: "Anton", sans-serif;
   background-color: #f3f3f4;
   margin-top: 4rem;
-  height: 2rem;
-  width: 4rem;
+  height: 3rem;
+  width: 5rem;
   /* border-radius: 0.5rem; */
+  font-size: 1.3rem;
   color: #222222;
   &:hover {
     background-color: #e1e1e1;
@@ -43,15 +44,16 @@ const AsideContainer = styled.div`
   transform: ${(props) => (props.isOn ? "translateX(-100%)" : "")};
   > :nth-child(1) {
     font-size: 3rem;
-    margin-bottom: 4rem;
+    margin-bottom: 7rem;
     font-weight: bold;
   }
   > :nth-child(2) {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     margin-bottom: 2rem;
   }
   > :nth-child(3) {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
+    margin-bottom: 3rem;
   }
 `;
 export default AsideLogin;

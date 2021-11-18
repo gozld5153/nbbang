@@ -38,9 +38,9 @@ const Slide = ({ images = [] }) => {
             })}
         </IndicatorWrapper>
         <ChildrenWrapper>
-          <h1 style={{ color: "white", fontSize: "2rem", fontWeight: "bold" }}>
+          {/* <h1 style={{ color: "white", fontSize: "2rem", fontWeight: "bold" }}>
             Test 중입니다!
-          </h1>
+          </h1> */}
         </ChildrenWrapper>
       </Wrapper>
       <BigWrapper>
@@ -60,7 +60,7 @@ const Dot = styled.div`
   width: 1.5rem;
   height: 1.5rem;
   border-radius: 50%;
-  background-color: white;
+  background-color: #222222;
   opacity: ${(props) => (props.isActive ? 1 : 0.4)};
   margin: 1rem;
   cursor: pointer;
@@ -98,6 +98,7 @@ const Slider = styled.div`
   flex-shrink: 0;
   background-position: center;
   background-size: cover;
+  background-repeat: no-repeat;
   transition: all 0.5s linear;
 `;
 
@@ -113,7 +114,7 @@ const SlideMoving2 = keyframes`
       left: 0;
     }
     100% {
-      left: -1230px;
+      left: -1227px;
     }
 `;
 

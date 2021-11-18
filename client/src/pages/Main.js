@@ -1,13 +1,12 @@
 import styled, { keyframes } from "styled-components";
 import TotalModal from "../components/nav_bar/TotalModal";
 import Slide from "../components/mainComponents/Slide";
-import image1 from "../components/mainComponents/img/image1.png";
-import image2 from "../components/mainComponents/img/image2.jpg";
+import image1 from "../components/mainComponents/img/image1.jpg";
+import image2 from "../components/mainComponents/img/image2.png";
 import image3 from "../components/mainComponents/img/image3.png";
-import MainComponent from "../components/mainComponents/MainComponent";
-import MainDefaultComponent from '../components/mainComponents/MainDefaultComponent'
+import MainDefaultComponent from "../components/mainComponents/MainDefaultComponent";
 import { useEffect, useRef, useState } from "react";
-
+import { ImArrowUp } from "react-icons/im";
 export default function Main({
   isModal,
   handleModal,
@@ -15,7 +14,9 @@ export default function Main({
   signAndLogin,
   handleNavbar,
   isOn,
+  isLogin,
 }) {
+  const title = ["Top", "생성", "수정", "초대", "목표", "변경", "완료", "확인"];
   const containerEle = useRef();
   const divF = useRef();
   const divS = useRef();
@@ -121,10 +122,7 @@ export default function Main({
   };
 
   const handleScroll = (idx) => {
-    const slideTop =
-      containerEle.current.getBoundingClientRect().top +
-      window.pageYOffset -
-      100;
+    const slideTop = 0;
 
     const divFtop = Math.round(
       divF.current.getBoundingClientRect().top + window.pageYOffset - 100
@@ -176,12 +174,12 @@ export default function Main({
     window.scroll({ top: scrollTopPosition, behavior: "smooth" });
   };
 
-  // useEffect(() => {
-  //   window.addEventListener("wheel", handleMouseWheel, { passive: false });
-  //   return () => {
-  //     window.removeEventListener("wheel", handleMouseWheel, { passive: false });
-  //   };
-  // }, [isModal]);
+  useEffect(() => {
+    window.addEventListener("wheel", handleMouseWheel, { passive: false });
+    return () => {
+      window.removeEventListener("wheel", handleMouseWheel, { passive: false });
+    };
+  }, [isModal]);
 
   return (
     <Container ref={containerEle} isModal={isModal}>
@@ -198,42 +196,45 @@ export default function Main({
           </ModalContainer>
         ) : null}
         <Slide images={[image1, image2, image3]}></Slide>
-        <MainContainer ref={divF}>
+        <MainContainer ref={divF} isActive={testIdx === 1}>
           <MainDefaultComponent
+            testIdx={testIdx}
             idx={1}
             title={[
               "프로젝트 만들기",
               " - nav의 Create 버튼을 눌러서 프로젝트 페이지로 진입.",
             ]}
-            underText="일단 버튼을 누르라. 그럼 길이 열릴것이다 -한태규"
+            underText="일단 버튼을 누르라. 그럼 길이 열릴것이다 - 한태규"
             numberColor="black"
-            backgroundColor="#656565"
+            backgroundColor="#6D9886"
             imageArr={[
-              `${process.env.PUBLIC_URL}/images/enter_project.png`,
+              `${process.env.PUBLIC_URL}/images/MainGIF/main1.gif`,
               `${process.env.PUBLIC_URL}/images/bbang.png`,
             ]}
           />
         </MainContainer>
-        <MainContainer ref={divS}>
+        <MainContainer ref={divS} isActive={testIdx === 2}>
           <MainDefaultComponent
+            testIdx={testIdx}
             idx={2}
             title={[
               "프로젝트 정보 수정",
               " - 새로운 프로젝트 클릭하기",
               " - 각 항목마다 상세정보 입력하기",
-              "하단의 submit버튼 누르기",
+              " - 하단의 submit버튼 누르기",
             ]}
-            underText="일단 버튼을 누르라. 그럼 길이 열릴것이다 -한태규"
+            underText="입력하라, 그럼 너는 정상에 설 것이다. - Brokeback Mt"
             numberColor="black"
-            backgroundColor="#656565"
+            backgroundColor="#6D9886"
             imageArr={[
-              `${process.env.PUBLIC_URL}/images/logo.png`,
+              `${process.env.PUBLIC_URL}/images/MainGIF/main2.gif`,
               `${process.env.PUBLIC_URL}/images/bbang.png`,
             ]}
           />
         </MainContainer>
-        <MainContainer ref={divT}>
+        <MainContainer ref={divT} isActive={testIdx === 3}>
           <MainDefaultComponent
+            testIdx={testIdx}
             idx={3}
             title={[
               "다른 사용자 초대하기",
@@ -241,17 +242,18 @@ export default function Main({
               " - 상대방의 이메일을 입력 후, Enter 누르기",
               " - 하단의 invite 버튼 누르기",
             ]}
-            underText="일단 버튼을 누르라. 그럼 길이 열릴것이다 -한태규"
+            underText="초대하라, 너는 거부당할 것이다 - Mosol Thirty"
             numberColor="black"
-            backgroundColor="#656565"
+            backgroundColor="#6D9886"
             imageArr={[
-              `${process.env.PUBLIC_URL}/images/logo.png`,
+              `${process.env.PUBLIC_URL}/images/MainGIF/main3.gif`,
               `${process.env.PUBLIC_URL}/images/bbang.png`,
             ]}
           />
         </MainContainer>
-        <MainContainer ref={div4}>
+        <MainContainer ref={div4} isActive={testIdx === 4}>
           <MainDefaultComponent
+            testIdx={testIdx}
             idx={4}
             title={[
               "목표 생성하기",
@@ -259,17 +261,18 @@ export default function Main({
               " - 모달창에서 목표의 기본정보 입력하기",
               " - 하단의 create버튼 누르기",
             ]}
-            underText="일단 버튼을 누르라. 그럼 길이 열릴것이다 -한태규"
+            underText="시작하라, 시작은 시작일 뿐이다 - 박명수"
             numberColor="black"
-            backgroundColor="#656565"
+            backgroundColor="#6D9886"
             imageArr={[
-              `${process.env.PUBLIC_URL}/images/logo.png`,
+              `${process.env.PUBLIC_URL}/images/MainGIF/main4.gif`,
               `${process.env.PUBLIC_URL}/images/bbang.png`,
             ]}
           />
         </MainContainer>
-        <MainContainer ref={div5}>
+        <MainContainer ref={div5} isActive={testIdx === 5}>
           <MainDefaultComponent
+            testIdx={testIdx}
             idx={5}
             title={[
               "목표 수정하기",
@@ -278,65 +281,86 @@ export default function Main({
               " - 각종 정보 수정 및 파일 올리기 등 작업 수행하기",
               " - 우측 상단에 수정 버튼 다시 누르기",
             ]}
-            underText="일단 버튼을 누르라. 그럼 길이 열릴것이다 -한태규"
+            underText="고치고 고치고 또 고쳐라 처음으로 돌아가고 싶을 것이다. - programmer"
             numberColor="black"
-            backgroundColor="#656565"
+            backgroundColor="#6D9886"
             imageArr={[
-              `${process.env.PUBLIC_URL}/images/logo.png`,
+              `${process.env.PUBLIC_URL}/images/MainGIF/main5.gif`,
               `${process.env.PUBLIC_URL}/images/bbang.png`,
             ]}
           />
         </MainContainer>
-        <MainContainer ref={div6}>
+        <MainContainer ref={div6} isActive={testIdx === 6}>
           <MainDefaultComponent
+            testIdx={testIdx}
             idx={6}
             title={[
               "완료 시키기",
               " - 프로젝트 정보 변경하는 쪽으로 이동하기",
               " - 좌측 하단에 complete 버튼 누르기",
             ]}
-            underText="일단 버튼을 누르라. 그럼 길이 열릴것이다 -한태규"
+            underText="자 이제 시작이야! - 피카츄"
             numberColor="black"
-            backgroundColor="#656565"
+            backgroundColor="#6D9886"
             imageArr={[
-              `${process.env.PUBLIC_URL}/images/logo.png`,
+              `${process.env.PUBLIC_URL}/images/MainGIF/main6.gif`,
               `${process.env.PUBLIC_URL}/images/bbang.png`,
             ]}
           />
         </MainContainer>
-        <MainContainer ref={div7}>
+        <MainContainer ref={div7} isActive={testIdx === 7}>
           <MainDefaultComponent
-            idx={6}
+            testIdx={testIdx}
+            idx={7}
             title={[
               "결과 확인하기",
               " - nav에서 mypage버튼 누르기",
               " - 원하는 완료한 프로젝트 선택하기",
-              " - 결과를 감상하기"
+              " - 결과를 감상하기",
             ]}
-            underText="일단 버튼을 누르라. 그럼 길이 열릴것이다 -한태규"
+            underText="수행한 것이 없습니다 - 진짜팀장"
             numberColor="black"
-            backgroundColor="#656565"
+            backgroundColor="#6D9886"
             imageArr={[
-              `${process.env.PUBLIC_URL}/images/logo.png`,
+              `${process.env.PUBLIC_URL}/images/MainGIF/main7.gif`,
               `${process.env.PUBLIC_URL}/images/bbang.png`,
             ]}
           />
+          {isModal || isLogin ? null : (
+            <ArrowDiv>
+              <ImArrowUp size={"60px"} />
+              <div style={{ margin: "0.6rem", fontWeight: "bold" }}>Click!</div>
+            </ArrowDiv>
+          )}
         </MainContainer>
       </>
       <DotContainer>
         {Array(8)
           .fill(0)
           .map((_, idx) => (
-            <Dot
-              isActive={testIdx === idx}
-              onClick={() => handleScroll(idx)}
-            ></Dot>
+            <Dot isActive={testIdx === idx} onClick={() => handleScroll(idx)}>
+              {title[idx]}
+            </Dot>
           ))}
       </DotContainer>
     </Container>
   );
 }
 
+const arrowGuide2 = keyframes`
+10% {
+  transform: translateY(-20px)
+}
+30% {
+  transform: translateY(0px)
+}
+40% {
+  transform: translateY(-20px)
+}
+70% {
+  transform: translateY(0px)
+}
+`;
 const Container = styled.div`
   width: 87.5vw;
   /* margin: 0 auto; */
@@ -354,16 +378,40 @@ const DotContainer = styled.div`
   transform: translateY(-50%);
 `;
 const Dot = styled.div`
-  width: 1rem;
-  height: 1rem;
-  border-radius: 50%;
-  background-color: #142f43;
+  width: 3rem;
+  height: 2rem;
+  /* border-radius: 50%; */
+  /* background-color: #142f43; */
   opacity: ${(props) => (props.isActive ? 1 : 0.4)};
-  margin: 1rem;
+  font-weight: ${(props) => (props.isActive ? "bold" : 0)};
+  margin-top: 1rem;
   cursor: pointer;
 `;
 
+const ArrowDiv = styled.div`
+  position: absolute;
+  top: 10px;
+  right: 40px;
+  animation: ${arrowGuide2} 1.5s linear infinite;
+`;
 const MainContainer = styled.div`
+  position: relative;
   height: 54.95rem;
-  border-bottom: 1px solid black;
+  border-bottom: 2px solid #2e3032;
+  margin: 1rem 0;
+  span {
+    font-family: "Black Han Sans", sans-serif;
+  }
+  p {
+    font-family: "Jua", sans-serif;
+    color: #efefef;
+    position: relative;
+    top: ${({ isActive }) => (isActive ? 0 : "20px")};
+    opacity: ${({ isActive }) => (isActive ? 1 : 0)};
+    transition: all 1s linear;
+    margin-top: 1.5rem;
+  }
+  ${ArrowDiv} {
+    display: ${({ isActive }) => (isActive ? "block" : "none")};
+  }
 `;
