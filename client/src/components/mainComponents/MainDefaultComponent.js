@@ -29,10 +29,9 @@ export default function MainDefaultComponent({
                 <span>{title[0]}</span>
                 {title.map((el, idx) => {
                   if (idx > 0) {
-                    return <p>{el}</p>
+                    return <p>{el}</p>;
                   }
-                })
-                }
+                })}
               </Content>
             </ContentBox>
             <ImgFrame>
@@ -56,12 +55,12 @@ export default function MainDefaultComponent({
       </ContentContainer>
     </Container>
   );
-};
+}
 
 const Center = styled.div`
   display: flex;
-  justify-content:center;
-  align-items:center;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Container = styled(Center)`
@@ -71,7 +70,6 @@ const Container = styled(Center)`
   color: #35353d;
   border-bottom: 2px solid #2e3032;
 `;
-
 
 const ContentContainer = styled.div`
   padding-right: 25.6rem;
@@ -101,7 +99,7 @@ const InnerBox = styled.div`
 const ContentBox = styled.div`
   width: 50rem;
   height: 30rem;
-  background-color: #656565;
+  background-color: ${(props) => props.backgroundColor};
 `;
 const Content = styled.div`
   margin: 8rem 1rem 1rem 1.5rem;
@@ -114,26 +112,28 @@ const Content = styled.div`
 
   p {
     font-size: 2rem;
-    margin:0.5rem 0;
+    margin: 0.5rem 0;
   }
 `;
 
 const ImgFrame = styled.div`
   position: relative;
   height: 25rem;
-  width: 35.6rem;
+  width: 38.6rem;
   overflow: hidden;
   background-color: white;
 `;
 const ImgBox = styled.div`
   position: relative;
-  top: ${(props)=> `-${(props.page*25)}rem`};
+  top: ${(props) => `-${props.page * 25}rem`};
   display: flex;
   flex-direction: column;
 `;
 const ImgContent = styled.img`
   height: 25rem;
-  width: 35.6rem;
+  width: 38.6rem;
+  box-shadow: 1px 1px 7px black;
+  background: contain;
 `;
 const ImgButton = styled.img`
   position: absolute;
@@ -155,6 +155,6 @@ const ImgButton = styled.img`
 const UnderText = styled.div`
   font-size: 1.4rem;
   font-weight: 600;
-  color:gray;
+  color: gray;
   padding: 1rem 0 0 10rem;
 `;

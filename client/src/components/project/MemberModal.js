@@ -28,7 +28,6 @@ export default function MemberModal({
     profile: "",
     color:'#ffffff'
   });
-
   const searchHandler = (e) => {
     setSearchEmail(e.target.value);
   };
@@ -53,8 +52,38 @@ export default function MemberModal({
           },
           withCredentials: true,
         })
-        .then((res) => setSearchMember(res.data.data));
+        .then((res) => {
+          setSelectMember({
+            id: null,
+            username: "",
+            email: "",
+            profile: "",
+            color: "#ffffff",
+          });
+          setSearchMember(res.data.data)
+        });
+    }
+  };
 
+  const enterButtonHandler = (e) => {
+    if (searchEmail) {
+      axios
+        .get(`${process.env.REACT_APP_API_URL}/users/search/${searchEmail}`, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        })
+        .then((res) => {
+          setSelectMember({
+            id: null,
+            username: "",
+            email: "",
+            profile: "",
+            color: "#ffffff",
+          });
+          setSearchMember(res.data.data);
+        });
     }
   };
 
@@ -90,9 +119,9 @@ export default function MemberModal({
   };
 
   const reseter = () => {
+    memberModalOpener();
     setSearchMember([]);
     setSearchEmail('');
-    memberModalOpener();
   };
   return (
     <ModalContainer isMemberOpen={isMemberOpen}>
@@ -104,15 +133,17 @@ export default function MemberModal({
           onKeyPress={enterHandler}
           type="text"
         />
-        <PressEnter>Enter</PressEnter>
+        <PressEnter onClick={enterButtonHandler}>Enter</PressEnter>
       </InputContainer>
-      <ul>
-        {searchMember.map((el) => (
-          <li onClick={() => selectHandler(el.id)} key={el.id}>
-            {el.email}
-          </li>
-        ))}
-      </ul>
+      <SerchList selectMember={selectMember}>
+        <ul>
+          {searchMember.map((el) => (
+            <li onClick={() => selectHandler(el.id)} key={el.id}>
+              {el.email}
+            </li>
+          ))}
+        </ul>
+      </SerchList>
       What is his color?
       <ColorPicker
         width={240}
@@ -148,12 +179,12 @@ const ModalContainer = styled.div`
 
   input {
     border-bottom: 1px solid black;
-    width: 9rem;
+    width: 10rem;
     height: 2rem;
     font-size: 1.2rem;
     margin-bottom: 1rem;
-    padding-left:1rem;
-    margin-left: 2rem;
+    /* padding-left:1rem; */
+    /* margin-left: 2rem; */
   }
 `;
 
@@ -171,13 +202,27 @@ const PressEnter = styled.div`
   border-radius: 0.3rem 0.3rem 0.3rem 0;
   padding: 0.1rem 0.2rem 0 0.2rem;
   background-color: black;
+  cursor:pointer;
+`;
+
+const SerchList = styled.div`
+  display: ${(props) => props.selectMember.id ? "none" : "default"};
+  margin-bottom: 2rem;
+  
+  li {
+    cursor:pointer;
+
+    :hover {
+      color:blue;
+    }
+  }
 `;
 
 const SubmitContainer = styled.div`
   display: flex;
   justify-content: space-between;
   width:100%;
-  margin-top: 0.2rem;
+  margin-top: 1rem;
   padding: 0 2rem;
 
   button {

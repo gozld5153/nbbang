@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
+import { FcCheckmark } from "react-icons/fc";
 
 const Signup = ({ handleSignAndLogin, isOn }) => {
   const [signupInfo, setSignupInfo] = useState({
@@ -114,11 +115,12 @@ const Signup = ({ handleSignAndLogin, isOn }) => {
           onChange={handleInputValue("email")}
         ></input>
         <button onClick={handleCheckEmail}>중복확인</button>
-        {isChecked || signupInfo.email === "" ? null : (
+        {isChecked ? (
+          // || signupInfo.email === ""
           <div>
-            <p>X</p>
+            <FcCheckmark />
           </div>
-        )}
+        ) : null}
       </div>
 
       <input
@@ -181,7 +183,9 @@ const Container = styled.div`
       font-family: "Noto Sans KR", sans-serif;
       position: absolute;
       width: 4rem;
-      height: 2.5rem;
+      height: 2.8rem;
+      /* font-size: 0.9rem; */
+      font-weight: 600;
       margin-top: 0.5rem;
       background-color: #222222;
       color: #efefef;
@@ -190,16 +194,17 @@ const Container = styled.div`
       }
     }
     div {
-      width: 1.5rem;
-      height: 1.5rem;
+      width: 2.2rem;
+      height: 2.2rem;
       position: absolute;
       display: grid;
       place-content: center;
       right: 0.8rem;
       top: 0.8rem;
-      border: 1px solid red;
+      border: 1px solid green;
       border-radius: 50%;
-      color: red;
+      color: green;
+      font-size: 1.2rem;
     }
   }
 `;
@@ -208,10 +213,11 @@ const SignupBtn = styled.button`
   font-family: "Anton", sans-serif;
   background-color: #222222;
   color: #efefef;
-  height: 2rem;
-  width: 4rem;
+  height: 3rem;
+  width: 5rem;
   /* border-radius: 0.5rem; */
   margin-top: 3rem;
+  font-size: 1.2rem;
   &:hover {
     font-weight: bold;
   }
@@ -227,7 +233,7 @@ const ErrBox = styled.div`
 const ErrMsg = styled.div`
   position: absolute;
   transition: all 0.5s linear;
-  top: ${({ showErr }) => (showErr ? 0 : "1rem")};
+  top: ${({ showErr }) => (showErr ? 0 : "0.4rem")};
   opacity: ${({ showErr }) => (showErr ? 1 : 0)};
   white-space: nowrap;
 `;
