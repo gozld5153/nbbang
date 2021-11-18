@@ -1,8 +1,8 @@
 import styled, { keyframes } from "styled-components";
 import TotalModal from "../components/nav_bar/TotalModal";
 import Slide from "../components/mainComponents/Slide";
-import image1 from "../components/mainComponents/img/image1.png";
-import image2 from "../components/mainComponents/img/image2.jpg";
+import image1 from "../components/mainComponents/img/image1.jpg";
+import image2 from "../components/mainComponents/img/image2.png";
 import image3 from "../components/mainComponents/img/image3.png";
 import MainDefaultComponent from "../components/mainComponents/MainDefaultComponent";
 import { useEffect, useRef, useState } from "react";
@@ -122,10 +122,7 @@ export default function Main({
   };
 
   const handleScroll = (idx) => {
-    const slideTop =
-      containerEle.current.getBoundingClientRect().top +
-      window.pageYOffset -
-      100;
+    const slideTop = 0;
 
     const divFtop = Math.round(
       divF.current.getBoundingClientRect().top + window.pageYOffset - 100
