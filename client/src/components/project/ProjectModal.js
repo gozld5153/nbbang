@@ -39,6 +39,7 @@ export default function ProjectModal({
   };
   const captain = selectcap();
   const [isOpen, setIsOpen] = useState(false);
+  const [isComplete,setIsComplete] = useState(false)
   const [selectDate, setSelectDate] = useState({
     startDate: defaultStartDate(),
     endDate: defaultendDate(),
@@ -72,38 +73,42 @@ export default function ProjectModal({
       });
   };
 
-  const projectComplete = () => {
-    axios
-      .put(
-        `${process.env.REACT_APP_API_URL}/project`,
-        {
-          id: projectInfo.id,
-          projectName: projectInfo.projectName,
-          captainId: projectInfo.captainId,
-          description: projectInfo.description,
-          state: "complete",
-          deadline: projectInfo.deadline,
-          member: member,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
+  const projectComplete = (e) => {
+    console.log(e.target.value)
+    if (e.target.value && e.key === "Enter") {
+      axios
+        .put(
+          `${process.env.REACT_APP_API_URL}/project`,
+          {
+            id: projectInfo.id,
+            projectName: projectInfo.projectName,
+            captainId: projectInfo.captainId,
+            description: projectInfo.description,
+            state: "complete",
+            deadline: projectInfo.deadline,
+            presentation: e.target.value,
+            member: member,
           },
-          withCredentials: true,
-        }
-      )
-      .then((res) => {
-        setUpdate(true);
-        if (res.data.message === "ok") {
-          navigate("/");
-        }
-      });
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            withCredentials: true,
+          }
+        )
+        .then((res) => {
+          setUpdate(true);
+          if (res.data.message === "ok") {
+            navigate("/");
+          }
+        });
+    }
   };
 
   return (
     <ModalContainer isProjectOpen={isProjectOpen}>
       What is ProjectName?
-      <input
+      <Input
         type="text"
         onBlur={(e) => DataHandler("projectName", e.target.value)}
       />
@@ -172,12 +177,23 @@ export default function ProjectModal({
       Description
       <textarea onChange={(e) => DataHandler("description", e.target.value)} />
       <SubmitContainer>
-        <ProjectFinisher onClick={projectComplete}>complete</ProjectFinisher>
-        <button onClick={closeHandler}>Submit</button>{" "}
+        <ProjectFinisher onClick={() => setIsComplete(!isComplete)}>
+          complete
+        </ProjectFinisher>
+        <button onClick={closeHandler}>Submit</button>
       </SubmitContainer>
+      <PresentationContainer isComplete={isComplete}>
+        Presentation
+        <PresentationInput
+          type="text"
+          onKeyPress={projectComplete}
+          placeholder="Press Enter after entering"
+        />
+      </PresentationContainer>
     </ModalContainer>
   );
 }
+
 
 const ModalContainer = styled.div`
   position: absolute;
@@ -192,17 +208,17 @@ const ModalContainer = styled.div`
   background-color: white;
   z-index: 999999;
 
-  input {
-    border-bottom: 1px solid black;
-    width: 12rem;
-    height: 2rem;
-    font-size: 1.2rem;
-  }
-
   textarea {
     height: 4rem;
     resize: none;
   }
+`;
+
+const Input = styled.input`
+  border-bottom: 1px solid black;
+  width: 12rem;
+  height: 2rem;
+  font-size: 1.2rem;
 `;
 
 const Cap = styled.li`
@@ -213,7 +229,14 @@ const CapLi = styled.li`
   cursor: pointer;
 `;
 
-const Daypicker = styled.div``;
+const Daypicker = styled.div`
+  input {
+    border-bottom: 1px solid black;
+    width: 12rem;
+    height: 2rem;
+    font-size: 1.2rem;
+  }
+`;
 
 const StyleDatePicker = styled(DatePicker)`cursor:pointer;`;
 
@@ -228,3 +251,17 @@ const SubmitContainer = styled.div`
 `;
 
 const ProjectFinisher = styled.button``;
+
+const PresentationContainer = styled.div`
+  display: ${(props) => (props.isComplete ? "default" : "none")};
+  margin-top:1rem;
+  padding-top:1rem;
+  border-top:0.2rem solid black;
+`;
+
+const PresentationInput = styled.input`
+  border-bottom: 1px solid black;
+  width: 12rem;
+  height: 2rem;
+  font-size: 1rem;
+`;
