@@ -20,7 +20,7 @@ export default MainComponent;
 
 const Container = styled.div`
   width: 100%;
-  height: 54.95rem;
+  height: 54.95rem; //높이
   margin: 1rem auto;
   display: flex;
   color: #35353d;

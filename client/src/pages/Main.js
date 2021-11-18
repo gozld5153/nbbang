@@ -5,6 +5,7 @@ import image1 from "../components/mainComponents/img/image1.png";
 import image2 from "../components/mainComponents/img/image2.jpg";
 import image3 from "../components/mainComponents/img/image3.png";
 import MainComponent from "../components/mainComponents/MainComponent";
+import MainDefaultComponent from "../components/mainComponents/MainDefaultComponent";
 import { useEffect, useRef, useState } from "react";
 
 export default function Main({
@@ -19,6 +20,11 @@ export default function Main({
   const divF = useRef();
   const divS = useRef();
   const divT = useRef();
+  const div4 = useRef();
+  const div5 = useRef();
+  const div6 = useRef();
+  const div7 = useRef();
+
   const [testIdx, setTestIdx] = useState(0);
   let scrollTopPosition = 0;
 
@@ -28,10 +34,10 @@ export default function Main({
     const scrollY = window.pageYOffset;
     const wheelMove = e.deltaY;
 
-    const slideTop =
-      containerEle.current.getBoundingClientRect().top +
-      window.pageYOffset -
-      100;
+    const slideTop = 0;
+    // containerEle.current.getBoundingClientRect().top +
+    // window.pageYOffset -
+    // 100;
 
     const divFtop = Math.round(
       divF.current.getBoundingClientRect().top + window.pageYOffset - 100
@@ -41,6 +47,18 @@ export default function Main({
     );
     const divTtop = Math.round(
       divT.current.getBoundingClientRect().top + window.pageYOffset - 100
+    );
+    const div4top = Math.round(
+      div4.current.getBoundingClientRect().top + window.pageYOffset - 100
+    );
+    const div5top = Math.round(
+      div5.current.getBoundingClientRect().top + window.pageYOffset - 100
+    );
+    const div6top = Math.round(
+      div6.current.getBoundingClientRect().top + window.pageYOffset - 100
+    );
+    const div7top = Math.round(
+      div7.current.getBoundingClientRect().top + window.pageYOffset - 100
     );
 
     // console.log(`컨테이너 상단 위치: ${slideTop}`);
@@ -61,6 +79,18 @@ export default function Main({
       } else if (scrollY < divTtop) {
         scrollTopPosition = divTtop;
         setTestIdx(3);
+      } else if (scrollY < div4top) {
+        scrollTopPosition = div4top;
+        setTestIdx(4);
+      } else if (scrollY < div5top) {
+        scrollTopPosition = div5top;
+        setTestIdx(5);
+      } else if (scrollY < div6top) {
+        scrollTopPosition = div6top;
+        setTestIdx(6);
+      } else if (scrollY < div7top) {
+        scrollTopPosition = div7top;
+        setTestIdx(7);
       }
     } else if (wheelMove < 0) {
       if (scrollY <= divFtop) {
@@ -69,9 +99,21 @@ export default function Main({
       } else if (scrollY <= divStop && scrollY > divFtop) {
         scrollTopPosition = divFtop;
         setTestIdx(1);
-      } else if (scrollY > divStop) {
+      } else if (scrollY <= divTtop && scrollY > divStop) {
         scrollTopPosition = divStop;
         setTestIdx(2);
+      } else if (scrollY <= div4top && scrollY > divTtop) {
+        scrollTopPosition = divTtop;
+        setTestIdx(3);
+      } else if (scrollY <= div5top && scrollY > div4top) {
+        scrollTopPosition = div4top;
+        setTestIdx(4);
+      } else if (scrollY <= div6top && scrollY > div5top) {
+        scrollTopPosition = div5top;
+        setTestIdx(5);
+      } else if (scrollY <= div7top && scrollY > div6top) {
+        scrollTopPosition = div6top;
+        setTestIdx(6);
       }
     }
 
@@ -93,6 +135,18 @@ export default function Main({
     const divTtop = Math.round(
       divT.current.getBoundingClientRect().top + window.pageYOffset - 100
     );
+    const div4top = Math.round(
+      div4.current.getBoundingClientRect().top + window.pageYOffset - 100
+    );
+    const div5top = Math.round(
+      div5.current.getBoundingClientRect().top + window.pageYOffset - 100
+    );
+    const div6top = Math.round(
+      div6.current.getBoundingClientRect().top + window.pageYOffset - 100
+    );
+    const div7top = Math.round(
+      div7.current.getBoundingClientRect().top + window.pageYOffset - 100
+    );
 
     if (idx === 0) {
       setTestIdx(0);
@@ -106,16 +160,28 @@ export default function Main({
     } else if (idx === 3) {
       setTestIdx(3);
       scrollTopPosition = divTtop;
+    } else if (idx === 4) {
+      setTestIdx(4);
+      scrollTopPosition = div4top;
+    } else if (idx === 5) {
+      setTestIdx(5);
+      scrollTopPosition = div5top;
+    } else if (idx === 6) {
+      setTestIdx(6);
+      scrollTopPosition = div6top;
+    } else if (idx === 7) {
+      setTestIdx(7);
+      scrollTopPosition = div7top;
     }
     window.scroll({ top: scrollTopPosition, behavior: "smooth" });
   };
 
-  useEffect(() => {
-    window.addEventListener("wheel", handleMouseWheel, { passive: false });
-    return () => {
-      window.removeEventListener("wheel", handleMouseWheel, { passive: false });
-    };
-  }, [isModal]);
+  // useEffect(() => {
+  //   window.addEventListener("wheel", handleMouseWheel, { passive: false });
+  //   return () => {
+  //     window.removeEventListener("wheel", handleMouseWheel, { passive: false });
+  //   };
+  // }, [isModal]);
 
   return (
     <Container ref={containerEle} isModal={isModal}>
@@ -133,17 +199,136 @@ export default function Main({
         ) : null}
         <Slide images={[image1, image2, image3]}></Slide>
         <MainContainer ref={divF}>
-          <MainComponent />
+          <MainDefaultComponent
+            idx={1}
+            title={[
+              "프로젝트 만들기",
+              " - nav의 Create 버튼을 눌러서 프로젝트 페이지로 진입.",
+            ]}
+            underText="일단 버튼을 누르라. 그럼 길이 열릴것이다 -한태규"
+            numberColor="black"
+            backgroundColor="#656565"
+            imageArr={[
+              `${process.env.PUBLIC_URL}/images/enter_project.png`,
+              `${process.env.PUBLIC_URL}/images/bbang.png`,
+            ]}
+          />
         </MainContainer>
         <MainContainer ref={divS}>
-          <MainComponent />
+          <MainDefaultComponent
+            idx={2}
+            title={[
+              "프로젝트 정보 수정",
+              " - 새로운 프로젝트 클릭하기",
+              " - 각 항목마다 상세정보 입력하기",
+              "하단의 submit버튼 누르기",
+            ]}
+            underText="일단 버튼을 누르라. 그럼 길이 열릴것이다 -한태규"
+            numberColor="black"
+            backgroundColor="#656565"
+            imageArr={[
+              `${process.env.PUBLIC_URL}/images/logo.png`,
+              `${process.env.PUBLIC_URL}/images/bbang.png`,
+            ]}
+          />
         </MainContainer>
         <MainContainer ref={divT}>
-          <MainComponent />
+          <MainDefaultComponent
+            idx={3}
+            title={[
+              "다른 사용자 초대하기",
+              " - 우측 상단에 invite 버튼 누르기",
+              " - 상대방의 이메일을 입력 후, Enter 누르기",
+              " - 하단의 invite 버튼 누르기",
+            ]}
+            underText="일단 버튼을 누르라. 그럼 길이 열릴것이다 -한태규"
+            numberColor="black"
+            backgroundColor="#656565"
+            imageArr={[
+              `${process.env.PUBLIC_URL}/images/logo.png`,
+              `${process.env.PUBLIC_URL}/images/bbang.png`,
+            ]}
+          />
         </MainContainer>
+        <MainContainer ref={div4}>
+          <MainDefaultComponent
+            idx={4}
+            title={[
+              "목표 생성하기",
+              " - todoList 상단에 +버튼 누르기",
+              " - 모달창에서 목표의 기본정보 입력하기",
+              " - 하단의 create버튼 누르기",
+            ]}
+            underText="일단 버튼을 누르라. 그럼 길이 열릴것이다 -한태규"
+            numberColor="black"
+            backgroundColor="#656565"
+            imageArr={[
+              `${process.env.PUBLIC_URL}/images/logo.png`,
+              `${process.env.PUBLIC_URL}/images/bbang.png`,
+            ]}
+          />
+        </MainContainer>
+        <MainContainer ref={div5}>
+          <MainDefaultComponent
+            idx={5}
+            title={[
+              "목표 수정하기",
+              " - 리스트에서 원하는 목표를 누르기",
+              " - 우측 상단에 수정 버튼 누르기",
+              " - 각종 정보 수정 및 파일 올리기 등 작업 수행하기",
+              " - 우측 상단에 수정 버튼 다시 누르기",
+            ]}
+            underText="일단 버튼을 누르라. 그럼 길이 열릴것이다 -한태규"
+            numberColor="black"
+            backgroundColor="#656565"
+            imageArr={[
+              `${process.env.PUBLIC_URL}/images/logo.png`,
+              `${process.env.PUBLIC_URL}/images/bbang.png`,
+            ]}
+          />
+        </MainContainer>
+        <MainContainer ref={div6}>
+          <MainDefaultComponent
+            idx={6}
+            title={[
+              "완료 시키기",
+              " - 프로젝트 정보 변경하는 쪽으로 이동하기",
+              " - 좌측 하단에 complete 버튼 누르기",
+            ]}
+            underText="일단 버튼을 누르라. 그럼 길이 열릴것이다 -한태규"
+            numberColor="black"
+            backgroundColor="#656565"
+            imageArr={[
+              `${process.env.PUBLIC_URL}/images/logo.png`,
+              `${process.env.PUBLIC_URL}/images/bbang.png`,
+            ]}
+          />
+        </MainContainer>
+        <MainContainer ref={div7}>
+          <MainDefaultComponent
+            idx={6}
+            title={[
+              "결과 확인하기",
+              " - nav에서 mypage버튼 누르기",
+              " - 원하는 완료한 프로젝트 선택하기",
+              " - 결과를 감상하기",
+            ]}
+            underText="일단 버튼을 누르라. 그럼 길이 열릴것이다 -한태규"
+            numberColor="black"
+            backgroundColor="#656565"
+            imageArr={[
+              `${process.env.PUBLIC_URL}/images/logo.png`,
+              `${process.env.PUBLIC_URL}/images/bbang.png`,
+            ]}
+          />
+        </MainContainer>
+        <MainContainer ref={div4}>4</MainContainer>
+        <MainContainer ref={div5}>5</MainContainer>
+        <MainContainer ref={div6}>6</MainContainer>
+        <MainContainer ref={div7}>7</MainContainer>
       </>
       <DotContainer>
-        {Array(4)
+        {Array(8)
           .fill(0)
           .map((_, idx) => (
             <Dot
@@ -158,6 +343,7 @@ export default function Main({
 
 const Container = styled.div`
   width: 87.5vw;
+  /* margin: 0 auto; */
   position: relative;
   height: 100%;
 `;
@@ -181,4 +367,7 @@ const Dot = styled.div`
   cursor: pointer;
 `;
 
-const MainContainer = styled.div``;
+const MainContainer = styled.div`
+  height: 54.95rem;
+  border-bottom: 1px solid black;
+`;
