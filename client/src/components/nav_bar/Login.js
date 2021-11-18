@@ -85,19 +85,24 @@ const Container = styled.div`
   > :nth-child(1) {
     font-weight: bold;
     font-size: 3rem;
-    margin-bottom: 4rem;
+    margin-bottom: 2rem;
     letter-spacing: 0.1rem;
   }
   input {
-    width: 14rem;
-    height: 2rem;
+    flex-shrink: 0;
+    width: 20rem;
+    height: 3rem;
     letter-spacing: 0.05rem;
     font-size: 1rem;
     font-family: "Anton", sans-serif;
     z-index: 0;
     background-color: #f3f3f4;
-    height: 2rem;
     margin: 0.5rem;
+    border: 1px solid gray;
+    padding: 0 0.5rem;
+  }
+
+  input:focus {
     border: 1px solid black;
   }
 `;
@@ -106,9 +111,9 @@ const LoginBtn = styled.button`
   font-family: "Anton", sans-serif;
   background-color: #222222;
   color: #efefef;
-
-  height: 2rem;
-  width: 4rem;
+  font-size: 1.4rem;
+  height: 2.5rem;
+  width: 5rem;
   /* border-radius: 0.5rem; */
   margin-top: 2rem;
   margin-bottom: 1rem;

@@ -159,23 +159,29 @@ const Container = styled.div`
     letter-spacing: 0.1rem;
   }
   input {
-    width: 14rem;
-    height: 2rem;
+    width: 20rem;
+    height: 3rem;
     letter-spacing: 0.05rem;
     font-size: 1rem;
     font-family: "Anton", sans-serif;
     background-color: #f3f3f4;
     margin: 0.5rem;
     z-index: 0;
+    border: 1px solid gray;
+    padding: 0 0.5rem;
+  }
+
+  input:focus {
     border: 1px solid black;
   }
+
   & > :nth-child(2) {
     position: relative;
     button {
       font-family: "Noto Sans KR", sans-serif;
       position: absolute;
       width: 4rem;
-      height: 2rem;
+      height: 2.5rem;
       margin-top: 0.5rem;
       background-color: #222222;
       color: #efefef;
