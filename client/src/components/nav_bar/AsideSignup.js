@@ -16,8 +16,9 @@ const SignupBtn = styled.button`
   font-family: "Anton", sans-serif;
   background-color: #f3f3f4;
   margin-top: 4rem;
-  height: 2rem;
-  width: 4rem;
+  height: 3rem;
+  width: 5rem;
+  font-size: 1.2rem;
   /* border-radius: 0.5rem; */
   color: #222222;
   &:hover {
@@ -45,7 +46,8 @@ const AsideContainer = styled.div`
   left: ${(props) => (props.isOn ? "50%" : "0")};
   > :nth-child(1) {
     font-size: 3rem;
-    margin-bottom: 4rem;
+    margin-bottom: 8rem;
+
     font-weight: bold;
   }
   > :nth-child(2) {
@@ -54,6 +56,7 @@ const AsideContainer = styled.div`
   }
   > :nth-child(3) {
     font-size: 1.2rem;
+    margin-bottom: 2rem;
   }
 `;
 export default AsideSignup;

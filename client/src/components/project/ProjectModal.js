@@ -101,8 +101,6 @@ export default function ProjectModal({
   };
 
   return (
-    // <Container isProjectOpen={isProjectOpen}>
-    // </Container>
     <ModalContainer isProjectOpen={isProjectOpen}>
       What is ProjectName?
       <input
@@ -158,7 +156,7 @@ export default function ProjectModal({
         <Cap onClick={() => setIsOpen(!isOpen)}>{captain}</Cap>
         {isOpen
           ? member.map((el) => (
-              <li
+              <CapLi
                 onClick={() => {
                   DataHandler("captainId", el.id);
                   setIsOpen(!isOpen);
@@ -166,7 +164,7 @@ export default function ProjectModal({
                 key={el.id}
               >
                 {el.username}
-              </li>
+              </CapLi>
             ))
           : null}
       </ul>
@@ -209,11 +207,15 @@ const ModalContainer = styled.div`
 
 const Cap = styled.li`
   border-bottom: 1px solid black;
+  cursor: pointer;
+`;
+const CapLi = styled.li`
+  cursor: pointer;
 `;
 
 const Daypicker = styled.div``;
 
-const StyleDatePicker = styled(DatePicker)``;
+const StyleDatePicker = styled(DatePicker)`cursor:pointer;`;
 
 const SubmitContainer = styled.div`
   display: flex;

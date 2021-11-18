@@ -206,6 +206,7 @@ export default function App() {
               path="/"
               element={
                 <Main
+                  isLogin={isLogin}
                   isModal={isModal}
                   handleModal={handleModal}
                   handleSignAndLogin={handleSignAndLogin}
