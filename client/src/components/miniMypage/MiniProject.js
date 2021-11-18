@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
 const Project = ({ progress, members, handleMypage, setUpdate }) => {
-  console.log(progress);
   const navigate = useNavigate();
   const handleMoveMypage = () => {
     navigate("/mypage/project-inprogress");
