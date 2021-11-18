@@ -35,7 +35,6 @@ export default function Project({ id, update, setUpdate }) {
     console.log(newObject.description);
     setProjectInfo({ ...newObject });
   };
-  console.log(params.projectId, id);
   useEffect(() => {
     if (update) {
       setUpdate(false);
