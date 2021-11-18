@@ -5,6 +5,7 @@ import image1 from "../components/mainComponents/img/image1.png";
 import image2 from "../components/mainComponents/img/image2.jpg";
 import image3 from "../components/mainComponents/img/image3.png";
 import MainComponent from "../components/mainComponents/MainComponent";
+import MainDefaultComponent from '../components/mainComponents/MainDefaultComponent'
 import { useEffect, useRef, useState } from "react";
 
 export default function Main({
@@ -175,12 +176,12 @@ export default function Main({
     window.scroll({ top: scrollTopPosition, behavior: "smooth" });
   };
 
-  useEffect(() => {
-    window.addEventListener("wheel", handleMouseWheel, { passive: false });
-    return () => {
-      window.removeEventListener("wheel", handleMouseWheel, { passive: false });
-    };
-  }, [isModal]);
+  // useEffect(() => {
+  //   window.addEventListener("wheel", handleMouseWheel, { passive: false });
+  //   return () => {
+  //     window.removeEventListener("wheel", handleMouseWheel, { passive: false });
+  //   };
+  // }, [isModal]);
 
   return (
     <Container ref={containerEle} isModal={isModal}>
@@ -198,13 +199,128 @@ export default function Main({
         ) : null}
         <Slide images={[image1, image2, image3]}></Slide>
         <MainContainer ref={divF}>
-          <MainComponent />
+          <MainDefaultComponent
+            idx={1}
+            title={[
+              "프로젝트 만들기",
+              " - nav의 Create 버튼을 눌러서 프로젝트 페이지로 진입.",
+            ]}
+            underText="일단 버튼을 누르라. 그럼 길이 열릴것이다 -한태규"
+            numberColor="black"
+            backgroundColor="#656565"
+            imageArr={[
+              `${process.env.PUBLIC_URL}/images/enter_project.png`,
+              `${process.env.PUBLIC_URL}/images/bbang.png`,
+            ]}
+          />
         </MainContainer>
         <MainContainer ref={divS}>
-          <MainComponent />
+          <MainDefaultComponent
+            idx={2}
+            title={[
+              "프로젝트 정보 수정",
+              " - 새로운 프로젝트 클릭하기",
+              " - 각 항목마다 상세정보 입력하기",
+              "하단의 submit버튼 누르기",
+            ]}
+            underText="일단 버튼을 누르라. 그럼 길이 열릴것이다 -한태규"
+            numberColor="black"
+            backgroundColor="#656565"
+            imageArr={[
+              `${process.env.PUBLIC_URL}/images/logo.png`,
+              `${process.env.PUBLIC_URL}/images/bbang.png`,
+            ]}
+          />
         </MainContainer>
         <MainContainer ref={divT}>
-          <MainComponent />
+          <MainDefaultComponent
+            idx={3}
+            title={[
+              "다른 사용자 초대하기",
+              " - 우측 상단에 invite 버튼 누르기",
+              " - 상대방의 이메일을 입력 후, Enter 누르기",
+              " - 하단의 invite 버튼 누르기",
+            ]}
+            underText="일단 버튼을 누르라. 그럼 길이 열릴것이다 -한태규"
+            numberColor="black"
+            backgroundColor="#656565"
+            imageArr={[
+              `${process.env.PUBLIC_URL}/images/logo.png`,
+              `${process.env.PUBLIC_URL}/images/bbang.png`,
+            ]}
+          />
+        </MainContainer>
+        <MainContainer ref={div4}>
+          <MainDefaultComponent
+            idx={4}
+            title={[
+              "목표 생성하기",
+              " - todoList 상단에 +버튼 누르기",
+              " - 모달창에서 목표의 기본정보 입력하기",
+              " - 하단의 create버튼 누르기",
+            ]}
+            underText="일단 버튼을 누르라. 그럼 길이 열릴것이다 -한태규"
+            numberColor="black"
+            backgroundColor="#656565"
+            imageArr={[
+              `${process.env.PUBLIC_URL}/images/logo.png`,
+              `${process.env.PUBLIC_URL}/images/bbang.png`,
+            ]}
+          />
+        </MainContainer>
+        <MainContainer ref={div5}>
+          <MainDefaultComponent
+            idx={5}
+            title={[
+              "목표 수정하기",
+              " - 리스트에서 원하는 목표를 누르기",
+              " - 우측 상단에 수정 버튼 누르기",
+              " - 각종 정보 수정 및 파일 올리기 등 작업 수행하기",
+              " - 우측 상단에 수정 버튼 다시 누르기",
+            ]}
+            underText="일단 버튼을 누르라. 그럼 길이 열릴것이다 -한태규"
+            numberColor="black"
+            backgroundColor="#656565"
+            imageArr={[
+              `${process.env.PUBLIC_URL}/images/logo.png`,
+              `${process.env.PUBLIC_URL}/images/bbang.png`,
+            ]}
+          />
+        </MainContainer>
+        <MainContainer ref={div6}>
+          <MainDefaultComponent
+            idx={6}
+            title={[
+              "완료 시키기",
+              " - 프로젝트 정보 변경하는 쪽으로 이동하기",
+              " - 좌측 하단에 complete 버튼 누르기",
+            ]}
+            underText="일단 버튼을 누르라. 그럼 길이 열릴것이다 -한태규"
+            numberColor="black"
+            backgroundColor="#656565"
+            imageArr={[
+              `${process.env.PUBLIC_URL}/images/logo.png`,
+              `${process.env.PUBLIC_URL}/images/bbang.png`,
+            ]}
+          />
+        </MainContainer>
+        <MainContainer ref={div7}>
+          <MainDefaultComponent
+            idx={6}
+            title={[
+              "결과 확인하기",
+              " - nav에서 mypage버튼 누르기",
+              " - 원하는 완료한 프로젝트 선택하기",
+              " - 결과를 감상하기"
+            ]}
+            underText="일단 버튼을 누르라. 그럼 길이 열릴것이다 -한태규"
+            numberColor="black"
+            backgroundColor="#656565"
+            imageArr={[
+              `${process.env.PUBLIC_URL}/images/logo.png`,
+              `${process.env.PUBLIC_URL}/images/bbang.png`,
+            ]}
+          />
         </MainContainer>
         <MainContainer ref={div4}>4</MainContainer>
         <MainContainer ref={div5}>5</MainContainer>
