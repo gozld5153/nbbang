@@ -2,21 +2,35 @@ import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-const ResultProject = ({ complete, members }) => {
+const ResultProject = ({ complete, members, handleMypage }) => {
   const navigate = useNavigate();
-
+  const handleMoveMypage = () => {
+    navigate("/mypage/project-done");
+    handleMypage();
+  };
+  const handleMoveProject = (id) => {
+    navigate(`/complete/${id}`);
+    handleMypage();
+  };
   return (
     <Container>
       {complete.length > 0 ? (
         <>
-          <div>완료한 프로젝트</div>
+          <div onClick={handleMoveMypage} style={{ cursor: "pointer" }}>
+            완료한 프로젝트
+          </div>
           <div>
             <ul>
               {complete.map((project, idx) => (
-                <li key={idx} onClick={() => navigate("project-done")}>
-                  <p>{project}</p>
+                <li key={idx} onClick={() => handleMoveProject(project.id)}>
+                  <p>{project.projectName}</p>
                   {members[idx].map((name, idx) => (
-                    <span key={idx}>{name.username} &nbsp;</span>
+                    <img
+                      src={`${process.env.REACT_APP_S3_IMG}/${name.profile}`}
+                      key={idx}
+                      alt=""
+                      title={name.username}
+                    />
                   ))}
                 </li>
               ))}
@@ -24,7 +38,9 @@ const ResultProject = ({ complete, members }) => {
           </div>
         </>
       ) : (
-        <div>완료한 프로젝트가 없습니다.</div>
+        <div onClick={handleMoveMypage} style={{ cursor: "pointer" }}>
+          완료한 프로젝트가 없습니다.
+        </div>
       )}
     </Container>
   );
@@ -36,6 +52,10 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  &:hover {
+    background: #ddd;
+  }
   > :nth-child(1) {
     font-weight: bold;
     font-size: 2rem;
@@ -56,7 +76,12 @@ const Container = styled.div`
         font-weight: bold;
       }
       > p {
-        margin-bottom: 0.5rem;
+        margin-top: 0.5rem;
+      }
+      img {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
       }
     }
   }

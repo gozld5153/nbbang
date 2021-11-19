@@ -17,7 +17,7 @@ const GlobalStyles = createGlobalStyle`
         font-weight: bold;
     }
     input {
-        border: 1px solid black;
+        border: none;
         vertical-align: middle;
     }
     input:focus {

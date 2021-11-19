@@ -2,35 +2,46 @@ import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-const Project = ({ progress, members }) => {
+const Project = ({ progress, members, handleMypage, setUpdate }) => {
   const navigate = useNavigate();
-  return (
-    <>
-      <div>진행중인 프로젝트</div>
-      <div>
-        <ul>
-          {progress.map((project, idx) => (
-            <li key={idx} onClick={() => navigate("project-inprogress")}>
-              <p>{project}</p>
-              {members[idx].map((name, idx) => (
-                <span key={idx}>{name.username}</span>
-              ))}
-            </li>
-          ))}
-        </ul>
-      </div>
-    </>
-  );
-};
-
-const MiniProject = ({ progress, members }) => {
+  const handleMoveMypage = () => {
+    navigate("/mypage/project-inprogress");
+    handleMypage();
+  };
+  const handleMoveProject = (id) => {
+    setUpdate(true);
+    navigate(`/project/${id}`);
+    handleMypage();
+  };
   return (
     <Container>
-      {/* 테스트용 실제동작은 div와 Project 자리 체인지  */}
       {progress.length > 0 ? (
-        <div>진행 중인 프로젝트가 없습니다.</div>
+        <>
+          <div onClick={handleMoveMypage} style={{ cursor: "pointer" }}>
+            진행중인 프로젝트
+          </div>
+          <div>
+            <ul>
+              {progress.map((project, idx) => (
+                <li key={idx} onClick={() => handleMoveProject(project.id)}>
+                  <p>{project.projectName}</p>
+                  {members[idx].map((name, idx) => (
+                    <img
+                      src={`${process.env.REACT_APP_S3_IMG}/${name.profile}`}
+                      key={idx}
+                      alt=""
+                      title={name.username}
+                    />
+                  ))}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </>
       ) : (
-        <Project progress={progress} members={members} />
+        <div onClick={handleMoveMypage} style={{ cursor: "pointer" }}>
+          진행중인 프로젝트가 없습니다.
+        </div>
       )}
     </Container>
   );
@@ -42,6 +53,9 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  &:hover {
+    background: #ddd;
+  }
   > :nth-child(1) {
     font-weight: bold;
     font-size: 2rem;
@@ -62,10 +76,15 @@ const Container = styled.div`
         font-weight: bold;
       }
       > p {
-        margin-bottom: 0.5rem;
+        margin-top: 0.5rem;
+      }
+      img {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
       }
     }
   }
 `;
 
-export default MiniProject;
+export default Project;

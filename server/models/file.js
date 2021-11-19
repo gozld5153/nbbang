@@ -9,17 +9,25 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      // models.File.belongsTo(models.User, { foreignKey: "user_id" });
-      // models.File.belongsTo(models.Project, { foreignKey: "project_id" });
-      // models.File.belongsTo(models.Goal, { foreignKey: "goal_id" });
+      File.belongsTo(models.User, {
+        foreignKey: {
+          name: "userId",
+        },
+        onDelete: "CASCADE",
+      });
+      File.belongsTo(models.Goal, {
+        foreignKey: {
+          name: "GoalId",
+        },
+        onDelete: "CASCADE",
+      });
     }
   }
   File.init(
     {
-      user_id: DataTypes.INTEGER,
-      project_id: DataTypes.INTEGER,
-      goal_id: DataTypes.INTEGER,
-      file_name: DataTypes.STRING,
+      userId: DataTypes.INTEGER,
+      goalId: DataTypes.INTEGER,
+      fileName: DataTypes.STRING,
       description: DataTypes.STRING,
     },
     {

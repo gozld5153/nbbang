@@ -8,10 +8,10 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      project_name: {
+      projectName: {
         type: Sequelize.STRING,
       },
-      captain_id: {
+      captainId: {
         type: Sequelize.INTEGER,
       },
       description: {
@@ -22,6 +22,7 @@ module.exports = {
       },
       state: {
         type: Sequelize.STRING,
+        defaultValue: "progress",
       },
       deadline: {
         type: Sequelize.STRING,

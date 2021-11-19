@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
+import { FcCheckmark } from "react-icons/fc";
 
 const Signup = ({ handleSignAndLogin, isOn }) => {
   const [signupInfo, setSignupInfo] = useState({
@@ -15,6 +16,7 @@ const Signup = ({ handleSignAndLogin, isOn }) => {
     username: "",
   });
 
+  const [showErr, setShowErr] = useState("");
   const [isChecked, setIsChecked] = useState(false);
 
   const handleInputValue = (key) => (e) => {
@@ -24,21 +26,29 @@ const Signup = ({ handleSignAndLogin, isOn }) => {
           ...signupInfo,
           [key]: e.target.value,
         });
+        setShowErr("");
         setErrMsg({ ...errMsg, [key]: null });
       } else {
-        setErrMsg({ ...errMsg, [key]: "유효한 이메일형식이 아닙니다." });
+        setErrMsg({
+          ...errMsg,
+          [key]: `It's not an email`,
+        });
       }
     }
 
     if (key === "password") {
-      if (/^[A-Za-z0-9]{4,16}$/.test(e.target.value)) {
+      if (/^[^\s]{4,16}$/.test(e.target.value)) {
         setSignupInfo({
           ...signupInfo,
           [key]: e.target.value,
         });
+        setShowErr("");
         setErrMsg({ ...errMsg, [key]: null });
       } else {
-        setErrMsg({ ...errMsg, [key]: "4자이상 16자이하로 작성해주세요." });
+        setErrMsg({
+          ...errMsg,
+          [key]: "Please write the password in 4 to 16 letters",
+        });
       }
     }
 
@@ -48,9 +58,14 @@ const Signup = ({ handleSignAndLogin, isOn }) => {
           ...signupInfo,
           [key]: e.target.value,
         });
+        setShowErr("");
         setErrMsg({ ...errMsg, [key]: null });
       } else {
-        setErrMsg({ ...errMsg, [key]: "2자이상 10자이하로 작성해주세요." });
+        setErrMsg({
+          ...errMsg,
+          [key]:
+            "Please write the username in 2 to 10 English and Numerical Characters",
+        });
       }
     }
   };
@@ -62,26 +77,31 @@ const Signup = ({ handleSignAndLogin, isOn }) => {
         .post(`${process.env.REACT_APP_API_URL}/users/duplication`, {
           email: signupInfo.email,
         })
-        .then(() => setIsChecked(true))
-        .catch((err) => setIsChecked(false));
+        .then((data) => {
+          console.log(data);
+          setIsChecked(true);
+        })
+        .catch((err) => {
+          console.log(err.response);
+          setIsChecked(false);
+          setShowErr("It's a duplicate email.");
+        });
     }
   };
 
   const handleSingup = () => {
-    if (
-      errMsg.email !== null ||
-      errMsg.password !== null ||
-      errMsg.username !== null
-    ) {
-      console.log("돌아가!");
-      return;
-    } else {
-      //todo axios 통신요청
-      axios
-        .post(`${process.env.REACT_APP_API_URL}/users/signup`, signupInfo)
-        .then((data) => handleSignAndLogin())
-        .catch((err) => console.log(err));
-    }
+    if (errMsg.email === "" || errMsg.password === "" || errMsg.username === "")
+      return setShowErr("Please enter information");
+    if (errMsg.email !== null) return setShowErr(errMsg.email);
+    if (isChecked === false) return setShowErr("Check the email duplicate");
+    if (errMsg.password !== null) return setShowErr(errMsg.password);
+    if (errMsg.username !== null) return setShowErr(errMsg.username);
+
+    //todo axios 통신요청
+    axios
+      .post(`${process.env.REACT_APP_API_URL}/users/signup`, signupInfo)
+      .then((data) => handleSignAndLogin())
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -95,16 +115,13 @@ const Signup = ({ handleSignAndLogin, isOn }) => {
           onChange={handleInputValue("email")}
         ></input>
         <button onClick={handleCheckEmail}>중복확인</button>
-        {isChecked || signupInfo.email === "" ? null : (
+        {isChecked ? (
+          // || signupInfo.email === ""
           <div>
-            <p>X</p>
+            <FcCheckmark />
           </div>
-        )}
+        ) : null}
       </div>
-
-      {errMsg.email === "유효한 이메일형식이 아닙니다." ? (
-        <div>{errMsg.email}</div>
-      ) : null}
 
       <input
         type="password"
@@ -112,25 +129,22 @@ const Signup = ({ handleSignAndLogin, isOn }) => {
         onChange={handleInputValue("password")}
       ></input>
 
-      {errMsg.password === "4자이상 16자이하로 작성해주세요." ? (
-        <div>{errMsg.password}</div>
-      ) : null}
-
       <input
         type="text"
         placeholder="username"
         onChange={handleInputValue("username")}
       ></input>
 
-      {errMsg.username === "2자이상 10자이하로 작성해주세요." ? (
-        <div>{errMsg.username}</div>
-      ) : null}
-      <SignupBtn onClick={handleSingup}>Sign up</SignupBtn>
+      <ErrBox>
+        <SignupBtn onClick={handleSingup}>Sign up</SignupBtn>
+        <ErrMsg showErr={showErr}>{showErr}</ErrMsg>
+      </ErrBox>
     </Container>
   );
 };
 
 const Container = styled.div`
+  font-family: "Anton", sans-serif;
   flex: 0 0 50%;
   height: 100%;
   display: flex;
@@ -144,51 +158,83 @@ const Container = styled.div`
     font-weight: bold;
     font-size: 3rem;
     margin-bottom: 4rem;
+    letter-spacing: 0.1rem;
   }
   input {
+    width: 20rem;
+    height: 3rem;
+    letter-spacing: 0.05rem;
+    font-size: 1rem;
+    font-family: "Anton", sans-serif;
     background-color: #f3f3f4;
-    height: 2rem;
     margin: 0.5rem;
     z-index: 0;
+    border: 1px solid gray;
+    padding: 0 0.5rem;
   }
+
+  input:focus {
+    border: 1px solid black;
+  }
+
   & > :nth-child(2) {
     position: relative;
     button {
+      font-family: "Noto Sans KR", sans-serif;
       position: absolute;
       width: 4rem;
-      height: 2rem;
+      height: 2.8rem;
+      /* font-size: 0.9rem; */
+      font-weight: 600;
       margin-top: 0.5rem;
-      background-color: #f3f3f4;
+      background-color: #222222;
+      color: #efefef;
       &:hover {
-        background-color: #e1e1e1;
         font-weight: bold;
       }
     }
     div {
-      width: 1.5rem;
-      height: 1.5rem;
+      width: 2.2rem;
+      height: 2.2rem;
       position: absolute;
       display: grid;
       place-content: center;
       right: 0.8rem;
       top: 0.8rem;
-      border: 1px solid red;
+      border: 1px solid green;
       border-radius: 50%;
-      color: red;
+      color: green;
+      font-size: 1.2rem;
     }
   }
 `;
 
 const SignupBtn = styled.button`
-  background-color: #f3f3f4;
-  margin-right: 2rem;
-  height: 2rem;
-  width: 4rem;
-  border-radius: 0.5rem;
+  font-family: "Anton", sans-serif;
+  background-color: #222222;
+  color: #efefef;
+  height: 3rem;
+  width: 5rem;
+  /* border-radius: 0.5rem; */
   margin-top: 3rem;
+  font-size: 1.2rem;
   &:hover {
-    background-color: #e1e1e1;
     font-weight: bold;
   }
+`;
+
+const ErrBox = styled.div`
+  position: relative;
+  display: flex;
+  width: 50%;
+  justify-content: center;
+`;
+
+const ErrMsg = styled.div`
+  position: absolute;
+  transition: all 0.5s linear;
+  top: ${({ showErr }) => (showErr ? 0 : "0.4rem")};
+  opacity: ${({ showErr }) => (showErr ? 1 : 0)};
+  white-space: nowrap;
 `;
 export default Signup;
