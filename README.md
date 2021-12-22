@@ -1,3 +1,4 @@
+# 서비스 소개
 인터넷 상에는 수많은 협업 페이지들이 있습니다.
 하지만 아직도 수많은 사람들이 조별과제를 무임승차 하려는 사람들에게 고통 받고 있죠
 그래서 저희는 생각했습니다.
@@ -23,3 +24,21 @@
 - 프로젝트가 완료되면 프로젝트 완료 페이지에서 프로젝트 결과를 확인할 수 있습니다.
 
 - 전체 프로젝트에서 각 팀원들의 기여도와 완료된 세부목표를 확인할 수 있습니다.
+
+[N빵 바로가기](https://www.nbbang.ml/)
+
+# 기술 스택
+<img src="https://cdn.discordapp.com/attachments/750939495775469683/923113005930135572/ezgif.com-gif-maker.png" />
+
+# 기능 플로우
+![](https://user-images.githubusercontent.com/83488329/141076423-ac6339c3-34a6-414f-ac88-cfcf8e09421e.png)
+---
+![](https://user-images.githubusercontent.com/83488329/141076633-591cd9eb-d6ab-49e4-8114-eec2f8eff26b.png)
+---
+![](https://user-images.githubusercontent.com/83488329/141076791-5e1ec6f8-95be-4781-9a22-4113136aee90.png)
+---
+![](https://user-images.githubusercontent.com/83488329/141076825-b9cec413-0186-4bcb-a756-fb65e26dfc7d.png)
+---
+![](https://user-images.githubusercontent.com/83488329/141076895-349f9295-0285-4e17-b27d-d152a9255fff.png)
+
+
